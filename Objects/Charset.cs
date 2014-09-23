@@ -22,7 +22,6 @@ namespace Tasslehoff.Library.Objects
 {
     using System;
     using System.Collections;
-    using System.Text;
 
     /// <summary>
     /// Charset class.

@@ -1,4 +1,4 @@
-// -----------------------------------------------------------------------
+﻿// -----------------------------------------------------------------------
 // <copyright file="ConfigSerializer.cs" company="-">
 // Copyright (c) 2013 larukedi (eser@sent.com). All rights reserved.
 // </copyright>
@@ -21,68 +21,68 @@
 namespace Tasslehoff.Library.Config
 {
     using System.IO;
-    using Newtonsoft.Json;
 
     /// <summary>
-    /// Serializer for configuration classes.
+    /// ConfigRegistry class
     /// </summary>
-    public static class ConfigSerializer
+    public class ConfigRegistry
     {
-        // methods
+        // fields
 
         /// <summary>
-        /// Gets the serializer instance.
+        /// Source path
         /// </summary>
-        /// <param name="type">The type</param>
-        /// <returns>A data contract serializer</returns>
-        internal static JsonSerializerSettings GetSerializerSettings()
+        private string sourcePath;
+
+        // constructors
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ConfigRegistry"/> class.
+        /// </summary>
+        /// <param name="path">The path of config files</param>
+        public ConfigRegistry(string path)
         {
-            JsonSerializerSettings settings = new JsonSerializerSettings()
+            this.SourcePath = path;
+        }
+
+        // attributes
+
+        /// <summary>
+        /// Gets or sets the source path
+        /// </summary>
+        public string SourcePath {
+            get
             {
-                Formatting = Formatting.Indented
-            };
-
-            return settings;
+                return this.sourcePath;
+            }
+            set
+            {
+                this.sourcePath = value;
+            }
         }
 
-        /// <summary>
-        /// Deserializes a configuration from a string.
-        /// </summary>
-        /// <typeparam name="T">A Config implementation</typeparam>
-        /// <param name="input">The input</param>
-        /// <returns>Deserialized configuration class instance</returns>
-        public static T Load<T>(string input) where T : Config
-        {
-            return JsonConvert.DeserializeObject<T>(input, ConfigSerializer.GetSerializerSettings());
-        }
+        // methods
 
         /// <summary>
         /// Deserializes a configuration from a file.
         /// </summary>
         /// <typeparam name="T">A Config implementation</typeparam>
-        /// <param name="path">The path</param>
+        /// <param name="relativePath">The relative path</param>
         /// <returns>Deserialized configuration class instance</returns>
-        public static T LoadFromFile<T>(string path) where T : Config
+        public T Load<T>(string relativePath) where T : Config, new()
         {
-            return ConfigSerializer.Load<T>(File.ReadAllText(path));
+            return ConfigSerializer.LoadFromFile<T>(Path.Combine(this.SourcePath, relativePath));
         }
 
         /// <summary>
         /// Deserializes a configuration from a file. If file is not found, creates a new one.
         /// </summary>
         /// <typeparam name="T">A Config implementation</typeparam>
-        /// <param name="path">The path</param>
+        /// <param name="relativePath">The relative path</param>
         /// <returns>Deserialized configuration class instance</returns>
-        public static T InitFromFile<T>(string path) where T : Config, new()
+        public T Init<T>(string relativePath) where T : Config, new()
         {
-            if (File.Exists(path))
-            {
-                return ConfigSerializer.LoadFromFile<T>(path);
-            }
-
-            T instance = new T();
-            instance.SaveToFile(path);
-            return instance;
+            return ConfigSerializer.InitFromFile<T>(Path.Combine(this.SourcePath, relativePath));
         }
     }
 }

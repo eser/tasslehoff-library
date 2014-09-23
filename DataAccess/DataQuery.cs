@@ -313,6 +313,25 @@ namespace Tasslehoff.Library.DataAccess
         }
 
         /// <summary>
+        /// Gets the SQL string.
+        /// </summary>
+        /// <returns>Query string</returns>
+        public string GetSqlString()
+        {
+            return this.sqlString;
+        }
+
+        /// <summary>
+        /// Sets the SQL string.
+        /// </summary>
+        /// <returns>Chain reference</returns>
+        public DataQuery SetSqlString(string sqlString)
+        {
+            this.sqlString = sqlString;
+            return this;
+        }
+
+        /// <summary>
         /// Selects the query.
         /// </summary>
         /// <returns>Chain reference</returns>
@@ -529,6 +548,17 @@ namespace Tasslehoff.Library.DataAccess
         }
 
         /// <summary>
+        /// Executes the datatable.
+        /// </summary>
+        /// <param name="commandBehavior">The command behavior</param>
+        /// <param name="function">The function</param>
+        /// <returns>DataTable result</returns>
+        public DataTable ExecuteDataTable(CommandBehavior commandBehavior = CommandBehavior.Default)
+        {
+            return this.database.ExecuteDataTable(this.sqlString, CommandType.Text, commandBehavior, this.parameters);
+        }
+
+        /// <summary>
         /// Executes the scalar.
         /// </summary>
         /// <returns>Scalar result</returns>
@@ -544,15 +574,6 @@ namespace Tasslehoff.Library.DataAccess
         public int ExecuteNonQuery()
         {
             return this.database.ExecuteNonQuery(this.sqlString, CommandType.Text, this.parameters);
-        }
-
-        /// <summary>
-        /// Gets the SQL string.
-        /// </summary>
-        /// <returns>Query string</returns>
-        public string GetSqlString()
-        {
-            return this.sqlString;
         }
     }
 }

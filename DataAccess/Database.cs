@@ -1,4 +1,4 @@
-// -----------------------------------------------------------------------
+﻿// -----------------------------------------------------------------------
 // <copyright file="Database.cs" company="-">
 // Copyright (c) 2013 larukedi (eser@sent.com). All rights reserved.
 // </copyright>
@@ -172,6 +172,48 @@ namespace Tasslehoff.Library.DataAccess
                 
                 // connection.Close();
             }
+        }
+
+        /// <summary>
+        /// Executes the DataTable.
+        /// </summary>
+        /// <param name="commandText">The command text</param>
+        /// <param name="commandType">Type of the command</param>
+        /// <param name="commandBehavior">The command behavior</param>
+        /// <param name="parameters">The parameters</param>
+        /// <returns>A DataTable returned from the database query</returns>
+        public DataTable ExecuteDataTable(string commandText, CommandType commandType = CommandType.Text, CommandBehavior commandBehavior = CommandBehavior.Default, IEnumerable<DbParameter> parameters = null)
+        {
+            DataTable dataTable = new DataTable();
+
+            using (DbConnection connection = this.GetConnection())
+            {
+                using (DbCommand command = this.GetCommand(connection, commandText, commandType))
+                {
+                    if (parameters != null)
+                    {
+                        // Parallel.ForEach<DbParameter>(parameters, parameter => {
+                        foreach (DbParameter parameter in parameters)
+                        {
+                            command.Parameters.Add(parameter);
+                        }
+                    }
+
+                    DbDataReader reader = command.ExecuteReader(commandBehavior);
+                    try
+                    {
+                        dataTable.Load(reader);
+                    }
+                    finally
+                    {
+                        reader.Close(); // reader.Disponse() instead?
+                    }
+                }
+
+                // connection.Close();
+            }
+
+            return dataTable;
         }
 
         /// <summary>
