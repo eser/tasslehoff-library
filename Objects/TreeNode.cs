@@ -1,5 +1,5 @@
 ﻿// -----------------------------------------------------------------------
-// <copyright file="TreeNode.cs" company="-">
+// <copyright file="TreeNode{T}.cs" company="-">
 // Copyright (c) 2013 larukedi (eser@sent.com). All rights reserved.
 // </copyright>
 // <author>larukedi (http://github.com/larukedi/)</author>
@@ -20,45 +20,87 @@
 
 namespace Tasslehoff.Library.Objects
 {
-    using System.Collections.Generic;
+    using System;
+    using Tasslehoff.Library.Collections;
 
     /// <summary>
     /// A node in tree data structure
     /// </summary>
-    public class TreeNode
+    /// <typeparam name="T">Type</typeparam>
+    public class TreeNode<T> : IComparable
     {
         // fields
 
         /// <summary>
-        /// Name
+        /// Value
         /// </summary>
-        private string name;
+        private T value;
+
+        /// <summary>
+        /// SortIndex
+        /// </summary>
+        private int sortIndex;
 
         /// <summary>
         /// Children
         /// </summary>
-        private List<TreeNode> children;
+        private SortedList<TreeNode<T>> children;
+
+        // constructor
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="TreeNode{T}"/> class.
+        /// </summary>
+        public TreeNode()
+        {
+            this.children = new SortedList<TreeNode<T>>();
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="TreeNode{T}"/> class.
+        /// </summary>
+        /// <param name="value">The value</param>
+        public TreeNode(T value)
+        {
+            this.value = value;
+            this.children = new SortedList<TreeNode<T>>();
+        }
 
         // attributes
 
         /// <summary>
-        /// Gets or sets the name
+        /// Gets or sets the value
         /// </summary>
-        public string Name {
+        public T Value {
             get
             {
-                return this.name;
+                return this.value;
             }
             set
             {
-                this.name = value;
+                this.value = value;
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the sort index
+        /// </summary>
+        public int SortIndex
+        {
+            get
+            {
+                return this.sortIndex;
+            }
+            set
+            {
+                this.sortIndex = value;
             }
         }
 
         /// <summary>
         /// Gets or sets the children
         /// </summary>
-        public List<TreeNode> Children
+        public SortedList<TreeNode<T>> Children
         {
             get
             {
@@ -68,6 +110,43 @@ namespace Tasslehoff.Library.Objects
             {
                 this.children = value;
             }
+        }
+
+        // methods
+
+        /// <summary>
+        /// Adds a child to node.
+        /// </summary>
+        /// <param name="value">The value</param>
+        /// <param name="sortIndex">The sort index</param>
+        /// <returns>Child object created</returns>
+        public TreeNode<T> AddChild(T value, int? sortIndex = null)
+        {
+            TreeNode<T> node = new TreeNode<T>(value);
+            if (sortIndex.HasValue)
+            {
+                node.sortIndex = sortIndex.Value;
+            }
+
+            this.children.Add(node);
+
+            return node;
+        }
+
+        /// <summary>
+        /// Does a comparision between two TreeNode instances
+        /// </summary>
+        /// <param name="obj">Other object to be compaired with</param>
+        /// <returns>The result</returns>
+        public int CompareTo(object obj)
+        {
+            TreeNode<T> other = obj as TreeNode<T>;
+            if (other == null)
+            {
+                return 1;
+            }
+
+            return this.sortIndex.CompareTo(other.sortIndex);
         }
     }
 }
