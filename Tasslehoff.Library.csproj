@@ -81,6 +81,7 @@
     <Compile Include="Objects\IntRange.cs" />
     <Compile Include="Objects\Numerator.cs" />
     <Compile Include="Objects\TreeNode.cs" />
+    <Compile Include="Plugins\IPluginControllable.cs" />
     <Compile Include="Plugins\LocalResource.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>

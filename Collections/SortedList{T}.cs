@@ -102,7 +102,15 @@ namespace Tasslehoff.Library.Collections
         /// <param name="value">The value.</param>
         public void Add(T value)
         {
-            this.values.Insert(~this.values.BinarySearch(value), value);
+            int index = ~this.values.BinarySearch(value);
+            if (index < 0)
+            {
+                this.values.Add(value);
+            }
+            else
+            {
+                this.values.Insert(index, value);
+            }
         }
 
         /// <summary>

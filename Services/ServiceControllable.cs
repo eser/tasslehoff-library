@@ -121,7 +121,7 @@ namespace Tasslehoff.Library.Services
         /// <summary>
         /// Restarts this instance.
         /// </summary>
-        public void Restart()
+        public virtual void Restart()
         {
             this.Stop();
             this.Start();
