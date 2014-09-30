@@ -627,6 +627,15 @@ namespace Tasslehoff.Library.DataAccess
         }
 
         /// <summary>
+        /// Resets current variables
+        /// </summary>
+        public void Reset()
+        {
+            this.parameters.Clear();
+            // this.placeholders.Clear();
+        }
+
+        /// <summary>
         /// Executes the reader.
         /// </summary>
         /// <param name="commandBehavior">The command behavior</param>
@@ -635,6 +644,8 @@ namespace Tasslehoff.Library.DataAccess
         {
             string finalSqlString = DataQuery.ApplyPlaceholders(this.sqlString, this.placeholders);
             this.database.ExecuteReader(finalSqlString, CommandType.Text, commandBehavior, this.parameters, function);
+
+            this.Reset();
         }
 
         /// <summary>
@@ -645,7 +656,10 @@ namespace Tasslehoff.Library.DataAccess
         public DataTable ExecuteDataTable(CommandBehavior commandBehavior = CommandBehavior.Default)
         {
             string finalSqlString = DataQuery.ApplyPlaceholders(this.sqlString, this.placeholders);
-            return this.database.ExecuteDataTable(finalSqlString, CommandType.Text, commandBehavior, this.parameters);
+            DataTable result = this.database.ExecuteDataTable(finalSqlString, CommandType.Text, commandBehavior, this.parameters);
+
+            this.Reset();
+            return result;
         }
 
         /// <summary>
@@ -656,7 +670,10 @@ namespace Tasslehoff.Library.DataAccess
         public IEnumerable ExecuteEnumerable(CommandBehavior commandBehavior = CommandBehavior.Default)
         {
             string finalSqlString = DataQuery.ApplyPlaceholders(this.sqlString, this.placeholders);
-            return this.database.ExecuteEnumerable(finalSqlString, CommandType.Text, commandBehavior, this.parameters);
+            IEnumerable result = this.database.ExecuteEnumerable(finalSqlString, CommandType.Text, commandBehavior, this.parameters);
+
+            this.Reset();
+            return result;
         }
 
         /// <summary>
@@ -666,7 +683,10 @@ namespace Tasslehoff.Library.DataAccess
         public object ExecuteScalar()
         {
             string finalSqlString = DataQuery.ApplyPlaceholders(this.sqlString, this.placeholders);
-            return this.database.ExecuteScalar(finalSqlString, CommandType.Text, this.parameters);
+            object result = this.database.ExecuteScalar(finalSqlString, CommandType.Text, this.parameters);
+
+            this.Reset();
+            return result;
         }
 
         /// <summary>
@@ -676,7 +696,10 @@ namespace Tasslehoff.Library.DataAccess
         public int ExecuteNonQuery()
         {
             string finalSqlString = DataQuery.ApplyPlaceholders(this.sqlString, this.placeholders);
-            return this.database.ExecuteNonQuery(finalSqlString, CommandType.Text, this.parameters);
+            int result = this.database.ExecuteNonQuery(finalSqlString, CommandType.Text, this.parameters);
+
+            this.Reset();
+            return result;
         }
     }
 }

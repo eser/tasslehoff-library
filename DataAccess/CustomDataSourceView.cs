@@ -21,6 +21,7 @@
 namespace Tasslehoff.Library.DataAccess
 {
     using System.Collections;
+    using System.Collections.Generic;
     using System.Data;
     using System.Web.UI;
 
@@ -166,7 +167,34 @@ namespace Tasslehoff.Library.DataAccess
         /// <returns>The number of items that were inserted into the underlying data storage.</returns>
         protected override int ExecuteInsert(IDictionary values)
         {
-            return base.ExecuteInsert(values);
+            if (!this.CanInsert)
+            {
+                return base.ExecuteInsert(values);
+            }
+
+            DataQuery targetQuery = this.owner.InsertQuery;
+
+            List<string> queryPart1 = new List<string>();
+            List<string> queryPart2 = new List<string>();
+            foreach (DictionaryEntry entry in values)
+            {
+                string key = entry.Key as string;
+
+                if (key == this.owner.PrimaryKeyField)
+                {
+                    continue;
+                }
+
+                queryPart1.Add(key);
+                queryPart2.Add("@" + key);
+
+                targetQuery.AddParameters(key, entry.Value);
+            }
+
+            targetQuery.AddPlaceholders("FIELDNAMES", string.Join(", ", queryPart1));
+            targetQuery.AddPlaceholders("FIELDVALUES", string.Join(", ", queryPart2));
+
+            return (int)targetQuery.ExecuteScalar();
         }
 
         /// <summary>
@@ -178,7 +206,32 @@ namespace Tasslehoff.Library.DataAccess
         /// <returns>The number of items that were updated in the underlying data storage.</returns>
         protected override int ExecuteUpdate(IDictionary keys, IDictionary values, IDictionary oldValues)
         {
-            return base.ExecuteUpdate(keys, values, oldValues);
+            if (!this.CanUpdate)
+            {
+                return base.ExecuteUpdate(keys, values, oldValues);
+            }
+
+            DataQuery targetQuery = this.owner.UpdateQuery
+                .AddParameters("ID", keys[this.owner.PrimaryKeyField]);
+
+            List<string> queryPart = new List<string>();
+            foreach (DictionaryEntry entry in values)
+            {
+                string key = entry.Key as string;
+
+                if (key == this.owner.PrimaryKeyField)
+                {
+                    continue;
+                }
+
+                queryPart.Add(string.Format("{0}=@{0}", key));
+
+                targetQuery.AddParameters(key, entry.Value);
+            }
+
+            targetQuery.AddPlaceholders("FIELDS", string.Join(", ", queryPart));
+
+            return targetQuery.ExecuteNonQuery();
         }
 
         /// <summary>
@@ -189,7 +242,15 @@ namespace Tasslehoff.Library.DataAccess
         /// <returns>The number of items that were deleted from the underlying data storage.</returns>
         protected override int ExecuteDelete(IDictionary keys, IDictionary oldValues)
         {
-            return base.ExecuteDelete(keys, oldValues);
+            if (!this.CanDelete)
+            {
+                return base.ExecuteDelete(keys, oldValues);
+            }
+
+            DataQuery targetQuery = this.owner.DeleteQuery
+                .AddParameters("ID", keys[this.owner.PrimaryKeyField]);
+
+            return targetQuery.ExecuteNonQuery();
         }
 
         #region CRUD
