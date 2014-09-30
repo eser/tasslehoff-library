@@ -21,6 +21,7 @@
 namespace Tasslehoff.Library.DataAccess
 {
     using System;
+    using System.Collections;
     using System.Collections.Generic;
     using System.Data;
     using System.Data.Common;
@@ -47,6 +48,11 @@ namespace Tasslehoff.Library.DataAccess
         /// The fields
         /// </summary>
         private IList<string> fields;
+
+        /// <summary>
+        /// The placeholders
+        /// </summary>
+        private IDictionary<string, string> placeholders;
 
         /// <summary>
         /// The parameters
@@ -94,10 +100,51 @@ namespace Tasslehoff.Library.DataAccess
             this.database = database;
 
             this.fields = new List<string>();
+            this.placeholders = new Dictionary<string, string>();
             this.parameters = new List<DbParameter>();
         }
 
+        // attributes
+
+        /// <summary>
+        /// Database instance
+        /// </summary>
+        public Database Database
+        {
+            get
+            {
+                return this.database;
+            }
+        }
+
+        /// <summary>
+        /// Parameters
+        /// </summary>
+        public IList<DbParameter> Parameters
+        {
+            get
+            {
+                return this.parameters;
+            }
+        }
+
         // methods
+
+        /// <summary>
+        /// Replaces placeholders with the values.
+        /// </summary>
+        /// <param name="sqlCommand">Query is going to be executed.</param>
+        /// <param name="placeholders">The placeholders</param>
+        /// <returns>Replaced sql command</returns>
+        public static string ApplyPlaceholders(string sqlCommand, IDictionary<string, string> placeholders)
+        {
+            foreach (KeyValuePair<string, string> pair in placeholders)
+            {
+                sqlCommand = sqlCommand.Replace("{" + pair.Key + "}", pair.Value);
+            }
+
+            return sqlCommand;
+        }
 
         /// <summary>
         /// Sets the destination table.
@@ -154,6 +201,48 @@ namespace Tasslehoff.Library.DataAccess
             }
 
             this.fields.Add("*");
+            return this;
+        }
+
+        /// <summary>
+        /// Adds the placeholders.
+        /// </summary>
+        /// <param name="key">The key</param>
+        /// <param name="value">The value</param>
+        /// <returns>Chain reference</returns>
+        public DataQuery AddPlaceholders(string key, string value)
+        {
+            this.placeholders[key] = value;
+            return this;
+        }
+
+        /// <summary>
+        /// Adds the placeholders.
+        /// </summary>
+        /// <param name="placeholders">The placeholders</param>
+        /// <returns>Chain reference</returns>
+        public DataQuery AddPlaceholders(params KeyValuePair<string, string>[] placeholders)
+        {
+            foreach (KeyValuePair<string, string> placeholder in placeholders)
+            {
+                this.placeholders[placeholder.Key] = placeholder.Value;
+            }
+
+            return this;
+        }
+
+        /// <summary>
+        /// Adds the placeholders.
+        /// </summary>
+        /// <param name="placeholders">The placeholders</param>
+        /// <returns>Chain reference</returns>
+        public DataQuery AddPlaceholders(IEnumerable<KeyValuePair<string, string>> placeholders)
+        {
+            foreach (KeyValuePair<string, string> placeholder in placeholders)
+            {
+                this.placeholders[placeholder.Key] = placeholder.Value;
+            }
+
             return this;
         }
 
@@ -544,18 +633,30 @@ namespace Tasslehoff.Library.DataAccess
         /// <param name="function">The function</param>
         public void ExecuteReader(CommandBehavior commandBehavior = CommandBehavior.Default, Action<DbDataReader> function = null)
         {
-            this.database.ExecuteReader(this.sqlString, CommandType.Text, commandBehavior, this.parameters, function);
+            string finalSqlString = DataQuery.ApplyPlaceholders(this.sqlString, this.placeholders);
+            this.database.ExecuteReader(finalSqlString, CommandType.Text, commandBehavior, this.parameters, function);
         }
 
         /// <summary>
         /// Executes the datatable.
         /// </summary>
         /// <param name="commandBehavior">The command behavior</param>
-        /// <param name="function">The function</param>
         /// <returns>DataTable result</returns>
         public DataTable ExecuteDataTable(CommandBehavior commandBehavior = CommandBehavior.Default)
         {
-            return this.database.ExecuteDataTable(this.sqlString, CommandType.Text, commandBehavior, this.parameters);
+            string finalSqlString = DataQuery.ApplyPlaceholders(this.sqlString, this.placeholders);
+            return this.database.ExecuteDataTable(finalSqlString, CommandType.Text, commandBehavior, this.parameters);
+        }
+
+        /// <summary>
+        /// Executes the enumerable.
+        /// </summary>
+        /// <param name="commandBehavior">The command behavior</param>
+        /// <returns>Enumerable result</returns>
+        public IEnumerable ExecuteEnumerable(CommandBehavior commandBehavior = CommandBehavior.Default)
+        {
+            string finalSqlString = DataQuery.ApplyPlaceholders(this.sqlString, this.placeholders);
+            return this.database.ExecuteEnumerable(finalSqlString, CommandType.Text, commandBehavior, this.parameters);
         }
 
         /// <summary>
@@ -564,7 +665,8 @@ namespace Tasslehoff.Library.DataAccess
         /// <returns>Scalar result</returns>
         public object ExecuteScalar()
         {
-            return this.database.ExecuteScalar(this.sqlString, CommandType.Text, this.parameters);
+            string finalSqlString = DataQuery.ApplyPlaceholders(this.sqlString, this.placeholders);
+            return this.database.ExecuteScalar(finalSqlString, CommandType.Text, this.parameters);
         }
 
         /// <summary>
@@ -573,7 +675,8 @@ namespace Tasslehoff.Library.DataAccess
         /// <returns>NonQuery result</returns>
         public int ExecuteNonQuery()
         {
-            return this.database.ExecuteNonQuery(this.sqlString, CommandType.Text, this.parameters);
+            string finalSqlString = DataQuery.ApplyPlaceholders(this.sqlString, this.placeholders);
+            return this.database.ExecuteNonQuery(finalSqlString, CommandType.Text, this.parameters);
         }
     }
 }

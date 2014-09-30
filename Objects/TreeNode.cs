@@ -21,32 +21,38 @@
 namespace Tasslehoff.Library.Objects
 {
     using System;
+    using System.Runtime.Serialization;
+    using System.Security.Permissions;
     using Tasslehoff.Library.Collections;
 
     /// <summary>
     /// A node in tree data structure
     /// </summary>
     /// <typeparam name="T">Type</typeparam>
-    public class TreeNode<T> : IComparable
+    [DataContract, Serializable]
+    public class TreeNode<T> : IComparable, ISerializable
     {
         // fields
 
         /// <summary>
         /// Value
         /// </summary>
+        [DataMember]
         private T value;
 
         /// <summary>
         /// SortIndex
         /// </summary>
+        [DataMember]
         private int sortIndex;
 
         /// <summary>
         /// Children
         /// </summary>
+        [DataMember]
         private SortedList<TreeNode<T>> children;
 
-        // constructor
+        // constructors
 
         /// <summary>
         /// Initializes a new instance of the <see cref="TreeNode{T}"/> class.
@@ -66,11 +72,24 @@ namespace Tasslehoff.Library.Objects
             this.children = new SortedList<TreeNode<T>>();
         }
 
+        /// <summary>
+        /// Constructor for serialization interface
+        /// </summary>
+        /// <param name="info">info</param>
+        /// <param name="context">context</param>
+        protected TreeNode(SerializationInfo info, StreamingContext context)
+        {
+            this.value = (T)info.GetValue("value", typeof(T));
+            this.sortIndex = info.GetInt32("sortIndex");
+            this.children = (SortedList<TreeNode<T>>)info.GetValue("children", typeof(SortedList<TreeNode<T>>));
+        }
+
         // attributes
 
         /// <summary>
         /// Gets or sets the value
         /// </summary>
+        [IgnoreDataMember]
         public T Value {
             get
             {
@@ -85,6 +104,7 @@ namespace Tasslehoff.Library.Objects
         /// <summary>
         /// Gets or sets the sort index
         /// </summary>
+        [IgnoreDataMember]
         public int SortIndex
         {
             get
@@ -100,6 +120,7 @@ namespace Tasslehoff.Library.Objects
         /// <summary>
         /// Gets or sets the children
         /// </summary>
+        [IgnoreDataMember]
         public SortedList<TreeNode<T>> Children
         {
             get
@@ -147,6 +168,20 @@ namespace Tasslehoff.Library.Objects
             }
 
             return this.sortIndex.CompareTo(other.sortIndex);
+        }
+
+        [SecurityPermission(SecurityAction.Demand, SerializationFormatter = true)]
+        protected void GetObjectData(SerializationInfo info, StreamingContext context)
+        {
+            info.AddValue("value", this.value);
+            info.AddValue("sortIndex", this.sortIndex);
+            info.AddValue("children", this.children);
+        }
+
+        [SecurityPermission(SecurityAction.LinkDemand, Flags = SecurityPermissionFlag.SerializationFormatter)]
+        void ISerializable.GetObjectData(SerializationInfo info, StreamingContext context)
+        {
+            this.GetObjectData(info, context);
         }
     }
 }

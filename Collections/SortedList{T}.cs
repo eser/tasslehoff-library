@@ -23,18 +23,22 @@ namespace Tasslehoff.Library.Collections
     using System;
     using System.Collections;
     using System.Collections.Generic;
+    using System.Runtime.Serialization;
+    using System.Security.Permissions;
 
     /// <summary>
     /// An sorted list class.
     /// </summary>
     /// <typeparam name="T">Any object type can be stored in a collection</typeparam>
-    public class SortedList<T> : IList<T> where T : IComparable
+    [DataContract, Serializable]
+    public class SortedList<T> : IList<T>, ISerializable where T : IComparable
     {
         // fields
 
         /// <summary>
         /// The values
         /// </summary>
+        [DataMember]
         private List<T> values;
 
         // constructors
@@ -47,12 +51,23 @@ namespace Tasslehoff.Library.Collections
             this.values = new List<T>();
         }
 
+        /// <summary>
+        /// Constructor for serialization interface
+        /// </summary>
+        /// <param name="info">info</param>
+        /// <param name="context">context</param>
+        protected SortedList(SerializationInfo info, StreamingContext context)
+        {
+            this.values = (List<T>)info.GetValue("values", typeof(List<T>));
+        }
+
         // properties
 
         /// <summary>
         /// Gets the number of elements contained in the <see cref="T:System.Collections.Generic.ICollection`1" />.
         /// </summary>
         /// <returns>The number of elements contained in the <see cref="T:System.Collections.Generic.ICollection`1" />.</returns>
+        [IgnoreDataMember]
         public int Count
         {
             get
@@ -65,6 +80,7 @@ namespace Tasslehoff.Library.Collections
         /// Gets a value indicating whether the <see cref="T:System.Collections.Generic.ICollection`1" /> is read-only.
         /// </summary>
         /// <returns>true if the <see cref="T:System.Collections.Generic.ICollection`1" /> is read-only; otherwise, false.</returns>
+        [IgnoreDataMember]
         public bool IsReadOnly
         {
             get
@@ -73,7 +89,7 @@ namespace Tasslehoff.Library.Collections
             }
         }
 
-        // indexer
+        // indexers
 
         /// <summary>
         /// Gets or sets the element with the specified index.
@@ -221,6 +237,18 @@ namespace Tasslehoff.Library.Collections
             {
                 yield return this.values[i];
             }
+        }
+
+        [SecurityPermission(SecurityAction.Demand, SerializationFormatter = true)]
+        protected void GetObjectData(SerializationInfo info, StreamingContext context)
+        {
+            info.AddValue("values", this.values);
+        }
+
+        [SecurityPermission(SecurityAction.LinkDemand, Flags = SecurityPermissionFlag.SerializationFormatter)]
+        void ISerializable.GetObjectData(SerializationInfo info, StreamingContext context)
+        {
+            this.GetObjectData(info, context);
         }
     }
 }

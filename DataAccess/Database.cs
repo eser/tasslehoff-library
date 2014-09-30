@@ -21,6 +21,7 @@
 namespace Tasslehoff.Library.DataAccess
 {
     using System;
+    using System.Collections;
     using System.Collections.Generic;
     using System.Data;
     using System.Data.Common;
@@ -172,6 +173,56 @@ namespace Tasslehoff.Library.DataAccess
                 
                 // connection.Close();
             }
+        }
+
+        /// <summary>
+        /// Executes the enumerable.
+        /// </summary>
+        /// <param name="commandText">The command text</param>
+        /// <param name="commandType">Type of the command</param>
+        /// <param name="commandBehavior">The command behavior</param>
+        /// <param name="parameters">The parameters</param>
+        public IEnumerable ExecuteEnumerable(string commandText, CommandType commandType = CommandType.Text, CommandBehavior commandBehavior = CommandBehavior.Default, IEnumerable<DbParameter> parameters = null)
+        {
+            List<object[]> result = new List<object[]>();
+
+            using (DbConnection connection = this.GetConnection())
+            {
+                using (DbCommand command = this.GetCommand(connection, commandText, commandType))
+                {
+                    if (parameters != null)
+                    {
+                        // Parallel.ForEach<DbParameter>(parameters, parameter => {
+                        foreach (DbParameter parameter in parameters)
+                        {
+                            command.Parameters.Add(parameter);
+                        }
+                    }
+
+                    DbDataReader reader = command.ExecuteReader(commandBehavior);
+                    try
+                    {
+                        while (reader.Read())
+                        {
+                            object[] row = new object[reader.FieldCount];
+                            for (int i = row.Length - 1; i >= 0; i--)
+                            {
+                                row[i] = reader[i];
+                            }
+
+                            result.Add(row);
+                        }
+                    }
+                    finally
+                    {
+                        reader.Close(); // reader.Disponse() instead?
+                    }
+                }
+
+                // connection.Close();
+            }
+
+            return result.ToArray();
         }
 
         /// <summary>
