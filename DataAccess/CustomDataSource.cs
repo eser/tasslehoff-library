@@ -79,6 +79,11 @@ namespace Tasslehoff.Library.DataAccess
         /// </summary>
         private DataQuery deleteQuery = null;
 
+        /// <summary>
+        /// Primary key field for the data source.
+        /// </summary>
+        private string primaryKeyField = null;
+
         // constructors
 
         /// <summary>
@@ -183,6 +188,21 @@ namespace Tasslehoff.Library.DataAccess
             set
             {
                 this.deleteQuery = value;
+            }
+        }
+
+        /// <summary>
+        /// Gets or Sets the primary key field for the data source.
+        /// </summary>
+        public string PrimaryKeyField
+        {
+            get
+            {
+                return this.primaryKeyField;
+            }
+            set
+            {
+                this.primaryKeyField = value;
             }
         }
 

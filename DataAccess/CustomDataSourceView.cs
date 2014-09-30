@@ -146,7 +146,10 @@ namespace Tasslehoff.Library.DataAccess
                 targetQuery.AddPlaceholders("SORT_FIELDS", arguments.SortExpression);
             }
 
-            IEnumerable result = targetQuery.ExecuteEnumerable(CommandBehavior.SingleResult);
+            DataTable dataTable = targetQuery.ExecuteDataTable(CommandBehavior.SingleResult);
+            dataTable.PrimaryKey = new DataColumn[] { dataTable.Columns[this.owner.PrimaryKeyField] };
+
+            IEnumerable result = new DataView(dataTable);
 
             if (this.CanRetrieveTotalRowCount && arguments.RetrieveTotalRowCount)
             {
