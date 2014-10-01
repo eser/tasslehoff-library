@@ -132,29 +132,44 @@ namespace Tasslehoff.Library.DataAccess
         /// <returns>An System.Collections.IEnumerable list of data from the underlying data storage.</returns>
         protected override IEnumerable ExecuteSelect(DataSourceSelectArguments arguments)
         {
-            DataQuery targetQuery;
-            if (this.CanPage) {
-                targetQuery = this.owner.SelectPagedQuery;
+            DataQuery targetSelectQuery;
+            DataQuery targetSelectCountQuery;
 
-                targetQuery.AddPlaceholders("RECORD_FROM", (arguments.StartRowIndex + 1).ToString());
-                targetQuery.AddPlaceholders("RECORD_TO", (arguments.StartRowIndex + arguments.MaximumRows).ToString());
+            if (this.CanPage) {
+                targetSelectQuery = this.owner.SelectPagedQuery;
+                targetSelectCountQuery = this.owner.SelectCountQuery;
+
+                targetSelectQuery.AddPlaceholders("RECORD_FROM", (arguments.StartRowIndex + 1).ToString());
+                targetSelectQuery.AddPlaceholders("RECORD_TO", (arguments.StartRowIndex + arguments.MaximumRows).ToString());
             } else {
-                targetQuery = this.owner.SelectQuery;
+                targetSelectQuery = this.owner.SelectQuery;
+                targetSelectCountQuery = this.owner.SelectCountQuery;
             }
 
             if (this.CanSort && !string.IsNullOrEmpty(arguments.SortExpression))
             {
-                targetQuery.AddPlaceholders("SORT_FIELDS", arguments.SortExpression);
+                targetSelectQuery.AddPlaceholders("SORT_FIELDS", arguments.SortExpression);
             }
 
-            DataTable dataTable = targetQuery.ExecuteDataTable(CommandBehavior.SingleResult);
+            if (!string.IsNullOrEmpty(this.owner.Where))
+            {
+                targetSelectQuery.AddPlaceholders("WHERE_STATEMENT", this.owner.Where);
+                targetSelectCountQuery.AddPlaceholders("WHERE_STATEMENT", this.owner.Where);
+            }
+            else
+            {
+                targetSelectQuery.AddPlaceholders("WHERE_STATEMENT", "1=1");
+                targetSelectCountQuery.AddPlaceholders("WHERE_STATEMENT", "1=1");
+            }
+
+            DataTable dataTable = targetSelectQuery.ExecuteDataTable(CommandBehavior.SingleResult);
             dataTable.PrimaryKey = new DataColumn[] { dataTable.Columns[this.owner.PrimaryKeyField] };
 
             IEnumerable result = new DataView(dataTable);
 
             if (this.CanRetrieveTotalRowCount && arguments.RetrieveTotalRowCount)
             {
-                arguments.TotalRowCount = (int)this.owner.SelectCountQuery.ExecuteScalar();
+                arguments.TotalRowCount = (int)targetSelectCountQuery.ExecuteScalar();
             }
 
             return result;

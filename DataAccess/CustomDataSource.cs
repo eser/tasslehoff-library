@@ -23,19 +23,32 @@ namespace Tasslehoff.Library.DataAccess
     using System;
     using System.Collections;
     using System.Collections.Generic;
+    using System.Web.DynamicData;
     using System.Web.UI;
+    using System.Web.UI.WebControls;
 
     /// <summary>
     /// CustomDataSource class.
+    /// 
+    /// TODO filter implementation
     /// </summary>
-    public class CustomDataSource : IDataSource
+    public class CustomDataSource : IDynamicDataSource
     {
+        // constants
+
+        private const string DefaultViewName = "";
+
         // events
 
         /// <summary>
         /// On data source has changed.
         /// </summary>
         public event EventHandler DataSourceChanged;
+
+        /// <summary>
+        /// On exception has thrown.
+        /// </summary>
+        public event EventHandler<DynamicValidatorEventArgs> Exception;
 
         // fields
 
@@ -84,6 +97,46 @@ namespace Tasslehoff.Library.DataAccess
         /// </summary>
         private string primaryKeyField = null;
 
+        /// <summary>
+        /// Whether where clause is created dynamically or not.
+        /// </summary>
+        private bool autoGenerateWhereClause = false;
+
+        /// <summary>
+        /// Context type.
+        /// </summary>
+        private Type contextType = null;
+
+        /// <summary>
+        /// Enable insert.
+        /// </summary>
+        private bool enableInsert;
+
+        /// <summary>
+        /// Enable update.
+        /// </summary>
+        private bool enableUpdate;
+
+        /// <summary>
+        /// Enable delete.
+        /// </summary>
+        private bool enableDelete;
+
+        /// <summary>
+        /// Entity set name.
+        /// </summary>
+        private string entitySetName;
+
+        /// <summary>
+        /// Where statement.
+        /// </summary>
+        private string where;
+
+        /// <summary>
+        /// Where parameters.
+        /// </summary>
+        private ParameterCollection whereParameters;
+
         // constructors
 
         /// <summary>
@@ -92,7 +145,7 @@ namespace Tasslehoff.Library.DataAccess
         public CustomDataSource()
         {
             this.dataSourceViewNames = new ArrayList() {
-                ""
+                CustomDataSource.DefaultViewName
             };
 
             this.dataSourceViews = new Dictionary<string, DataSourceView>();
@@ -203,6 +256,126 @@ namespace Tasslehoff.Library.DataAccess
             set
             {
                 this.primaryKeyField = value;
+            }
+        }
+
+        /// <summary>
+        /// Gets or Sets whether where clause is created dynamically or not.
+        /// </summary>
+        public bool AutoGenerateWhereClause
+        {
+            get
+            {
+                return this.autoGenerateWhereClause;
+            }
+            set
+            {
+                this.autoGenerateWhereClause = value;
+            }
+        }
+
+        /// <summary>
+        /// Gets or Sets the context type.
+        /// </summary>
+        public Type ContextType
+        {
+            get
+            {
+                return this.contextType;
+            }
+            set
+            {
+                this.contextType = value;
+            }
+        }
+
+        /// <summary>
+        /// Gets or Sets the enable insert.
+        /// </summary>
+        public bool EnableInsert
+        {
+            get
+            {
+                return this.enableInsert;
+            }
+            set
+            {
+                this.enableInsert = value;
+            }
+        }
+
+        /// <summary>
+        /// Gets or Sets the enable update.
+        /// </summary>
+        public bool EnableUpdate
+        {
+            get
+            {
+                return this.enableUpdate;
+            }
+            set
+            {
+                this.enableUpdate = value;
+            }
+        }
+
+        /// <summary>
+        /// Gets or Sets the enable delete.
+        /// </summary>
+        public bool EnableDelete
+        {
+            get
+            {
+                return this.enableDelete;
+            }
+            set
+            {
+                this.enableDelete = value;
+            }
+        }
+
+        /// <summary>
+        /// Gets or Sets the entity set name.
+        /// </summary>
+        public string EntitySetName
+        {
+            get
+            {
+                return this.entitySetName;
+            }
+            set
+            {
+                this.entitySetName = value;
+            }
+        }
+
+        /// <summary>
+        /// Gets or Sets the where statement.
+        /// </summary>
+        public string Where
+        {
+            get
+            {
+                return this.where;
+            }
+            set
+            {
+                this.where = value;
+            }
+        }
+
+        /// <summary>
+        /// Gets or Sets the where parameters.
+        /// </summary>
+        public ParameterCollection WhereParameters
+        {
+            get
+            {
+                return this.whereParameters;
+            }
+            set
+            {
+                this.whereParameters = value;
             }
         }
 
