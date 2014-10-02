@@ -20,6 +20,7 @@
 
 namespace Tasslehoff.Library.DataAccess
 {
+    using System;
     using System.Collections;
     using System.Collections.Generic;
     using System.Data;
@@ -135,7 +136,10 @@ namespace Tasslehoff.Library.DataAccess
             DataQuery targetSelectQuery;
             DataQuery targetSelectCountQuery;
 
-            if (this.CanPage) {
+            this.owner.InvokeBeforeSelectQuery(EventArgs.Empty);
+
+            if (this.CanPage)
+            {
                 targetSelectQuery = this.owner.SelectPagedQuery;
                 targetSelectCountQuery = this.owner.SelectCountQuery;
 

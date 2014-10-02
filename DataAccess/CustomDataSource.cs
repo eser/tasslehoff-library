@@ -50,6 +50,12 @@ namespace Tasslehoff.Library.DataAccess
         /// </summary>
         public event EventHandler<DynamicValidatorEventArgs> Exception;
 
+        /// <summary>
+        /// Before select query.
+        /// </summary>
+        public event EventHandler BeforeSelectQuery;
+
+
         // fields
 
         /// <summary>
@@ -411,6 +417,18 @@ namespace Tasslehoff.Library.DataAccess
         public ICollection GetViewNames()
         {
             return this.dataSourceViewNames;
+        }
+
+        /// <summary>
+        /// Invokes BeforeSelectQuery event.
+        /// </summary>
+        /// <param name="e">The event arguments</param>
+        internal void InvokeBeforeSelectQuery(EventArgs e)
+        {
+            if (this.BeforeSelectQuery != null)
+            {
+                this.BeforeSelectQuery(this, e);
+            }
         }
     }
 }
