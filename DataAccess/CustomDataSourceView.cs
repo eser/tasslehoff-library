@@ -154,6 +154,10 @@ namespace Tasslehoff.Library.DataAccess
             {
                 targetSelectQuery.AddPlaceholders("SORT_FIELDS", arguments.SortExpression);
             }
+            else
+            {
+                targetSelectQuery.AddPlaceholders("SORT_FIELDS", this.owner.PrimaryKeyField);
+            }
 
             if (!string.IsNullOrEmpty(this.owner.Where))
             {
