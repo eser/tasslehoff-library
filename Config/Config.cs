@@ -85,6 +85,17 @@ namespace Tasslehoff.Library.Config
 
                 property.SetValue(this, value, null);
             }
+
+            this.OnReset(isFirstInit);
+        }
+
+        /// <summary>
+        /// Gets called during the reset of the specified config object.
+        /// </summary>
+        /// <param name="isFirstInit">Whether it is called during initialization or not</param>
+        protected virtual void OnReset(bool isFirstInit = false)
+        {
+
         }
     }
 }

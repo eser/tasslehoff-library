@@ -138,7 +138,7 @@ namespace Tasslehoff.Library.DataAccess
 
             this.owner.InvokeBeforeSelectQuery(EventArgs.Empty);
 
-            if (this.CanPage)
+            if (this.CanPage && this.owner.UsePagedQuery)
             {
                 targetSelectQuery = this.owner.SelectPagedQuery;
                 targetSelectCountQuery = this.owner.SelectCountQuery;

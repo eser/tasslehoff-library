@@ -143,6 +143,11 @@ namespace Tasslehoff.Library.DataAccess
         /// </summary>
         private ParameterCollection whereParameters;
 
+        /// <summary>
+        /// Determines whether paged query is used or not.
+        /// </summary>
+        private bool usePagedQuery;
+
         // constructors
 
         /// <summary>
@@ -382,6 +387,21 @@ namespace Tasslehoff.Library.DataAccess
             set
             {
                 this.whereParameters = value;
+            }
+        }
+
+        /// <summary>
+        /// Gets or Sets whether paged query is used or not.
+        /// </summary>
+        public bool UsePagedQuery
+        {
+            get
+            {
+                return this.usePagedQuery;
+            }
+            set
+            {
+                this.usePagedQuery = value;
             }
         }
 
