@@ -81,7 +81,7 @@ namespace Tasslehoff.Library.DataEntities
         /// <returns>
         /// Serialized data.
         /// </returns>
-        public IDictionary<string, object> Serialize(T instance, bool convertNullsToDBNull = false)
+        public IDictionary<string, object> Serialize(IDataEntity instance, bool convertNullsToDBNull = false)
         {
             IDictionary<string, object> dictionary = new Dictionary<string, object>();
 
@@ -111,10 +111,11 @@ namespace Tasslehoff.Library.DataEntities
         /// Deserializes the item.
         /// </summary>
         /// <param name="dictionary">The dictionary</param>
+        /// <typeparam name="T2">IDataEntity implementation</typeparam>
         /// <returns>Deserialized class</returns>
-        public T Deserialize(IDictionary<string, object> dictionary)
+        public T2 Deserialize<T2>(IDictionary<string, object> dictionary) where T2 : IDataEntity, new()
         {
-            T instance = new T();
+            T2 instance = new T2();
 
             instance.OnDeserialize(ref dictionary);
 
@@ -148,10 +149,11 @@ namespace Tasslehoff.Library.DataEntities
         /// Deserializes the item.
         /// </summary>
         /// <param name="record">The record</param>
+        /// <typeparam name="T2">IDataEntity implementation</typeparam>
         /// <returns>
         /// Deserialized class
         /// </returns>
-        public T Deserialize(IDataRecord record)
+        public T2 Deserialize<T2>(IDataRecord record) where T2 : IDataEntity, new()
         {
             IDictionary<string, object> dictionary = new Dictionary<string, object>();
 
@@ -160,34 +162,36 @@ namespace Tasslehoff.Library.DataEntities
                 dictionary.Add(record.GetName(i), record.GetValue(i));
             }
 
-            return this.Deserialize(dictionary);
+            return this.Deserialize<T2>(dictionary);
         }
 
         /// <summary>
         /// Deserializes the specified reader.
         /// </summary>
         /// <param name="reader">The reader.</param>
+        /// <typeparam name="T2">IDataEntity implementation</typeparam>
         /// <returns>Deserialized class</returns>
-        public T Deserialize(IDataReader reader)
+        public T2 Deserialize<T2>(IDataReader reader) where T2 : IDataEntity, new()
         {
             if (reader.Read())
             {
-                return this.Deserialize((IDataRecord)reader);
+                return this.Deserialize<T2>((IDataRecord)reader);
             }
 
-            return default(T);
+            return default(T2);
         }
 
         /// <summary>
         /// Deserializes to enumerable.
         /// </summary>
         /// <param name="reader">The reader</param>
+        /// <typeparam name="T2">IDataEntity implementation</typeparam>
         /// <returns>Set of deserialized classes</returns>
-        public IEnumerable<T> DeserializeToEnumerable(IDataReader reader)
+        public IEnumerable<T2> DeserializeToEnumerable<T2>(IDataReader reader) where T2 : IDataEntity, new()
         {
             while (reader.Read())
             {
-                yield return this.Deserialize((IDataRecord)reader);
+                yield return this.Deserialize<T2>((IDataRecord)reader);
             }
         }
 
@@ -195,14 +199,15 @@ namespace Tasslehoff.Library.DataEntities
         /// Deserializes to collection.
         /// </summary>
         /// <param name="reader">The reader</param>
+        /// <typeparam name="T2">IDataEntity implementation</typeparam>
         /// <returns>Set of deserialized classes</returns>
-        public IEnumerable<T> DeserializeToCollection(IDataReader reader)
+        public IEnumerable<T2> DeserializeToCollection<T2>(IDataReader reader) where T2 : IDataEntity, new()
         {
-            ICollection<T> collection = new Collection<T>();
+            ICollection<T2> collection = new Collection<T2>();
 
             while (reader.Read())
             {
-                collection.Add(this.Deserialize((IDataRecord)reader));
+                collection.Add(this.Deserialize<T2>((IDataRecord)reader));
             }
 
             return collection;
@@ -214,14 +219,15 @@ namespace Tasslehoff.Library.DataEntities
         /// <typeparam name="TKey">The type of the key</typeparam>
         /// <param name="key">The key</param>
         /// <param name="reader">The reader</param>
+        /// <typeparam name="T2">IDataEntity implementation</typeparam>
         /// <returns>Set of deserialized classes</returns>
-        public IDictionary<TKey, T> DeserializeToDictionary<TKey>(string key, IDataReader reader)
+        public IDictionary<TKey, T2> DeserializeToDictionary<TKey, T2>(string key, IDataReader reader) where T2 : IDataEntity, new()
         {
-            IDictionary<TKey, T> dictionary = new Dictionary<TKey, T>();
+            IDictionary<TKey, T2> dictionary = new Dictionary<TKey, T2>();
 
             while (reader.Read())
             {
-                dictionary.Add((TKey)reader[key], this.Deserialize((IDataRecord)reader));
+                dictionary.Add((TKey)reader[key], this.Deserialize<T2>((IDataRecord)reader));
             }
 
             return dictionary;
@@ -235,17 +241,96 @@ namespace Tasslehoff.Library.DataEntities
         /// <param name="key1">The key1.</param>
         /// <param name="key2">The key2.</param>
         /// <param name="reader">The reader.</param>
+        /// <typeparam name="T2">IDataEntity implementation</typeparam>
         /// <returns>Dictionary object</returns>
-        public DictionaryBase<TKey1, TKey2, T> DeserializeToBaseDictionary<TKey1, TKey2>(string key1, string key2, IDataReader reader)
+        public DictionaryBase<TKey1, TKey2, T2> DeserializeToBaseDictionary<TKey1, TKey2, T2>(string key1, string key2, IDataReader reader) where T2 : IDataEntity, new()
         {
-            DictionaryBase<TKey1, TKey2, T> dictionary = new DictionaryBase<TKey1, TKey2, T>();
+            DictionaryBase<TKey1, TKey2, T2> dictionary = new DictionaryBase<TKey1, TKey2, T2>();
 
             while (reader.Read())
             {
-                dictionary.Add((TKey1)reader[key1], (TKey2)reader[key2], this.Deserialize((IDataRecord)reader));
+                dictionary.Add((TKey1)reader[key1], (TKey2)reader[key2], this.Deserialize<T2>((IDataRecord)reader));
             }
 
             return dictionary;
+        }
+
+        /// <summary>
+        /// Deserializes the item.
+        /// </summary>
+        /// <param name="dictionary">The dictionary</param>
+        /// <returns>Deserialized class</returns>
+        public T Deserialize(IDictionary<string, object> dictionary)
+        {
+            return this.Deserialize<T>(dictionary);
+        }
+
+        /// <summary>
+        /// Deserializes the item.
+        /// </summary>
+        /// <param name="record">The record</param>
+        /// <returns>
+        /// Deserialized class
+        /// </returns>
+        public T Deserialize(IDataRecord record)
+        {
+            return this.Deserialize<T>(record);
+        }
+
+        /// <summary>
+        /// Deserializes the specified reader.
+        /// </summary>
+        /// <param name="reader">The reader.</param>
+        /// <returns>Deserialized class</returns>
+        public T Deserialize(IDataReader reader)
+        {
+            return this.Deserialize<T>(reader);
+        }
+
+        /// <summary>
+        /// Deserializes to enumerable.
+        /// </summary>
+        /// <param name="reader">The reader</param>
+        /// <returns>Set of deserialized classes</returns>
+        public IEnumerable<T> DeserializeToEnumerable(IDataReader reader)
+        {
+            return this.DeserializeToEnumerable<T>(reader);
+        }
+
+        /// <summary>
+        /// Deserializes to collection.
+        /// </summary>
+        /// <param name="reader">The reader</param>
+        /// <returns>Set of deserialized classes</returns>
+        public IEnumerable<T> DeserializeToCollection(IDataReader reader)
+        {
+            return this.DeserializeToCollection<T>(reader);
+        }
+
+        /// <summary>
+        /// Deserializes to dictionary.
+        /// </summary>
+        /// <typeparam name="TKey">The type of the key</typeparam>
+        /// <param name="key">The key</param>
+        /// <param name="reader">The reader</param>
+        /// <returns>Set of deserialized classes</returns>
+        public IDictionary<TKey, T> DeserializeToDictionary<TKey>(string key, IDataReader reader)
+        {
+            return this.DeserializeToDictionary<TKey>(key, reader);
+        }
+
+        /// <summary>
+        /// Deserializes to base dictionary.
+        /// </summary>
+        /// <typeparam name="TKey1">The type of the key1.</typeparam>
+        /// <typeparam name="TKey2">The type of the key2.</typeparam>
+        /// <param name="key1">The key1.</param>
+        /// <param name="key2">The key2.</param>
+        /// <param name="reader">The reader.</param>
+        /// <returns>Dictionary object</returns>
+        public DictionaryBase<TKey1, TKey2, T> DeserializeToBaseDictionary<TKey1, TKey2>(string key1, string key2, IDataReader reader)
+        {
+            return this.DeserializeToBaseDictionary<TKey1, TKey2>(key1, key2, reader);
         }
     }
 }

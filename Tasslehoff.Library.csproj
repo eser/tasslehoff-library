@@ -73,6 +73,7 @@
     <Compile Include="DataAccess\CustomDataSourceView.cs" />
     <Compile Include="DataAccess\CustomDataSource.cs" />
     <Compile Include="DataAccess\DataQuery.cs" />
+    <Compile Include="DataEntities\DataEntityRegistry.cs" />
     <Compile Include="DataEntities\FieldSerializer.cs" />
     <Compile Include="DataEntities\FieldSerializers.cs" />
     <Compile Include="DataEntities\DataEntity.cs" />
