@@ -26,6 +26,9 @@ namespace Tasslehoff.Library.DataAccess
     using System.Data;
     using System.Data.Common;
     using System.Diagnostics.CodeAnalysis;
+    using Tasslehoff.Library.DataEntities;
+
+    // TODO ExecuteDataEntityArray / Collection (maybe yield?)
 
     /// <summary>
     /// Database class.
@@ -173,6 +176,63 @@ namespace Tasslehoff.Library.DataAccess
                 
                 // connection.Close();
             }
+        }
+
+        /// <summary>
+        /// Executes the data entity.
+        /// </summary>
+        /// <param name="dataEntityMap">The data entity map instance</param>
+        /// <param name="commandText">The command text</param>
+        /// <param name="commandType">Type of the command</param>
+        /// <param name="commandBehavior">The command behavior</param>
+        /// <param name="parameters">The parameters</param>
+        /// <typeparam name="T">IDataEntity implementation</typeparam>
+        /// <returns>Data entity object.</returns>
+        public T ExecuteDataEntity<T>(DataEntityMap<T> dataEntityMap, string commandText, CommandType commandType = CommandType.Text, CommandBehavior commandBehavior = CommandBehavior.Default, IEnumerable<DbParameter> parameters = null) where T : IDataEntity, new()
+        {
+            T result = default(T);
+
+            this.ExecuteReader(
+                commandText,
+                commandType,
+                commandBehavior,
+                parameters,
+                (DbDataReader reader) =>
+                {
+                    result = dataEntityMap.Deserialize<T>(reader);
+                }
+            );
+
+            return result;
+        }
+
+        /// <summary>
+        /// Executes the data entity.
+        /// </summary>
+        /// <param name="dataEntityMap">The data entity registry instance</param>
+        /// <param name="commandText">The command text</param>
+        /// <param name="commandType">Type of the command</param>
+        /// <param name="commandBehavior">The command behavior</param>
+        /// <param name="parameters">The parameters</param>
+        /// <typeparam name="T">IDataEntity implementation</typeparam>
+        /// <returns>Data entity object.</returns>
+        public T ExecuteDataEntity<T>(DataEntityRegistry dataEntityRegistry, string commandText, CommandType commandType = CommandType.Text, CommandBehavior commandBehavior = CommandBehavior.Default, IEnumerable<DbParameter> parameters = null) where T : IDataEntity, new()
+        {
+            return this.ExecuteDataEntity<T>(dataEntityRegistry.Get<T>(), commandText, commandType, commandBehavior, parameters);
+        }
+
+        /// <summary>
+        /// Executes the data entity.
+        /// </summary>
+        /// <param name="commandText">The command text</param>
+        /// <param name="commandType">Type of the command</param>
+        /// <param name="commandBehavior">The command behavior</param>
+        /// <param name="parameters">The parameters</param>
+        /// <typeparam name="T">IDataEntity implementation</typeparam>
+        /// <returns>Data entity object.</returns>
+        public T ExecuteDataEntity<T>(string commandText, CommandType commandType = CommandType.Text, CommandBehavior commandBehavior = CommandBehavior.Default, IEnumerable<DbParameter> parameters = null) where T : IDataEntity, new()
+        {
+            return this.ExecuteDataEntity<T>(DataEntityRegistry.Instance, commandText, commandType, commandBehavior, parameters);
         }
 
         /// <summary>

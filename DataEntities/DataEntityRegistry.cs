@@ -21,8 +21,6 @@
 namespace Tasslehoff.Library.DataEntities
 {
     using System;
-    using System.Data;
-    using System.Data.Common;
     using System.Runtime.InteropServices;
     using Tasslehoff.Library.Collections;
     using Tasslehoff.Library.DataAccess;
@@ -36,6 +34,11 @@ namespace Tasslehoff.Library.DataEntities
         // fields
 
         /// <summary>
+        /// Singleton instance.
+        /// </summary>
+        private static DataEntityRegistry instance = null;
+
+        /// <summary>
         /// Database instance.
         /// </summary>
         private Database database;
@@ -47,6 +50,10 @@ namespace Tasslehoff.Library.DataEntities
         /// </summary>
         public DataEntityRegistry()
         {
+            if (DataEntityRegistry.instance == null)
+            {
+                DataEntityRegistry.instance = this;
+            }
         }
 
         /// <summary>
@@ -59,6 +66,20 @@ namespace Tasslehoff.Library.DataEntities
         }
 
         // attributes
+
+        /// <summary>
+        /// Gets or Sets singleton instance.
+        /// </summary>
+        public static DataEntityRegistry Instance {
+            get
+            {
+                return DataEntityRegistry.instance;
+            }
+            set
+            {
+                DataEntityRegistry.instance = value;
+            }
+        }
 
         /// <summary>
         /// Gets or Sets database instance.
@@ -96,28 +117,41 @@ namespace Tasslehoff.Library.DataEntities
             return this[typeof(T)] as DataEntityMap<T>;
         }
 
+        /// <summary>
+        /// Gets the data entity class.
+        /// </summary>
+        /// <typeparam name="T">IDataEntity implementation.</typeparam>
+        /// <param name="dataQuery">DataQuery instance.</param>
+        /// <returns>Data entity class.</returns>
         public T GetObjectFromDb<T>(DataQuery dataQuery) where T : IDataEntity, new()
         {
-            DataEntityMap<T> dataEntityMap = this[typeof(T)] as DataEntityMap<T>;
-            T result = default(T);
-
-            dataQuery.ExecuteReader(
-                CommandBehavior.Default,
-                (DbDataReader reader) =>
-                {
-                    result = dataEntityMap.Deserialize<T>(reader);
-                }
-            );
-
-            return result;
+            return dataQuery.ExecuteDataEntity<T>();
         }
 
-        public T GetObjectFromDb<T>(string sqlString) where T : IDataEntity, new()
+        /// <summary>
+        /// Gets the data entity class.
+        /// </summary>
+        /// <typeparam name="T">IDataEntity implementation.</typeparam>
+        /// <param name="database">Database instance.</param>
+        /// <param name="sqlString">Sql string.</param>
+        /// <returns>Data entity class.</returns>
+        public T GetObjectFromDb<T>(Database database, string sqlString) where T : IDataEntity, new()
         {
-            DataQuery dataQuery = this.database.NewQuery()
+            DataQuery dataQuery = database.NewQuery()
                 .SetSqlString(sqlString);
 
             return this.GetObjectFromDb<T>(dataQuery);
+        }
+
+        /// <summary>
+        /// Gets the data entity class.
+        /// </summary>
+        /// <typeparam name="T">IDataEntity implementation.</typeparam>
+        /// <param name="sqlString">Sql string.</param>
+        /// <returns>Data entity class.</returns>
+        public T GetObjectFromDb<T>(string sqlString) where T : IDataEntity, new()
+        {
+            return this.GetObjectFromDb<T>(this.database, sqlString);
         }
     }
 }
