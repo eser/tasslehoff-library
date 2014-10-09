@@ -105,6 +105,17 @@ namespace Tasslehoff.Library.DataAccess
             this.parameters = new List<DbParameter>();
         }
 
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="DataQuery"/> class.
+        /// </summary>
+        /// <param name="database">The database</param>
+        /// <param name="sqlString">The sql string</param>
+        public DataQuery(Database database, string sqlString) : this(database)
+        {
+            this.sqlString = sqlString;
+        }
+        
         // attributes
 
         /// <summary>
