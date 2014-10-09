@@ -21,8 +21,11 @@
 namespace Tasslehoff.Library.DataEntities
 {
     using System;
+    using System.Data;
+    using System.Data.Common;
     using System.Runtime.InteropServices;
     using Tasslehoff.Library.Collections;
+    using Tasslehoff.Library.DataAccess;
 
     /// <summary>
     /// DataEntityRegistry class.
@@ -30,6 +33,48 @@ namespace Tasslehoff.Library.DataEntities
     [ComVisible(false)]
     public class DataEntityRegistry : DictionaryBase<Type, IDataEntityMap>
     {
+        // fields
+
+        /// <summary>
+        /// Database instance.
+        /// </summary>
+        private Database database;
+
+        // constructors
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="DataEntityRegistry"/> class.
+        /// </summary>
+        public DataEntityRegistry()
+        {
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="DataEntityRegistry"/> class.
+        /// </summary>
+        /// <param name="database"></param>
+        public DataEntityRegistry(Database database) : this()
+        {
+            this.database = database;
+        }
+
+        // attributes
+
+        /// <summary>
+        /// Gets or Sets database instance.
+        /// </summary>
+        public Database Database
+        {
+            get
+            {
+                return this.database;
+            }
+            set
+            {
+                this.database = value;
+            }
+        }
+
         // methods
 
         /// <summary>
@@ -39,6 +84,40 @@ namespace Tasslehoff.Library.DataEntities
         public void Register<T>() where T : IDataEntity, new()
         {
             this.Add(typeof(T), new DataEntityMap<T>());
+        }
+
+        /// <summary>
+        /// Gets the data entity class.
+        /// </summary>
+        /// <typeparam name="T">IDataEntity implementation.</typeparam>
+        /// <returns>Data entity class.</returns>
+        public DataEntityMap<T> Get<T>() where T : IDataEntity, new()
+        {
+            return this[typeof(T)] as DataEntityMap<T>;
+        }
+
+        public T GetObjectFromDb<T>(DataQuery dataQuery) where T : IDataEntity, new()
+        {
+            DataEntityMap<T> dataEntityMap = this[typeof(T)] as DataEntityMap<T>;
+            T result = default(T);
+
+            dataQuery.ExecuteReader(
+                CommandBehavior.Default,
+                (DbDataReader reader) =>
+                {
+                    result = dataEntityMap.Deserialize<T>(reader);
+                }
+            );
+
+            return result;
+        }
+
+        public T GetObjectFromDb<T>(string sqlString) where T : IDataEntity, new()
+        {
+            DataQuery dataQuery = this.database.NewQuery()
+                .SetSqlString(sqlString);
+
+            return this.GetObjectFromDb<T>(dataQuery);
         }
     }
 }
