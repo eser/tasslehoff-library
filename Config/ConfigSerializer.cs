@@ -39,7 +39,8 @@ namespace Tasslehoff.Library.Config
         {
             JsonSerializerSettings settings = new JsonSerializerSettings()
             {
-                Formatting = Formatting.Indented
+                Formatting = Formatting.Indented,
+                MissingMemberHandling = MissingMemberHandling.Ignore
             };
 
             return settings;
