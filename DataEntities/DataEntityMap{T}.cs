@@ -87,7 +87,7 @@ namespace Tasslehoff.Library.DataEntities
 
             foreach (DataEntityFieldAttribute fieldAttribute in this.Values)
             {
-                object value = VariableUtils.ReadMemberValue(fieldAttribute.ClassMember, instance);
+                object value = VariableUtils.ReadMemberValue(fieldAttribute.ClassMember, instance, fieldAttribute.EnumAsString);
 
                 if (fieldAttribute.Serializer != null)
                 {
@@ -139,7 +139,7 @@ namespace Tasslehoff.Library.DataEntities
                     fieldValue = FieldSerializers.Get(attribute.Serializer).Deserializer(fieldValue);
                 }
 
-                VariableUtils.WriteMemberValue(attribute.ClassMember, instance, fieldValue);
+                VariableUtils.WriteMemberValue(attribute.ClassMember, instance, fieldValue, attribute.EnumAsString);
             }
 
             return instance;
@@ -159,7 +159,7 @@ namespace Tasslehoff.Library.DataEntities
 
             for (int i = 0; i < record.FieldCount; i++)
             {
-                dictionary.Add(record.GetName(i), record.GetValue(i));
+                dictionary[record.GetName(i)] = record.GetValue(i);
             }
 
             return this.Deserialize<T2>(dictionary);

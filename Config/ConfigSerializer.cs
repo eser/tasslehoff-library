@@ -40,7 +40,8 @@ namespace Tasslehoff.Library.Config
             JsonSerializerSettings settings = new JsonSerializerSettings()
             {
                 Formatting = Formatting.Indented,
-                MissingMemberHandling = MissingMemberHandling.Ignore
+                MissingMemberHandling = MissingMemberHandling.Ignore,
+                ContractResolver = new OrderedContractResolver()
             };
 
             return settings;

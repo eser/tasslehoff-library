@@ -67,18 +67,47 @@ namespace Tasslehoff.Library.Utils
         /// </summary>
         /// <param name="member">The member</param>
         /// <param name="instance">The instance</param>
+        /// <param name="enumAsString">Whether serialize enum as string or not</param>
         /// <returns>Value of the field/property instance</returns>
-        public static object ReadMemberValue(MemberInfo member, object instance)
+        public static object ReadMemberValue(MemberInfo member, object instance, bool enumAsString = false)
         {
             object value = null;
 
             if (member.MemberType == MemberTypes.Field)
             {
-                value = (member as FieldInfo).GetValue(instance);
+                FieldInfo fieldInfo = member as FieldInfo;
+
+                value = fieldInfo.GetValue(instance);
+
+                if (fieldInfo.FieldType.IsEnum)
+                {
+                    if (enumAsString)
+                    {
+                        value = value.ToString();
+                    }
+                    else
+                    {
+                        value = Convert.ChangeType(value, Enum.GetUnderlyingType(fieldInfo.FieldType));
+                    }
+                }
             }
             else if (member.MemberType == MemberTypes.Property)
             {
-                value = (member as PropertyInfo).GetValue(instance, null);
+                PropertyInfo propertyInfo = member as PropertyInfo;
+
+                value = propertyInfo.GetValue(instance, null);
+
+                if (propertyInfo.PropertyType.IsEnum)
+                {
+                    if (enumAsString)
+                    {
+                        value = value.ToString();
+                    }
+                    else
+                    {
+                        value = Convert.ChangeType(value, Enum.GetUnderlyingType(propertyInfo.PropertyType));
+                    }
+                }
             }
 
             return value;
@@ -90,15 +119,44 @@ namespace Tasslehoff.Library.Utils
         /// <param name="member">The member</param>
         /// <param name="instance">The instance</param>
         /// <param name="value">The value</param>
-        public static void WriteMemberValue(MemberInfo member, object instance, object value)
+        /// <param name="enumAsString">Whether serialize enum as string or not</param>
+        public static void WriteMemberValue(MemberInfo member, object instance, object value, bool enumAsString = false)
         {
             if (member.MemberType == MemberTypes.Field)
             {
-                (member as FieldInfo).SetValue(instance, value);
+                FieldInfo fieldInfo = member as FieldInfo;
+
+                if (fieldInfo.FieldType.IsEnum)
+                {
+                    if (enumAsString)
+                    {
+                        value = Enum.Parse(fieldInfo.FieldType, value.ToString());
+                    }
+                    else
+                    {
+                        value = Convert.ChangeType(value, fieldInfo.FieldType);
+                    }
+                }
+
+                fieldInfo.SetValue(instance, value);
             }
             else if (member.MemberType == MemberTypes.Property)
             {
-                (member as PropertyInfo).SetValue(instance, value, null);
+                PropertyInfo propertyInfo = member as PropertyInfo;
+
+                if (propertyInfo.PropertyType.IsEnum)
+                {
+                    if (enumAsString)
+                    {
+                        value = Enum.Parse(propertyInfo.PropertyType, value.ToString());
+                    }
+                    else
+                    {
+                        value = Convert.ChangeType(value, propertyInfo.PropertyType);
+                    }
+                }
+
+                propertyInfo.SetValue(instance, value, null);
             }
         }
 

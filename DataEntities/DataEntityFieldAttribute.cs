@@ -50,6 +50,11 @@ namespace Tasslehoff.Library.DataEntities
         /// </summary>
         private string serializer = null;
 
+        /// <summary>
+        /// Whether serialize enum as string or not
+        /// </summary>
+        private bool enumAsString;
+
         // constructors
 
         /// <summary>
@@ -134,6 +139,24 @@ namespace Tasslehoff.Library.DataEntities
             set
             {
                 this.serializer = value;
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets whether serialize enum as string or not.
+        /// </summary>
+        /// <value>
+        /// Whether serialize enum as string or not.
+        /// </value>
+        public bool EnumAsString
+        {
+            get
+            {
+                return this.enumAsString;
+            }
+            set
+            {
+                this.enumAsString = value;
             }
         }
     }
