@@ -128,12 +128,13 @@ namespace Tasslehoff.Library.Services
         }
 
         /// <summary>
-        /// Releases unmanaged and - optionally - managed resources.
+        /// Called when [dispose].
         /// </summary>
-        /// <param name="disposing"><c>true</c> to release both managed and unmanaged resources; <c>false</c> to release only unmanaged resources</param>
-        protected override void Dispose(bool disposing)
+        protected override void OnDispose()
         {
-            base.Dispose(disposing);
+            this.Stop();
+
+            base.OnDispose();
         }
 
         // abstract methods

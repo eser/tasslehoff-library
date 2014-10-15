@@ -1,5 +1,5 @@
 ﻿// -----------------------------------------------------------------------
-// <copyright file="IServiceControllable.cs" company="-">
+// <copyright file="Container.cs" company="-">
 // Copyright (c) 2013 larukedi (eser@sent.com). All rights reserved.
 // </copyright>
 // <author>larukedi (http://github.com/larukedi/)</author>
@@ -18,42 +18,42 @@
 //// You should have received a copy of the GNU General Public License
 //// along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-namespace Tasslehoff.Library.Services
+namespace Tasslehoff.Library
 {
     using System;
+    using System.Collections.Generic;
+    using System.Web.UI.WebControls;
 
     /// <summary>
-    /// IServiceControllable interface.
+    /// Container class.
     /// </summary>
-    public interface IServiceControllable : IService
+    public class Container : Control
     {
-        // events
+        /// <summary>
+        /// Creates web control
+        /// </summary>
+        /// <returns>Web control</returns>
+        public override WebControl CreateWebControl()
+        {
+            throw new NotImplementedException();
+        }
 
         /// <summary>
-        /// Occurs when [on start].
+        /// Imports content
         /// </summary>
-        event EventHandler<ServiceStatusChangedEventArgs> OnStart;
+        /// <param name="bag">The dictionary consists of elements</param>
+        public override void Import(IDictionary<string, IControl> bag)
+        {
+            throw new NotImplementedException();
+        }
 
         /// <summary>
-        /// Occurs when [on stop].
+        /// Exports content
         /// </summary>
-        event EventHandler<ServiceStatusChangedEventArgs> OnStop;
-
-        // methods
-
-        /// <summary>
-        /// Restarts this instance.
-        /// </summary>
-        void Restart();
-
-        /// <summary>
-        /// Starts this instance.
-        /// </summary>
-        void Start();
-
-        /// <summary>
-        /// Stops this instance.
-        /// </summary>
-        void Stop();
+        /// <returns>Exported data</returns>
+        public override IDictionary<string, IControl> Export()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

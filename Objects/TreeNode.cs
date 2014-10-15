@@ -29,8 +29,8 @@ namespace Tasslehoff.Library.Objects
     /// A node in tree data structure
     /// </summary>
     /// <typeparam name="T">Type</typeparam>
-    [DataContract, Serializable]
-    public class TreeNode<T> : IComparable, ISerializable
+    [DataContract]
+    public class TreeNode<T> : ICloneable, IComparable, ISerializable
     {
         // fields
 
@@ -152,6 +152,18 @@ namespace Tasslehoff.Library.Objects
             this.children.Add(node);
 
             return node;
+        }
+
+
+        /// <summary>
+        /// Creates a new object that is a copy of the current instance.
+        /// </summary>
+        /// <returns>
+        /// A new object that is a copy of this instance.
+        /// </returns>
+        object ICloneable.Clone()
+        {
+            return this.MemberwiseClone();
         }
 
         /// <summary>

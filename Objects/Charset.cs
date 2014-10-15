@@ -22,17 +22,21 @@ namespace Tasslehoff.Library.Objects
 {
     using System;
     using System.Collections;
+    using System.Runtime.Serialization;
+    using System.Security.Permissions;
 
     /// <summary>
     /// Charset class.
     /// </summary>
-    public class Charset : ICloneable, IEnumerable
+    [DataContract]
+    public class Charset : ICloneable, IEnumerable, ISerializable
     {
         // fields
 
         /// <summary>
         /// The table
         /// </summary>
+        [DataMember]
         private char[] table;
 
         // constructors
@@ -45,8 +49,6 @@ namespace Tasslehoff.Library.Objects
             this.table = new char[0];
         }
 
-        // methods
-
         /// <summary>
         /// Initializes a new instance of the <see cref="Charset"/> class.
         /// </summary>
@@ -58,6 +60,18 @@ namespace Tasslehoff.Library.Objects
                 this.Insert(table);
             }
         }
+
+        /// <summary>
+        /// Constructor for serialization interface
+        /// </summary>
+        /// <param name="info">info</param>
+        /// <param name="context">context</param>
+        protected Charset(SerializationInfo info, StreamingContext context)
+        {
+            this.table = (char[])info.GetValue("table", typeof(char[]));
+        }
+
+        // methods
 
         /// <summary>
         /// Gets the table.
@@ -113,7 +127,7 @@ namespace Tasslehoff.Library.Objects
         /// <returns>
         /// A new object that is a copy of this instance.
         /// </returns>
-        public object Clone()
+        object ICloneable.Clone()
         {
             return this.MemberwiseClone();
         }
@@ -131,5 +145,30 @@ namespace Tasslehoff.Library.Objects
                 yield return currentChar;
             }
         }
+
+        /// <summary>
+        /// Returns an enumerator that iterates through a collection.
+        /// </summary>
+        /// <returns>
+        /// An <see cref="T:System.Collections.IEnumerator" /> object that can be used to iterate through the collection.
+        /// </returns>
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return this.GetEnumerator();
+        }
+
+
+        [SecurityPermission(SecurityAction.Demand, SerializationFormatter = true)]
+        protected void GetObjectData(SerializationInfo info, StreamingContext context)
+        {
+            info.AddValue("table", this.table);
+        }
+
+        [SecurityPermission(SecurityAction.LinkDemand, Flags = SecurityPermissionFlag.SerializationFormatter)]
+        void ISerializable.GetObjectData(SerializationInfo info, StreamingContext context)
+        {
+            this.GetObjectData(info, context);
+        }
+ 
     }
 }

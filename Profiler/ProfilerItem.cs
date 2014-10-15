@@ -22,7 +22,6 @@ namespace Tasslehoff.Library.Profiler
 {
     using System;
     using System.Diagnostics;
-    using System.Diagnostics.CodeAnalysis;
     using Tasslehoff.Library.Utils;
 
     /// <summary>
@@ -179,7 +178,7 @@ namespace Tasslehoff.Library.Profiler
         /// <summary>
         /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
         /// </summary>
-        public void Dispose()
+        void IDisposable.Dispose()
         {
             this.Dispose(true);
 
@@ -187,10 +186,17 @@ namespace Tasslehoff.Library.Profiler
         }
 
         /// <summary>
+        /// Called when [dispose].
+        /// </summary>
+        protected virtual void OnDispose()
+        {
+            VariableUtils.CheckAndDispose<PerformanceCounter>(ref this.performanceCounter);
+        }
+
+        /// <summary>
         /// Releases unmanaged and - optionally - managed resources.
         /// </summary>
         /// <param name="disposing"><c>true</c> to release both managed and unmanaged resources; <c>false</c> to release only unmanaged resources</param>
-        [SuppressMessage("Microsoft.Usage", "CA2213:DisposableFieldsShouldBeDisposed", MessageId = "performanceCounter", Justification = "performanceCounter is already will be disposed using CheckAndDispose method.")]
         protected virtual void Dispose(bool disposing)
         {
             if (this.disposed)
@@ -200,8 +206,7 @@ namespace Tasslehoff.Library.Profiler
 
             if (disposing)
             {
-                VariableUtils.CheckAndDispose(this.performanceCounter);
-                this.performanceCounter = null;
+                this.OnDispose();
             }
 
             this.disposed = true;

@@ -22,7 +22,7 @@ namespace Tasslehoff.Library.DataEntities
 {
     using System.Collections.Generic;
     using System.Data;
-using Tasslehoff.Library.Collections;
+    using Tasslehoff.Library.Collections;
 
     /// <summary>
     /// IDataEntityMap interface

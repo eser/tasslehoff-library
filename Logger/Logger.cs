@@ -224,7 +224,7 @@ namespace Tasslehoff.Library.Logger
         /// <summary>
         /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
         /// </summary>
-        public void Dispose()
+        void IDisposable.Dispose()
         {
             this.Dispose(true);
 

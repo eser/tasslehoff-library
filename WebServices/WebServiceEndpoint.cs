@@ -21,22 +21,26 @@
 namespace Tasslehoff.Library.WebServices
 {
     using System;
+    using System.Runtime.Serialization;
 
     /// <summary>
     /// WebServiceEndpoint class.
     /// </summary>
-    public class WebServiceEndpoint
+    [DataContract]
+    public class WebServiceEndpoint : ISerializable
     {
         // fields
 
         /// <summary>
         /// The name
         /// </summary>
+        [DataMember]
         private string name;
 
         /// <summary>
         /// The type
         /// </summary>
+        [DataMember]
         private Type type;
 
         // constructors
@@ -52,6 +56,17 @@ namespace Tasslehoff.Library.WebServices
             this.type = type;
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="WebServiceEndpoint"/> class.
+        /// </summary>
+        /// <param name="info">The <see cref="T:System.Runtime.Serialization.SerializationInfo" /> that holds the serialized object data about the exception being thrown</param>
+        /// <param name="context">The <see cref="T:System.Runtime.Serialization.StreamingContext" /> that contains contextual information about the source or destination</param>
+        protected WebServiceEndpoint(SerializationInfo info, StreamingContext context)
+        {
+            this.name = info.GetString("name");
+            this.type = (Type)info.GetValue("type", typeof(Type));
+        }
+
         // properties
 
         /// <summary>
@@ -60,6 +75,7 @@ namespace Tasslehoff.Library.WebServices
         /// <value>
         /// The name.
         /// </value>
+        [IgnoreDataMember]
         public string Name
         {
             get
@@ -74,6 +90,7 @@ namespace Tasslehoff.Library.WebServices
         /// <value>
         /// The type.
         /// </value>
+        [IgnoreDataMember]
         public Type Type
         {
             get
@@ -81,5 +98,14 @@ namespace Tasslehoff.Library.WebServices
                 return this.type;
             }
         }
+
+        // methods
+
+        void ISerializable.GetObjectData(SerializationInfo info, StreamingContext context)
+        {
+            info.AddValue("name", this.name);
+            info.AddValue("type", this.type);
+        }
+
     }
 }

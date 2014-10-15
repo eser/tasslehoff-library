@@ -22,22 +22,27 @@ namespace Tasslehoff.Library.Objects
 {
     using System;
     using System.Collections;
+    using System.Runtime.Serialization;
+    using System.Security.Permissions;
 
     /// <summary>
     /// IntRange class.
     /// </summary>
-    public class IntRange : ICloneable, IEnumerable
+    [DataContract]
+    public class IntRange : ICloneable, IEnumerable, ISerializable
     {
         // fields
 
         /// <summary>
         /// The start
         /// </summary>
+        [DataMember]
         private readonly int start;
 
         /// <summary>
         /// The end
         /// </summary>
+        [DataMember]
         private readonly int end;
 
         // constructors
@@ -53,11 +58,23 @@ namespace Tasslehoff.Library.Objects
             this.end = end;
         }
 
+        /// <summary>
+        /// Constructor for serialization interface
+        /// </summary>
+        /// <param name="info">info</param>
+        /// <param name="context">context</param>
+        protected IntRange(SerializationInfo info, StreamingContext context)
+        {
+            this.start = info.GetInt32("start");
+            this.end = info.GetInt32("end");
+        }
+
         // properties
 
         /// <summary>
         /// Gets the start.
         /// </summary>
+        [IgnoreDataMember]
         public int Start
         {
             get
@@ -69,6 +86,7 @@ namespace Tasslehoff.Library.Objects
         /// <summary>
         /// Gets the end.
         /// </summary>
+        [IgnoreDataMember]
         public int End
         {
             get
@@ -101,7 +119,7 @@ namespace Tasslehoff.Library.Objects
         /// <returns>
         /// A new object that is a copy of this instance.
         /// </returns>
-        public object Clone()
+        object ICloneable.Clone()
         {
             return this.MemberwiseClone();
         }
@@ -120,6 +138,30 @@ namespace Tasslehoff.Library.Objects
             {
                 yield return this.start + i;
             }
+        }
+
+        /// <summary>
+        /// Returns an enumerator that iterates through a collection.
+        /// </summary>
+        /// <returns>
+        /// An <see cref="T:System.Collections.IEnumerator" /> object that can be used to iterate through the collection.
+        /// </returns>
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return this.GetEnumerator();
+        }
+
+        [SecurityPermission(SecurityAction.Demand, SerializationFormatter = true)]
+        protected void GetObjectData(SerializationInfo info, StreamingContext context)
+        {
+            info.AddValue("start", this.start);
+            info.AddValue("end", this.end);
+        }
+
+        [SecurityPermission(SecurityAction.LinkDemand, Flags = SecurityPermissionFlag.SerializationFormatter)]
+        void ISerializable.GetObjectData(SerializationInfo info, StreamingContext context)
+        {
+            this.GetObjectData(info, context);
         }
     }
 }

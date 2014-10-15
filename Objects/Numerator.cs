@@ -20,21 +20,28 @@
 
 namespace Tasslehoff.Library.Objects
 {
+    using System;
+    using System.Runtime.Serialization;
+    using System.Security.Permissions;
+
     /// <summary>
     /// Numerator class.
     /// </summary>
-    public class Numerator
+    [DataContract]
+    public class Numerator : ICloneable, ISerializable
     {
         // fields
 
         /// <summary>
         /// The sync lock
         /// </summary>
-        private readonly object syncLock;
+        [IgnoreDataMember]
+        private readonly object syncLock = new object();
 
         /// <summary>
         /// The next number
         /// </summary>
+        [DataMember]
         private int nextNumber;
 
         // constructors
@@ -42,10 +49,20 @@ namespace Tasslehoff.Library.Objects
         /// <summary>
         /// Initializes a new instance of the <see cref="Numerator"/> class.
         /// </summary>
-        public Numerator()
+        /// <param name="startNumber">Starting number</param>
+        public Numerator(int startNumber = int.MinValue)
         {
-            this.syncLock = new object();
-            this.nextNumber = int.MinValue;
+            this.nextNumber = startNumber;
+        }
+
+        /// <summary>
+        /// Constructor for serialization interface
+        /// </summary>
+        /// <param name="info">info</param>
+        /// <param name="context">context</param>
+        protected Numerator(SerializationInfo info, StreamingContext context)
+        {
+            this.nextNumber = info.GetInt32("nextNumber");
         }
 
         // methods
@@ -68,5 +85,28 @@ namespace Tasslehoff.Library.Objects
                 }
             }
         }
-    }
+
+        /// <summary>
+        /// Creates a new object that is a copy of the current instance.
+        /// </summary>
+        /// <returns>
+        /// A new object that is a copy of this instance.
+        /// </returns>
+        object ICloneable.Clone()
+        {
+            return new Numerator(this.nextNumber);
+        }
+
+        [SecurityPermission(SecurityAction.Demand, SerializationFormatter = true)]
+        protected void GetObjectData(SerializationInfo info, StreamingContext context)
+        {
+            info.AddValue("nextNumber", this.nextNumber);
+        }
+
+        [SecurityPermission(SecurityAction.LinkDemand, Flags = SecurityPermissionFlag.SerializationFormatter)]
+        void ISerializable.GetObjectData(SerializationInfo info, StreamingContext context)
+        {
+            this.GetObjectData(info, context);
+        }
+     }
 }

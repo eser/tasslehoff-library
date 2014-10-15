@@ -21,7 +21,6 @@
 namespace Laroux.ScabbiaLibrary.Threading
 {
     using System;
-    using System.Diagnostics.CodeAnalysis;
     using System.Threading;
     using System.Threading.Tasks;
     using Tasslehoff.Library.Utils;
@@ -169,7 +168,7 @@ namespace Laroux.ScabbiaLibrary.Threading
         /// <summary>
         /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
         /// </summary>
-        public void Dispose()
+        void IDisposable.Dispose()
         {
             this.Dispose(true);
 
@@ -221,32 +220,30 @@ namespace Laroux.ScabbiaLibrary.Threading
         }
 
         /// <summary>
+        /// Called when [dispose].
+        /// </summary>
+        protected virtual void OnDispose()
+        {
+            VariableUtils.CheckAndDispose<CancellationTokenSource>(ref this.cancellationTokenSource);
+        }
+
+        /// <summary>
         /// Releases unmanaged and - optionally - managed resources
         /// </summary>
         /// <param name="disposing"><c>true</c> to release both managed and unmanaged resources; <c>false</c> to release only unmanaged resources.</param>
-        [SuppressMessage("Microsoft.Usage", "CA2213:DisposableFieldsShouldBeDisposed", MessageId = "cancellationTokenSource", Justification = "cancellationTokenSource is already will be disposed using CheckAndDispose method.")]
         protected virtual void Dispose(bool disposing)
         {
-            lock (this)
+            if (this.disposed)
             {
-                // Do nothing if the object has already been disposed of.
-                if (this.disposed)
-                {
-                    return;
-                }
-
-                if (disposing)
-                {
-                    // Release diposable objects used by this instance here.
-                    VariableUtils.CheckAndDispose(this.cancellationTokenSource);
-                    this.cancellationTokenSource = null;
-                }
-
-                // Release unmanaged resources here. Don't access reference type fields.
-
-                // Remember that the object has been disposed of.
-                this.disposed = true;
+                return;
             }
+
+            if (disposing)
+            {
+                this.OnDispose();
+            }
+
+            this.disposed = true;
         }
     }
 }

@@ -22,23 +22,28 @@ namespace Tasslehoff.Library.Objects
 {
     using System;
     using System.Globalization;
+    using System.Runtime.Serialization;
+    using System.Security.Permissions;
     using System.Threading;
 
     /// <summary>
     /// DateRange class.
     /// </summary>
-    public class DateRange : ICloneable
+    [DataContract]
+    public class DateRange : ICloneable, ISerializable
     {
         // fields
 
         /// <summary>
         /// The start
         /// </summary>
+        [DataMember]
         private readonly DateTime start;
 
         /// <summary>
         /// The end
         /// </summary>
+        [DataMember]
         private readonly DateTime end;
 
         // constructors
@@ -54,11 +59,23 @@ namespace Tasslehoff.Library.Objects
             this.end = end;
         }
 
+        /// <summary>
+        /// Constructor for serialization interface
+        /// </summary>
+        /// <param name="info">info</param>
+        /// <param name="context">context</param>
+        protected DateRange(SerializationInfo info, StreamingContext context)
+        {
+            this.start = info.GetDateTime("start");
+            this.end = info.GetDateTime("end");
+        }
+
         // properties
 
         /// <summary>
         /// Gets the start.
         /// </summary>
+        [IgnoreDataMember]
         public DateTime Start
         {
             get
@@ -70,6 +87,7 @@ namespace Tasslehoff.Library.Objects
         /// <summary>
         /// Gets the end.
         /// </summary>
+        [IgnoreDataMember]
         public DateTime End
         {
             get
@@ -126,9 +144,22 @@ namespace Tasslehoff.Library.Objects
         /// <returns>
         /// A new object that is a copy of this instance.
         /// </returns>
-        public object Clone()
+        object ICloneable.Clone()
         {
             return this.MemberwiseClone();
+        }
+
+        [SecurityPermission(SecurityAction.Demand, SerializationFormatter = true)]
+        protected void GetObjectData(SerializationInfo info, StreamingContext context)
+        {
+            info.AddValue("start", this.start);
+            info.AddValue("end", this.end);
+        }
+
+        [SecurityPermission(SecurityAction.LinkDemand, Flags = SecurityPermissionFlag.SerializationFormatter)]
+        void ISerializable.GetObjectData(SerializationInfo info, StreamingContext context)
+        {
+            this.GetObjectData(info, context);
         }
     }
 }

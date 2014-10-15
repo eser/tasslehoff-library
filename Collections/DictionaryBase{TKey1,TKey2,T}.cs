@@ -24,6 +24,8 @@ namespace Tasslehoff.Library.Collections
     using System.Collections;
     using System.Collections.Generic;
     using System.Collections.ObjectModel;
+    using System.Runtime.Serialization;
+    using System.Security.Permissions;
 
     /// <summary>
     /// An essential dictionary base class for making implementations easy.
@@ -31,23 +33,27 @@ namespace Tasslehoff.Library.Collections
     /// <typeparam name="TKey1">The type of the key1.</typeparam>
     /// <typeparam name="TKey2">The type of the key2.</typeparam>
     /// <typeparam name="T">Any object type can be stored in a collection</typeparam>
-    public class DictionaryBase<TKey1, TKey2, T> : IDictionary<TKey1, T>
+    [DataContract]
+    public class DictionaryBase<TKey1, TKey2, T> : IDictionary<TKey1, T> /* , IDictionary<TKey2, T> */, ISerializable
     {
         // fields
 
         /// <summary>
         /// The keys 1
         /// </summary>
+        [DataMember]
         private Collection<TKey1> keys1;
 
         /// <summary>
         /// The keys 2
         /// </summary>
+        [DataMember]
         private Collection<TKey2> keys2;
 
         /// <summary>
         /// The values
         /// </summary>
+        [DataMember]
         private Collection<T> values;
 
         // constructors
@@ -62,12 +68,25 @@ namespace Tasslehoff.Library.Collections
             this.values = new Collection<T>();
         }
 
+        /// <summary>
+        /// Constructor for serialization interface
+        /// </summary>
+        /// <param name="info">info</param>
+        /// <param name="context">context</param>
+        protected DictionaryBase(SerializationInfo info, StreamingContext context)
+        {
+            this.keys1 = (Collection<TKey1>)info.GetValue("keys1", typeof(Collection<TKey1>));
+            this.keys2 = (Collection<TKey2>)info.GetValue("keys2", typeof(Collection<TKey2>));
+            this.values = (Collection<T>)info.GetValue("values", typeof(Collection<T>));
+        }
+
         // properties
 
         /// <summary>
         /// Gets the number of elements contained in the <see cref="T:System.Collections.Generic.ICollection`1" />.
         /// </summary>
         /// <returns>The number of elements contained in the <see cref="T:System.Collections.Generic.ICollection`1" />.</returns>
+        [IgnoreDataMember]
         public int Count
         {
             get
@@ -80,7 +99,21 @@ namespace Tasslehoff.Library.Collections
         /// Gets an <see cref="T:System.Collections.Generic.ICollection`1" /> containing the keys of the <see cref="T:System.Collections.Generic.IDictionary`2" />.
         /// </summary>
         /// <returns>An <see cref="T:System.Collections.Generic.ICollection`1" /> containing the keys of the object that implements <see cref="T:System.Collections.Generic.IDictionary`2" />.</returns>
+        [IgnoreDataMember]
         public ICollection<TKey1> Keys
+        {
+            get
+            {
+                return this.keys1;
+            }
+        }
+
+        /// <summary>
+        /// Gets an <see cref="T:System.Collections.Generic.ICollection`1" /> containing the keys of the <see cref="T:System.Collections.Generic.IDictionary`2" />.
+        /// </summary>
+        /// <returns>An <see cref="T:System.Collections.Generic.ICollection`1" /> containing the keys of the object that implements <see cref="T:System.Collections.Generic.IDictionary`2" />.</returns>
+        [IgnoreDataMember]
+        ICollection<TKey1> IDictionary<TKey1, T>.Keys
         {
             get
             {
@@ -94,6 +127,7 @@ namespace Tasslehoff.Library.Collections
         /// <value>
         /// The keys2.
         /// </value>
+        [IgnoreDataMember]
         public ICollection<TKey2> Keys2
         {
             get
@@ -102,10 +136,28 @@ namespace Tasslehoff.Library.Collections
             }
         }
 
+        /*
+        /// <summary>
+        /// Gets the keys2.
+        /// </summary>
+        /// <value>
+        /// The keys2.
+        /// </value>
+        [IgnoreDataMember]
+        ICollection<TKey2> IDictionary<TKey2, T>.Keys
+        {
+            get
+            {
+                return this.keys2;
+            }
+        }
+        */
+
         /// <summary>
         /// Gets an <see cref="T:System.Collections.Generic.ICollection`1" /> containing the values in the <see cref="T:System.Collections.Generic.IDictionary`2" />.
         /// </summary>
         /// <returns>An <see cref="T:System.Collections.Generic.ICollection`1" /> containing the values in the object that implements <see cref="T:System.Collections.Generic.IDictionary`2" />.</returns>
+        [IgnoreDataMember]
         public ICollection<T> Values
         {
             get
@@ -118,6 +170,7 @@ namespace Tasslehoff.Library.Collections
         /// Gets a value indicating whether the <see cref="T:System.Collections.Generic.ICollection`1" /> is read-only.
         /// </summary>
         /// <returns>true if the <see cref="T:System.Collections.Generic.ICollection`1" /> is read-only; otherwise, false.</returns>
+        [IgnoreDataMember]
         public bool IsReadOnly
         {
             get
@@ -140,13 +193,13 @@ namespace Tasslehoff.Library.Collections
         {
             get
             {
-                T value;
-                if (this.TryGetValue(key, out value))
+                int index = this.keys1.IndexOf(key);
+                if (index == -1)
                 {
-                    return value;
+                    throw new IndexOutOfRangeException();
                 }
 
-                return default(T);
+                return this.values[index];
             }
 
             set
@@ -167,13 +220,13 @@ namespace Tasslehoff.Library.Collections
         {
             get
             {
-                T value;
-                if (this.TryGetValue(key, out value))
+                int index = this.keys2.IndexOf(key);
+                if (index == -1)
                 {
-                    return value;
+                    throw new IndexOutOfRangeException();
                 }
 
-                return default(T);
+                return this.values[index];
             }
         }
 
@@ -195,48 +248,6 @@ namespace Tasslehoff.Library.Collections
         }
 
         // methods
-
-        /// <summary>
-        /// Gets the value associated with the specified key.
-        /// </summary>
-        /// <param name="key">The key whose value to get.</param>
-        /// <param name="value">When this method returns, the value associated with the specified key, if the key is found; otherwise, the default value for the type of the <paramref name="value" /> parameter. This parameter is passed uninitialized.</param>
-        /// <returns>
-        /// true if the object that implements <see cref="T:System.Collections.Generic.IDictionary`2" /> contains an element with the specified key; otherwise, false.
-        /// </returns>
-        public bool TryGetValue(TKey1 key, out T value)
-        {
-            int index = this.keys1.IndexOf(key);
-            if (index == -1)
-            {
-                value = default(T);
-                return false;
-            }
-
-            value = this.values[index];
-            return true;
-        }
-
-        /// <summary>
-        /// Gets the value associated with the specified key.
-        /// </summary>
-        /// <param name="key">The key whose value to get.</param>
-        /// <param name="value">When this method returns, the value associated with the specified key, if the key is found; otherwise, the default value for the type of the <paramref name="value" /> parameter. This parameter is passed uninitialized.</param>
-        /// <returns>
-        /// true if the object that implements <see cref="T:System.Collections.Generic.IDictionary`2" /> contains an element with the specified key; otherwise, false.
-        /// </returns>
-        public bool TryGetValue(TKey2 key, out T value)
-        {
-            int index = this.keys2.IndexOf(key);
-            if (index == -1)
-            {
-                value = default(T);
-                return false;
-            }
-
-            value = this.values[index];
-            return true;
-        }
 
         /// <summary>
         /// Adds the specified key.
@@ -352,6 +363,24 @@ namespace Tasslehoff.Library.Collections
         }
 
         /// <summary>
+        /// Determines whether the <see cref="T:System.Collections.Generic.ICollection`1" /> contains a specific value.
+        /// </summary>
+        /// <param name="item">The object to locate in the <see cref="T:System.Collections.Generic.ICollection`1" />.</param>
+        /// <returns>
+        /// true if <paramref name="item" /> is found in the <see cref="T:System.Collections.Generic.ICollection`1" />; otherwise, false.
+        /// </returns>
+        public bool Contains(KeyValuePair<TKey2, T> item)
+        {
+            int index = this.keys2.IndexOf(item.Key);
+            if (index != -1 && this.values[index].Equals(item.Value))
+            {
+                return true;
+            }
+
+            return false;
+        }
+
+        /// <summary>
         /// Removes the specified key.
         /// </summary>
         /// <param name="key">The key.</param>
@@ -451,6 +480,61 @@ namespace Tasslehoff.Library.Collections
         }
 
         /// <summary>
+        /// Gets the value associated with the specified key.
+        /// </summary>
+        /// <param name="key">The key whose value to get.</param>
+        /// <param name="value">When this method returns, the value associated with the specified key, if the key is found; otherwise, the default value for the type of the <paramref name="value" /> parameter. This parameter is passed uninitialized.</param>
+        /// <returns>
+        /// true if the object that implements <see cref="T:System.Collections.Generic.IDictionary`2" /> contains an element with the specified key; otherwise, false.
+        /// </returns>
+        public bool TryGetValue(TKey1 key, out T value)
+        {
+            int index = this.keys1.IndexOf(key);
+            if (index == -1)
+            {
+                value = default(T);
+                return false;
+            }
+
+            value = this.values[index];
+            return true;
+        }
+
+        /// <summary>
+        /// Gets the value associated with the specified key.
+        /// </summary>
+        /// <param name="key">The key whose value to get.</param>
+        /// <param name="value">When this method returns, the value associated with the specified key, if the key is found; otherwise, the default value for the type of the <paramref name="value" /> parameter. This parameter is passed uninitialized.</param>
+        /// <returns>
+        /// true if the object that implements <see cref="T:System.Collections.Generic.IDictionary`2" /> contains an element with the specified key; otherwise, false.
+        /// </returns>
+        public bool TryGetValue(TKey2 key, out T value)
+        {
+            int index = this.keys2.IndexOf(key);
+            if (index == -1)
+            {
+                value = default(T);
+                return false;
+            }
+
+            value = this.values[index];
+            return true;
+        }
+
+        /// <summary>
+        /// Gets the value associated with the specified key.
+        /// </summary>
+        /// <param name="key">The key whose value to get.</param>
+        /// <param name="value">When this method returns, the value associated with the specified key, if the key is found; otherwise, the default value for the type of the <paramref name="value" /> parameter. This parameter is passed uninitialized.</param>
+        /// <returns>
+        /// true if the object that implements <see cref="T:System.Collections.Generic.IDictionary`2" /> contains an element with the specified key; otherwise, false.
+        /// </returns>
+        bool IDictionary<TKey1, T>.TryGetValue(TKey1 key, out T value)
+        {
+            return this.TryGetValue(key, out value);
+        }
+
+        /// <summary>
         /// Returns an enumerator that iterates through a collection.
         /// </summary>
         /// <returns>
@@ -472,10 +556,21 @@ namespace Tasslehoff.Library.Collections
         /// </returns>
         IEnumerator IEnumerable.GetEnumerator()
         {
-            for (int i = 0; i < this.keys1.Count; i++)
-            {
-                yield return new KeyValuePair<TKey1, T>(this.keys1[i], this.values[i]);
-            }
+            return this.GetEnumerator();
+        }
+
+        [SecurityPermission(SecurityAction.Demand, SerializationFormatter = true)]
+        protected void GetObjectData(SerializationInfo info, StreamingContext context)
+        {
+            info.AddValue("keys1", this.keys1);
+            info.AddValue("keys2", this.keys2);
+            info.AddValue("values", this.values);
+        }
+
+        [SecurityPermission(SecurityAction.LinkDemand, Flags = SecurityPermissionFlag.SerializationFormatter)]
+        void ISerializable.GetObjectData(SerializationInfo info, StreamingContext context)
+        {
+            this.GetObjectData(info, context);
         }
     }
 }

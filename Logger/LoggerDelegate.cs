@@ -253,13 +253,21 @@ namespace Tasslehoff.Library.Logger
         /// <summary>
         /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
         /// </summary>
-        public void Dispose()
+        void IDisposable.Dispose()
         {
             this.Dispose(true);
 
             GC.SuppressFinalize(this);
         }
 
+        /// <summary>
+        /// Called when [dispose].
+        /// </summary>
+        protected virtual void OnDispose()
+        {
+            VariableUtils.CheckAndDispose<Logger>(ref this.assignedLogger);
+        }
+        
         /// <summary>
         /// Releases unmanaged and - optionally - managed resources.
         /// </summary>
@@ -277,17 +285,6 @@ namespace Tasslehoff.Library.Logger
             }
             
             this.disposed = true;
-        }
-
-        // abstract methods
-
-        /// <summary>
-        /// Called when [dispose].
-        /// </summary>
-        protected virtual void OnDispose()
-        {
-            VariableUtils.CheckAndDispose(this.assignedLogger);
-            this.assignedLogger = null;
         }
     }
 }

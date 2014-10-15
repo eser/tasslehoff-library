@@ -30,7 +30,7 @@ namespace Tasslehoff.Library.Collections
     /// An sorted list class.
     /// </summary>
     /// <typeparam name="T">Any object type can be stored in a collection</typeparam>
-    [DataContract, Serializable]
+    [DataContract]
     public class SortedList<T> : IList<T>, ISerializable where T : IComparable
     {
         // fields
@@ -233,10 +233,7 @@ namespace Tasslehoff.Library.Collections
         /// </returns>
         IEnumerator IEnumerable.GetEnumerator()
         {
-            for (int i = 0; i < this.values.Count; i++)
-            {
-                yield return this.values[i];
-            }
+            return this.GetEnumerator();
         }
 
         [SecurityPermission(SecurityAction.Demand, SerializationFormatter = true)]

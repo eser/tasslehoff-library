@@ -154,30 +154,19 @@ namespace Tasslehoff.Library.Services
         }
 
         /// <summary>
-        /// Releases unmanaged and - optionally - managed resources.
+        /// Called when [dispose].
         /// </summary>
-        /// <param name="disposing"><c>true</c> to release both managed and unmanaged resources; <c>false</c> to release only unmanaged resources</param>
-        protected override void Dispose(bool disposing)
+        protected override void OnDispose()
         {
-            if (this.Disposed)
+            IService[] childServices = ArrayUtils.GetArray<IService>(this.children.Values);
+            Array.Reverse(childServices);
+
+            foreach (IService child in childServices)
             {
-                return;
+                child.Dispose();
             }
 
-            if (disposing)
-            {
-                IService[] childServices = ArrayUtils.GetArray<IService>(this.children.Values);
-                Array.Reverse(childServices);
-
-                foreach (IService child in childServices)
-                {
-                    child.Dispose();
-                }
-
-                this.OnDispose();
-            }
-
-            this.Disposed = true;
+            base.OnDispose();
         }
     }
 }

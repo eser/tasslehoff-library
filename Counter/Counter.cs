@@ -18,10 +18,11 @@
 //// You should have received a copy of the GNU General Public License
 //// along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-namespace Tasslehoff.Library.Objects
+namespace Tasslehoff.Library.Counter
 {
     using System;
     using System.Collections.Generic;
+    using Tasslehoff.Library.Objects;
     using Tasslehoff.Library.Services;
 
     /// <summary>

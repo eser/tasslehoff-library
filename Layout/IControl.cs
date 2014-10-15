@@ -1,5 +1,5 @@
 ﻿// -----------------------------------------------------------------------
-// <copyright file="IService.cs" company="-">
+// <copyright file="IControl.cs" company="-">
 // Copyright (c) 2013 larukedi (eser@sent.com). All rights reserved.
 // </copyright>
 // <author>larukedi (http://github.com/larukedi/)</author>
@@ -18,56 +18,78 @@
 //// You should have received a copy of the GNU General Public License
 //// along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-namespace Tasslehoff.Library.Services
+namespace Tasslehoff.Library
 {
     using System;
-    using Tasslehoff.Library.Logger;
+    using System.Collections.Generic;
+    using System.Runtime.Serialization;
+    using System.Web.UI.WebControls;
 
     /// <summary>
-    /// IService interface.
+    /// IControl interface.
     /// </summary>
-    public interface IService : IDisposable
+    public interface IControl : IDisposable, ISerializable
     {
         // properties
 
         /// <summary>
-        /// Gets the name.
+        /// Gets or sets child objects
         /// </summary>
         /// <value>
-        /// The name.
+        /// Child objects
         /// </value>
-        string Name { get; }
+        List<IControl> Children { get; }
 
         /// <summary>
-        /// Gets the description.
+        /// Gets or sets id
         /// </summary>
         /// <value>
-        /// The description.
+        /// Id
         /// </value>
-        string Description { get; }
+        string Id { get; }
 
         /// <summary>
-        /// Gets the status.
+        /// Gets or sets class
         /// </summary>
         /// <value>
-        /// The status.
+        /// CssClass
         /// </value>
-        ServiceStatus Status { get; }
+        string CssClass { get; }
 
         /// <summary>
-        /// Gets the status date.
+        /// Gets or sets span
         /// </summary>
         /// <value>
-        /// The status date.
+        /// Span
         /// </value>
-        DateTime StatusDate { get; }
+        int Span { get; }
 
         /// <summary>
-        /// Gets the log.
+        /// Gets or sets offset
         /// </summary>
         /// <value>
-        /// The log.
+        /// Offset
         /// </value>
-        LoggerDelegate Log { get; }
+        int Offset { get; }
+
+        // methods
+
+        /// <summary>
+        /// Creates web control
+        /// </summary>
+        /// <returns>Web control</returns>
+        WebControl CreateWebControl();
+
+        /// <summary>
+        /// Imports content
+        /// </summary>
+        /// <param name="bag">The dictionary consists of elements</param>
+        void Import(IDictionary<string, IControl> bag);
+
+        /// <summary>
+        /// Exports content
+        /// </summary>
+        /// <returns>Exported data</returns>
+        IDictionary<string, IControl> Export();
     }
 }

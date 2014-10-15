@@ -80,10 +80,14 @@
     <Compile Include="DataEntities\DataEntity.cs" />
     <Compile Include="DataEntities\IDataEntity.cs" />
     <Compile Include="DataEntities\IDataEntityMap.cs" />
+    <Compile Include="Layout\Container.cs" />
+    <Compile Include="Layout\Control.cs" />
+    <Compile Include="Layout\ControlRegistry.cs" />
+    <Compile Include="Layout\IControl.cs" />
     <Compile Include="Objects\CharRange.cs" />
     <Compile Include="Objects\Charset.cs" />
-    <Compile Include="Objects\Counter.cs" />
-    <Compile Include="Objects\CounterPoppedEventArgs.cs" />
+    <Compile Include="Counter\Counter.cs" />
+    <Compile Include="Counter\CounterPoppedEventArgs.cs" />
     <Compile Include="Objects\DateRange.cs" />
     <Compile Include="Objects\IntRange.cs" />
     <Compile Include="Objects\Numerator.cs" />
@@ -172,4 +176,5 @@
     <None Include="packages.config" />
     <None Include="Tasslehoff.Library.pfx" />
   </ItemGroup>
+  <ItemGroup />
 </Project>

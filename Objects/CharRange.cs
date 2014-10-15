@@ -22,22 +22,27 @@ namespace Tasslehoff.Library.Objects
 {
     using System;
     using System.Collections;
+    using System.Runtime.Serialization;
+    using System.Security.Permissions;
 
     /// <summary>
     /// CharRange class.
     /// </summary>
-    public class CharRange : ICloneable, IEnumerable
+    [DataContract]
+    public class CharRange : ICloneable, IEnumerable, ISerializable
     {
         // fields
 
         /// <summary>
         /// The start char
         /// </summary>
+        [DataMember]
         private readonly char startChar;
 
         /// <summary>
         /// The end char
         /// </summary>
+        [DataMember]
         private readonly char endChar;
 
         // constructors
@@ -53,11 +58,23 @@ namespace Tasslehoff.Library.Objects
             this.endChar = endChar;
         }
 
+        /// <summary>
+        /// Constructor for serialization interface
+        /// </summary>
+        /// <param name="info">info</param>
+        /// <param name="context">context</param>
+        protected CharRange(SerializationInfo info, StreamingContext context)
+        {
+            this.startChar = info.GetChar("startChar");
+            this.endChar = info.GetChar("endChar");
+        }
+
         // properties
 
         /// <summary>
         /// Gets the start char.
         /// </summary>
+        [IgnoreDataMember]
         public char StartChar
         {
             get
@@ -69,6 +86,7 @@ namespace Tasslehoff.Library.Objects
         /// <summary>
         /// Gets the end char.
         /// </summary>
+        [IgnoreDataMember]
         public char EndChar
         {
             get
@@ -76,6 +94,8 @@ namespace Tasslehoff.Library.Objects
                 return this.endChar;
             }
         }
+
+        // methods
 
         /// <summary>
         /// Gets the range table.
@@ -120,7 +140,7 @@ namespace Tasslehoff.Library.Objects
         /// <returns>
         /// A new object that is a copy of this instance.
         /// </returns>
-        public object Clone()
+        object ICloneable.Clone()
         {
             return this.MemberwiseClone();
         }
@@ -141,6 +161,30 @@ namespace Tasslehoff.Library.Objects
             {
                 yield return (char)(startChar + i);
             }
+        }
+
+        /// <summary>
+        /// Returns an enumerator that iterates through a collection.
+        /// </summary>
+        /// <returns>
+        /// An <see cref="T:System.Collections.IEnumerator" /> object that can be used to iterate through the collection.
+        /// </returns>
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return this.GetEnumerator();
+        }
+
+        [SecurityPermission(SecurityAction.Demand, SerializationFormatter = true)]
+        protected void GetObjectData(SerializationInfo info, StreamingContext context)
+        {
+            info.AddValue("startChar", this.startChar);
+            info.AddValue("endChar", this.endChar);
+        }
+
+        [SecurityPermission(SecurityAction.LinkDemand, Flags = SecurityPermissionFlag.SerializationFormatter)]
+        void ISerializable.GetObjectData(SerializationInfo info, StreamingContext context)
+        {
+            this.GetObjectData(info, context);
         }
     }
 }

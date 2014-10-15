@@ -21,7 +21,6 @@
 namespace Tasslehoff.Library.Cron
 {
     using System;
-    using System.Diagnostics.CodeAnalysis;
     using System.Threading;
     using Tasslehoff.Library.Utils;
 
@@ -156,7 +155,7 @@ namespace Tasslehoff.Library.Cron
         /// <summary>
         /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
         /// </summary>
-        public void Dispose()
+        void IDisposable.Dispose()
         {
             this.Dispose(true);
 
@@ -164,10 +163,17 @@ namespace Tasslehoff.Library.Cron
         }
 
         /// <summary>
+        /// Called when [dispose].
+        /// </summary>
+        protected virtual void OnDispose()
+        {
+            VariableUtils.CheckAndDispose<CancellationTokenSource>(ref this.cancellationTokenSource);
+        }
+
+        /// <summary>
         /// Releases unmanaged and - optionally - managed resources.
         /// </summary>
         /// <param name="disposing"><c>true</c> to release both managed and unmanaged resources; <c>false</c> to release only unmanaged resources</param>
-        [SuppressMessage("Microsoft.Usage", "CA2213:DisposableFieldsShouldBeDisposed", MessageId = "cancellationTokenSource", Justification = "cancellationTokenSource is already will be disposed using CheckAndDispose method.")]
         protected virtual void Dispose(bool disposing)
         {
             if (this.disposed)
@@ -177,8 +183,7 @@ namespace Tasslehoff.Library.Cron
 
             if (disposing)
             {
-                VariableUtils.CheckAndDispose(this.cancellationTokenSource);
-                this.cancellationTokenSource = null;
+                this.OnDispose();
             }
 
             this.disposed = true;

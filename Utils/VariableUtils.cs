@@ -35,11 +35,12 @@ namespace Tasslehoff.Library.Utils
         /// Checks the and dispose.
         /// </summary>
         /// <param name="variable">The variable</param>
-        public static void CheckAndDispose(IDisposable variable)
+        public static void CheckAndDispose<T>(ref T variable) where T : class, IDisposable
         {
             if (variable != null)
             {
                 variable.Dispose();
+                variable = null;
             }
         }
 

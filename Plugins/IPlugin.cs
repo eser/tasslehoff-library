@@ -23,7 +23,7 @@ namespace Tasslehoff.Library
     using Tasslehoff.Library.Services;
 
     /// <summary>
-    /// IPlugin class.
+    /// IPlugin interface.
     /// </summary>
     public interface IPlugin : IService
     {        
