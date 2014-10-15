@@ -28,8 +28,9 @@ namespace Tasslehoff.Library.Objects
     /// <summary>
     /// CharRange class.
     /// </summary>
+    [Serializable]
     [DataContract]
-    public class CharRange : ICloneable, IEnumerable, ISerializable
+    public class CharRange : ICloneable, IEnumerable
     {
         // fields
 
@@ -56,17 +57,6 @@ namespace Tasslehoff.Library.Objects
         {
             this.startChar = startChar;
             this.endChar = endChar;
-        }
-
-        /// <summary>
-        /// Constructor for serialization interface
-        /// </summary>
-        /// <param name="info">info</param>
-        /// <param name="context">context</param>
-        protected CharRange(SerializationInfo info, StreamingContext context)
-        {
-            this.startChar = info.GetChar("startChar");
-            this.endChar = info.GetChar("endChar");
         }
 
         // properties
@@ -172,19 +162,6 @@ namespace Tasslehoff.Library.Objects
         IEnumerator IEnumerable.GetEnumerator()
         {
             return this.GetEnumerator();
-        }
-
-        [SecurityPermission(SecurityAction.Demand, SerializationFormatter = true)]
-        protected void GetObjectData(SerializationInfo info, StreamingContext context)
-        {
-            info.AddValue("startChar", this.startChar);
-            info.AddValue("endChar", this.endChar);
-        }
-
-        [SecurityPermission(SecurityAction.LinkDemand, Flags = SecurityPermissionFlag.SerializationFormatter)]
-        void ISerializable.GetObjectData(SerializationInfo info, StreamingContext context)
-        {
-            this.GetObjectData(info, context);
         }
     }
 }

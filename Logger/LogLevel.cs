@@ -20,50 +20,62 @@
 
 namespace Tasslehoff.Library.Logger
 {
+    using System;
+    using System.Runtime.Serialization;
 
     /// <summary>
     /// Level for logging.
     /// </summary>
+    [Serializable]
+    [DataContract]
     public enum LogLevel
     {
         /// <summary>
         /// The emergency
         /// </summary>
+        [EnumMember]
         Emergency,
 
         /// <summary>
         /// The alert
         /// </summary>
+        [EnumMember]
         Alert,
 
         /// <summary>
         /// The critical
         /// </summary>
+        [EnumMember]
         Critical,
 
         /// <summary>
         /// The error
         /// </summary>
+        [EnumMember]
         Error,
 
         /// <summary>
         /// The warning
         /// </summary>
+        [EnumMember]
         Warning,
 
         /// <summary>
         /// The notice
         /// </summary>
+        [EnumMember]
         Notice,
 
         /// <summary>
         /// The info
         /// </summary>
+        [EnumMember]
         Info,
 
         /// <summary>
         /// The debug
         /// </summary>
+        [EnumMember]
         Debug
     }
 }

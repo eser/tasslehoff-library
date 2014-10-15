@@ -23,12 +23,12 @@ namespace Tasslehoff.Library
     using System;
     using System.Collections.Generic;
     using System.Runtime.Serialization;
-    using System.Security.Permissions;
     using System.Web.UI.WebControls;
 
     /// <summary>
     /// Control class.
     /// </summary>
+    [Serializable]
     [DataContract]
     public abstract class Control : IControl
     {
@@ -78,20 +78,6 @@ namespace Tasslehoff.Library
         public Control()
         {
             this.children = new List<IControl>();
-        }
-
-        /// <summary>
-        /// Constructor for serialization interface
-        /// </summary>
-        /// <param name="info">info</param>
-        /// <param name="context">context</param>
-        protected Control(SerializationInfo info, StreamingContext context)
-        {
-            this.id = info.GetString("id");
-            this.cssClass = info.GetString("cssClass");
-            this.span = info.GetInt32("span");
-            this.offset = info.GetInt32("offset");
-            this.children = (List<IControl>)info.GetValue("children", typeof(List<IControl>));
         }
 
         /// <summary>
@@ -227,17 +213,65 @@ namespace Tasslehoff.Library
         /// <returns>Web control</returns>
         public abstract WebControl CreateWebControl();
 
-        /// <summary>
-        /// Imports content
-        /// </summary>
-        /// <param name="bag">The dictionary consists of elements</param>
-        public abstract void Import(IDictionary<string, IControl> bag);
+        public string Export(int indent = 0)
+        {
+            List<string> props = new List<string>();
 
-        /// <summary>
-        /// Exports content
-        /// </summary>
-        /// <returns>Exported data</returns>
-        public abstract IDictionary<string, IControl> Export();
+            this.OnExport(props, indent);
+
+            string indentStr = new string('\t', indent);
+            string result = indentStr + "{";
+            bool firstLoop = true;
+
+            foreach (string prop in props)
+            {
+                if (firstLoop)
+                {
+                    firstLoop = false;
+                }
+                else
+                {
+                    result += ",";
+                }
+
+                result += Environment.NewLine + indentStr + "\t" + prop;
+            }
+
+            if (!firstLoop)
+            {
+                result += Environment.NewLine + indentStr;
+            }
+
+            result += "}";
+
+
+            return result;
+        }
+
+        protected void OnExport(List<string> props, int indent)
+        {
+            if (this.span != 0)
+            {
+                props.Add(string.Format("span: {0}", this.span));
+            }
+
+            if (this.offset != 0)
+            {
+                props.Add(string.Format("offset: {0}", this.offset));
+            }
+
+            if (this.children.Count > 0)
+            {
+                string childrenText = "children: [";
+                foreach (IControl control in this.children)
+                {
+                    childrenText += control.Export(indent + 1);
+                }
+                childrenText += "]";
+
+                props.Add(childrenText);
+            }
+        }
 
         /// <summary>
         /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
@@ -282,22 +316,6 @@ namespace Tasslehoff.Library
             }
 
             this.disposed = true;
-        }
-
-        [SecurityPermission(SecurityAction.Demand, SerializationFormatter = true)]
-        protected void GetObjectData(SerializationInfo info, StreamingContext context)
-        {
-            info.AddValue("id", this.id);
-            info.AddValue("cssClass", this.cssClass);
-            info.AddValue("span", this.span);
-            info.AddValue("offset", this.offset);
-            info.AddValue("children", this.children);
-        }
-
-        [SecurityPermission(SecurityAction.LinkDemand, Flags = SecurityPermissionFlag.SerializationFormatter)]
-        void ISerializable.GetObjectData(SerializationInfo info, StreamingContext context)
-        {
-            this.GetObjectData(info, context);
         }
     }
 }

@@ -29,8 +29,9 @@ namespace Tasslehoff.Library.Objects
     /// A node in tree data structure
     /// </summary>
     /// <typeparam name="T">Type</typeparam>
+    [Serializable]
     [DataContract]
-    public class TreeNode<T> : ICloneable, IComparable, ISerializable
+    public class TreeNode<T> : ICloneable, IComparable
     {
         // fields
 
@@ -70,18 +71,6 @@ namespace Tasslehoff.Library.Objects
         {
             this.value = value;
             this.children = new SortedList<TreeNode<T>>();
-        }
-
-        /// <summary>
-        /// Constructor for serialization interface
-        /// </summary>
-        /// <param name="info">info</param>
-        /// <param name="context">context</param>
-        protected TreeNode(SerializationInfo info, StreamingContext context)
-        {
-            this.value = (T)info.GetValue("value", typeof(T));
-            this.sortIndex = info.GetInt32("sortIndex");
-            this.children = (SortedList<TreeNode<T>>)info.GetValue("children", typeof(SortedList<TreeNode<T>>));
         }
 
         // attributes
@@ -180,20 +169,6 @@ namespace Tasslehoff.Library.Objects
             }
 
             return this.sortIndex.CompareTo(other.sortIndex);
-        }
-
-        [SecurityPermission(SecurityAction.Demand, SerializationFormatter = true)]
-        protected void GetObjectData(SerializationInfo info, StreamingContext context)
-        {
-            info.AddValue("value", this.value);
-            info.AddValue("sortIndex", this.sortIndex);
-            info.AddValue("children", this.children);
-        }
-
-        [SecurityPermission(SecurityAction.LinkDemand, Flags = SecurityPermissionFlag.SerializationFormatter)]
-        void ISerializable.GetObjectData(SerializationInfo info, StreamingContext context)
-        {
-            this.GetObjectData(info, context);
         }
     }
 }

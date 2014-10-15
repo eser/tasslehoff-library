@@ -29,8 +29,9 @@ namespace Tasslehoff.Library.Objects
     /// <summary>
     /// DateRange class.
     /// </summary>
+    [Serializable]
     [DataContract]
-    public class DateRange : ICloneable, ISerializable
+    public class DateRange : ICloneable
     {
         // fields
 
@@ -59,16 +60,6 @@ namespace Tasslehoff.Library.Objects
             this.end = end;
         }
 
-        /// <summary>
-        /// Constructor for serialization interface
-        /// </summary>
-        /// <param name="info">info</param>
-        /// <param name="context">context</param>
-        protected DateRange(SerializationInfo info, StreamingContext context)
-        {
-            this.start = info.GetDateTime("start");
-            this.end = info.GetDateTime("end");
-        }
 
         // properties
 
@@ -148,18 +139,5 @@ namespace Tasslehoff.Library.Objects
         {
             return this.MemberwiseClone();
         }
-
-        [SecurityPermission(SecurityAction.Demand, SerializationFormatter = true)]
-        protected void GetObjectData(SerializationInfo info, StreamingContext context)
-        {
-            info.AddValue("start", this.start);
-            info.AddValue("end", this.end);
-        }
-
-        [SecurityPermission(SecurityAction.LinkDemand, Flags = SecurityPermissionFlag.SerializationFormatter)]
-        void ISerializable.GetObjectData(SerializationInfo info, StreamingContext context)
-        {
-            this.GetObjectData(info, context);
-        }
-    }
+   }
 }

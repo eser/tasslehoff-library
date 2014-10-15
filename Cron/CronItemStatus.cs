@@ -20,24 +20,32 @@
 
 namespace Tasslehoff.Library.Cron
 {
+    using System;
+    using System.Runtime.Serialization;
+
     /// <summary>
     /// CronItemStatus enumeration.
     /// </summary>
+    [Serializable]
+    [DataContract]
     public enum CronItemStatus
     {
         /// <summary>
         /// Not started
         /// </summary>
+        [EnumMember]
         NotStarted = 0,
 
         /// <summary>
         /// Item is running
         /// </summary>
+        [EnumMember]
         Running = 1,
 
         /// <summary>
         /// Item is stopped
         /// </summary>
+        [EnumMember]
         Stopped = 2
     }
 }

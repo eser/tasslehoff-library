@@ -21,76 +21,92 @@
 namespace Tasslehoff.Library.Cron
 {
     using System;
+    using System.Runtime.Serialization;
 
     /// <summary>
     /// MonthFlags enumeration.
     /// </summary>
+    [Serializable]
+    [DataContract]
     [Flags]
     public enum MonthFlags
     {
         /// <summary>
         /// None of them.
         /// </summary>
+        [EnumMember]
         None = 0,
 
         /// <summary>
         /// Month January.
         /// </summary>
+        [EnumMember]
         January = 1,
 
         /// <summary>
         /// Month February.
         /// </summary>
+        [EnumMember]
         February = 2,
 
         /// <summary>
         /// Month March.
         /// </summary>
+        [EnumMember]
         March = 4,
 
         /// <summary>
         /// Month April.
         /// </summary>
+        [EnumMember]
         April = 8,
 
         /// <summary>
         /// Month May.
         /// </summary>
+        [EnumMember]
         May = 16,
 
         /// <summary>
         /// Month June.
         /// </summary>
+        [EnumMember]
         June = 32,
 
         /// <summary>
         /// Month July.
         /// </summary>
+        [EnumMember]
         July = 64,
 
         /// <summary>
         /// Month August.
         /// </summary>
+        [EnumMember]
         August = 128,
 
         /// <summary>
         /// Month September.
         /// </summary>
+        [EnumMember]
         September = 256,
 
         /// <summary>
         /// Month October.
         /// </summary>
+        [EnumMember]
         October = 512,
 
         /// <summary>
         /// Month November.
         /// </summary>
+        [EnumMember]
         November = 1024,
 
         /// <summary>
         /// Month December.
         /// </summary>
+        [EnumMember]
         December = 2048
     }
 }

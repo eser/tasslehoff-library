@@ -23,7 +23,7 @@ namespace Tasslehoff.Library.Config
     using System;
     using System.IO;
     using System.Reflection;
-    using Newtonsoft.Json;
+    using Tasslehoff.Library.Utils;
 
     /// <summary>
     /// Config class
@@ -48,7 +48,7 @@ namespace Tasslehoff.Library.Config
         /// <returns>Serialized config object</returns>
         public string Dump()
         {
-            return JsonConvert.SerializeObject(this, ConfigSerializer.GetSerializerSettings());
+            return SerializationUtils.JsonSerialize(this);
         }
 
         /// <summary>

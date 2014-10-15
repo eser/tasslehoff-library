@@ -20,30 +20,39 @@
 
 namespace Laroux.ScabbiaLibrary.Threading
 {
+    using System;
+    using System.Runtime.Serialization;
+
     /// <summary>
     /// ChannelTaskStatus enumeration.
     /// </summary>
     /// <remarks>Converted from byte to int due to CLS compliancy.</remarks>
+    [Serializable]
+    [DataContract]
     public enum ChannelTaskStatus
     {
         /// <summary>
         /// Task is NotStarted
         /// </summary>
+        [EnumMember]
         NotStarted = 0,
 
         /// <summary>
         /// Task is Running
         /// </summary>
+        [EnumMember]
         Running = 1,
 
         /// <summary>
         /// Task is Finished
         /// </summary>
+        [EnumMember]
         Finished = 2,
 
         /// <summary>
         /// Task is Cancelled
         /// </summary>
+        [EnumMember]
         Cancelled = 3
     }
 }

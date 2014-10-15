@@ -30,6 +30,7 @@ namespace Tasslehoff.Library
     /// <remarks>
     /// You can use BaseException&lt;dynamic&gt; to use dynamic parameters.
     /// </remarks>
+    [Serializable]
     [DataContract]
     public abstract class BaseException<T> : BaseException
     {
@@ -73,16 +74,6 @@ namespace Tasslehoff.Library
             this.exceptionObject = exceptionObject;
         }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="BaseException{T}"/> class.
-        /// </summary>
-        /// <param name="info">The <see cref="T:System.Runtime.Serialization.SerializationInfo" /> that holds the serialized object data about the exception being thrown</param>
-        /// <param name="context">The <see cref="T:System.Runtime.Serialization.StreamingContext" /> that contains contextual information about the source or destination</param>
-        protected BaseException(SerializationInfo info, StreamingContext context) : base(info, context)
-        {
-            this.exceptionObject = (T)info.GetValue("exceptionObject", typeof(T));
-        }
-
         // properties
 
         /// <summary>
@@ -98,13 +89,6 @@ namespace Tasslehoff.Library
             {
                 return this.exceptionObject;
             }
-        }
-
-        // methods
-
-        public override void GetObjectData(SerializationInfo info, StreamingContext context)
-        {
-            info.AddValue("exceptionObject", this.exceptionObject);
         }
     }
 }

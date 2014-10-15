@@ -21,37 +21,26 @@
 namespace Tasslehoff.Library
 {
     using System;
-    using System.Collections.Generic;
+    using System.Runtime.Serialization;
     using System.Web.UI.WebControls;
 
     /// <summary>
     /// Container class.
     /// </summary>
+    [Serializable]
+    [DataContract]
     public class Container : Control
     {
+        // constructors
+                
+
+        // methods
+
         /// <summary>
         /// Creates web control
         /// </summary>
         /// <returns>Web control</returns>
         public override WebControl CreateWebControl()
-        {
-            throw new NotImplementedException();
-        }
-
-        /// <summary>
-        /// Imports content
-        /// </summary>
-        /// <param name="bag">The dictionary consists of elements</param>
-        public override void Import(IDictionary<string, IControl> bag)
-        {
-            throw new NotImplementedException();
-        }
-
-        /// <summary>
-        /// Exports content
-        /// </summary>
-        /// <returns>Exported data</returns>
-        public override IDictionary<string, IControl> Export()
         {
             throw new NotImplementedException();
         }

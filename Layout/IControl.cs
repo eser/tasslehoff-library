@@ -22,13 +22,12 @@ namespace Tasslehoff.Library
 {
     using System;
     using System.Collections.Generic;
-    using System.Runtime.Serialization;
     using System.Web.UI.WebControls;
 
     /// <summary>
     /// IControl interface.
     /// </summary>
-    public interface IControl : IDisposable, ISerializable
+    public interface IControl : IDisposable
     {
         // properties
 
@@ -80,16 +79,6 @@ namespace Tasslehoff.Library
         /// <returns>Web control</returns>
         WebControl CreateWebControl();
 
-        /// <summary>
-        /// Imports content
-        /// </summary>
-        /// <param name="bag">The dictionary consists of elements</param>
-        void Import(IDictionary<string, IControl> bag);
-
-        /// <summary>
-        /// Exports content
-        /// </summary>
-        /// <returns>Exported data</returns>
-        IDictionary<string, IControl> Export();
+        string Export(int indent = 0);
     }
 }

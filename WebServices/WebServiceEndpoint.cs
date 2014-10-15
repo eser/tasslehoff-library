@@ -26,8 +26,9 @@ namespace Tasslehoff.Library.WebServices
     /// <summary>
     /// WebServiceEndpoint class.
     /// </summary>
+    [Serializable]
     [DataContract]
-    public class WebServiceEndpoint : ISerializable
+    public class WebServiceEndpoint
     {
         // fields
 
@@ -54,17 +55,6 @@ namespace Tasslehoff.Library.WebServices
         {
             this.name = name;
             this.type = type;
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="WebServiceEndpoint"/> class.
-        /// </summary>
-        /// <param name="info">The <see cref="T:System.Runtime.Serialization.SerializationInfo" /> that holds the serialized object data about the exception being thrown</param>
-        /// <param name="context">The <see cref="T:System.Runtime.Serialization.StreamingContext" /> that contains contextual information about the source or destination</param>
-        protected WebServiceEndpoint(SerializationInfo info, StreamingContext context)
-        {
-            this.name = info.GetString("name");
-            this.type = (Type)info.GetValue("type", typeof(Type));
         }
 
         // properties
@@ -98,14 +88,5 @@ namespace Tasslehoff.Library.WebServices
                 return this.type;
             }
         }
-
-        // methods
-
-        void ISerializable.GetObjectData(SerializationInfo info, StreamingContext context)
-        {
-            info.AddValue("name", this.name);
-            info.AddValue("type", this.type);
-        }
-
     }
 }

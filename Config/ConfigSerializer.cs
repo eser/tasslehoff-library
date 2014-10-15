@@ -21,32 +21,13 @@
 namespace Tasslehoff.Library.Config
 {
     using System.IO;
-    using Newtonsoft.Json;
+    using Tasslehoff.Library.Utils;
 
     /// <summary>
     /// Serializer for configuration classes.
     /// </summary>
     public static class ConfigSerializer
     {
-        // methods
-
-        /// <summary>
-        /// Gets the serializer instance.
-        /// </summary>
-        /// <param name="type">The type</param>
-        /// <returns>A data contract serializer</returns>
-        internal static JsonSerializerSettings GetSerializerSettings()
-        {
-            JsonSerializerSettings settings = new JsonSerializerSettings()
-            {
-                Formatting = Formatting.Indented,
-                MissingMemberHandling = MissingMemberHandling.Ignore,
-                ContractResolver = new OrderedContractResolver()
-            };
-
-            return settings;
-        }
-
         /// <summary>
         /// Deserializes a configuration from a string.
         /// </summary>
@@ -55,7 +36,7 @@ namespace Tasslehoff.Library.Config
         /// <returns>Deserialized configuration class instance</returns>
         public static T Load<T>(string input) where T : Config
         {
-            return JsonConvert.DeserializeObject<T>(input, ConfigSerializer.GetSerializerSettings());
+            return SerializationUtils.JsonDeserialize<T>(input);
         }
 
         /// <summary>

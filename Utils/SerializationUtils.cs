@@ -23,6 +23,8 @@ namespace Tasslehoff.Library.Utils
     using System.IO;
     using System.Runtime.Serialization;
     using System.Runtime.Serialization.Formatters.Binary;
+    using Newtonsoft.Json;
+    using Tasslehoff.Library.Utils.Serialization;
 
     /// <summary>
     /// SerializationUtils class.
@@ -111,6 +113,46 @@ namespace Tasslehoff.Library.Utils
             }
 
             return graph;
+        }
+
+        /// <summary>
+        /// Gets the serializer instance.
+        /// </summary>
+        /// <param name="type">The type</param>
+        /// <returns>A data contract serializer</returns>
+        internal static JsonSerializerSettings GetSerializerSettings()
+        {
+            JsonSerializerSettings settings = new JsonSerializerSettings()
+            {
+                Formatting = Formatting.Indented,
+                MissingMemberHandling = MissingMemberHandling.Ignore,
+                ContractResolver = new OrderedContractResolver()
+            };
+
+            return settings;
+        }
+
+        /// <summary>
+        /// JSONs the serialize.
+        /// </summary>
+        /// <param name="graph">The graph</param>
+        /// <returns>Serialized data</returns>
+        public static string JsonSerialize(object graph)
+        {
+            return JsonConvert.SerializeObject(graph, SerializationUtils.GetSerializerSettings());
+        }
+
+        /// <summary>
+        /// JSONs the deserialize.
+        /// </summary>
+        /// <typeparam name="T">Any type</typeparam>
+        /// <param name="bytes">The bytes</param>
+        /// <returns>
+        /// Deserialized object.
+        /// </returns>
+        public static T JsonDeserialize<T>(string value)
+        {
+            return JsonConvert.DeserializeObject<T>(value, SerializationUtils.GetSerializerSettings());
         }
     }
 }

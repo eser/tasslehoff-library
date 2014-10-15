@@ -28,8 +28,9 @@ namespace Tasslehoff.Library.Objects
     /// <summary>
     /// Charset class.
     /// </summary>
+    [Serializable]
     [DataContract]
-    public class Charset : ICloneable, IEnumerable, ISerializable
+    public class Charset : ICloneable, IEnumerable
     {
         // fields
 
@@ -59,16 +60,6 @@ namespace Tasslehoff.Library.Objects
             {
                 this.Insert(table);
             }
-        }
-
-        /// <summary>
-        /// Constructor for serialization interface
-        /// </summary>
-        /// <param name="info">info</param>
-        /// <param name="context">context</param>
-        protected Charset(SerializationInfo info, StreamingContext context)
-        {
-            this.table = (char[])info.GetValue("table", typeof(char[]));
         }
 
         // methods
@@ -157,18 +148,5 @@ namespace Tasslehoff.Library.Objects
             return this.GetEnumerator();
         }
 
-
-        [SecurityPermission(SecurityAction.Demand, SerializationFormatter = true)]
-        protected void GetObjectData(SerializationInfo info, StreamingContext context)
-        {
-            info.AddValue("table", this.table);
-        }
-
-        [SecurityPermission(SecurityAction.LinkDemand, Flags = SecurityPermissionFlag.SerializationFormatter)]
-        void ISerializable.GetObjectData(SerializationInfo info, StreamingContext context)
-        {
-            this.GetObjectData(info, context);
-        }
- 
     }
 }

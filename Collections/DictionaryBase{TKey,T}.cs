@@ -32,8 +32,9 @@ namespace Tasslehoff.Library.Collections
     /// </summary>
     /// <typeparam name="TKey">The type of the key.</typeparam>
     /// <typeparam name="T">Any object type can be stored in a collection</typeparam>
+    [Serializable]
     [DataContract]
-    public class DictionaryBase<TKey, T> : IDictionary<TKey, T>, ISerializable
+    public class DictionaryBase<TKey, T> : IDictionary<TKey, T>
     {
         // fields
 
@@ -58,17 +59,6 @@ namespace Tasslehoff.Library.Collections
         {
             this.keys = new Collection<TKey>();
             this.values = new Collection<T>();
-        }
-
-        /// <summary>
-        /// Constructor for serialization interface
-        /// </summary>
-        /// <param name="info">info</param>
-        /// <param name="context">context</param>
-        protected DictionaryBase(SerializationInfo info, StreamingContext context)
-        {
-            this.keys = (Collection<TKey>)info.GetValue("keys", typeof(Collection<TKey>));
-            this.values = (Collection<T>)info.GetValue("values", typeof(Collection<T>));
         }
 
         // properties
@@ -346,19 +336,6 @@ namespace Tasslehoff.Library.Collections
         IEnumerator IEnumerable.GetEnumerator()
         {
             return this.GetEnumerator();
-        }
-
-        [SecurityPermission(SecurityAction.Demand, SerializationFormatter = true)]
-        protected void GetObjectData(SerializationInfo info, StreamingContext context)
-        {
-            info.AddValue("keys", this.keys);
-            info.AddValue("values", this.values);
-        }
-
-        [SecurityPermission(SecurityAction.LinkDemand, Flags = SecurityPermissionFlag.SerializationFormatter)]
-        void ISerializable.GetObjectData(SerializationInfo info, StreamingContext context)
-        {
-            this.GetObjectData(info, context);
         }
     }
 }

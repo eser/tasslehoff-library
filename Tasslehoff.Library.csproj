@@ -61,7 +61,7 @@
     <Compile Include="Collections\DictionaryBase{TKey1,TKey2,T}.cs" />
     <Compile Include="Config\Config.cs" />
     <Compile Include="Config\ConfigRegistry.cs" />
-    <Compile Include="Config\OrderedContractResolver.cs" />
+    <Compile Include="Utils\Serialization\OrderedContractResolver.cs" />
     <Compile Include="Cron\CronActionParameters.cs" />
     <Compile Include="Cron\CronItem.cs" />
     <Compile Include="Cron\CronItemStatus.cs" />

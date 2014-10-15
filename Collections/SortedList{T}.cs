@@ -30,8 +30,9 @@ namespace Tasslehoff.Library.Collections
     /// An sorted list class.
     /// </summary>
     /// <typeparam name="T">Any object type can be stored in a collection</typeparam>
+    [Serializable]
     [DataContract]
-    public class SortedList<T> : IList<T>, ISerializable where T : IComparable
+    public class SortedList<T> : IList<T> where T : IComparable
     {
         // fields
 
@@ -49,16 +50,6 @@ namespace Tasslehoff.Library.Collections
         public SortedList()
         {
             this.values = new List<T>();
-        }
-
-        /// <summary>
-        /// Constructor for serialization interface
-        /// </summary>
-        /// <param name="info">info</param>
-        /// <param name="context">context</param>
-        protected SortedList(SerializationInfo info, StreamingContext context)
-        {
-            this.values = (List<T>)info.GetValue("values", typeof(List<T>));
         }
 
         // properties
@@ -234,18 +225,6 @@ namespace Tasslehoff.Library.Collections
         IEnumerator IEnumerable.GetEnumerator()
         {
             return this.GetEnumerator();
-        }
-
-        [SecurityPermission(SecurityAction.Demand, SerializationFormatter = true)]
-        protected void GetObjectData(SerializationInfo info, StreamingContext context)
-        {
-            info.AddValue("values", this.values);
-        }
-
-        [SecurityPermission(SecurityAction.LinkDemand, Flags = SecurityPermissionFlag.SerializationFormatter)]
-        void ISerializable.GetObjectData(SerializationInfo info, StreamingContext context)
-        {
-            this.GetObjectData(info, context);
         }
     }
 }

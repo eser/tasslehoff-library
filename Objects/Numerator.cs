@@ -22,13 +22,13 @@ namespace Tasslehoff.Library.Objects
 {
     using System;
     using System.Runtime.Serialization;
-    using System.Security.Permissions;
 
     /// <summary>
     /// Numerator class.
     /// </summary>
+    [Serializable]
     [DataContract]
-    public class Numerator : ICloneable, ISerializable
+    public class Numerator : ICloneable
     {
         // fields
 
@@ -36,6 +36,7 @@ namespace Tasslehoff.Library.Objects
         /// The sync lock
         /// </summary>
         [IgnoreDataMember]
+        [NonSerialized]
         private readonly object syncLock = new object();
 
         /// <summary>
@@ -53,16 +54,6 @@ namespace Tasslehoff.Library.Objects
         public Numerator(int startNumber = int.MinValue)
         {
             this.nextNumber = startNumber;
-        }
-
-        /// <summary>
-        /// Constructor for serialization interface
-        /// </summary>
-        /// <param name="info">info</param>
-        /// <param name="context">context</param>
-        protected Numerator(SerializationInfo info, StreamingContext context)
-        {
-            this.nextNumber = info.GetInt32("nextNumber");
         }
 
         // methods
@@ -95,18 +86,6 @@ namespace Tasslehoff.Library.Objects
         object ICloneable.Clone()
         {
             return new Numerator(this.nextNumber);
-        }
-
-        [SecurityPermission(SecurityAction.Demand, SerializationFormatter = true)]
-        protected void GetObjectData(SerializationInfo info, StreamingContext context)
-        {
-            info.AddValue("nextNumber", this.nextNumber);
-        }
-
-        [SecurityPermission(SecurityAction.LinkDemand, Flags = SecurityPermissionFlag.SerializationFormatter)]
-        void ISerializable.GetObjectData(SerializationInfo info, StreamingContext context)
-        {
-            this.GetObjectData(info, context);
         }
      }
 }

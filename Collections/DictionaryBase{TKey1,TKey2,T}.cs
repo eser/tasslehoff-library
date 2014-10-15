@@ -25,7 +25,6 @@ namespace Tasslehoff.Library.Collections
     using System.Collections.Generic;
     using System.Collections.ObjectModel;
     using System.Runtime.Serialization;
-    using System.Security.Permissions;
 
     /// <summary>
     /// An essential dictionary base class for making implementations easy.
@@ -33,8 +32,9 @@ namespace Tasslehoff.Library.Collections
     /// <typeparam name="TKey1">The type of the key1.</typeparam>
     /// <typeparam name="TKey2">The type of the key2.</typeparam>
     /// <typeparam name="T">Any object type can be stored in a collection</typeparam>
+    [Serializable]
     [DataContract]
-    public class DictionaryBase<TKey1, TKey2, T> : IDictionary<TKey1, T> /* , IDictionary<TKey2, T> */, ISerializable
+    public class DictionaryBase<TKey1, TKey2, T> : IDictionary<TKey1, T> /* , IDictionary<TKey2, T> */
     {
         // fields
 
@@ -66,18 +66,6 @@ namespace Tasslehoff.Library.Collections
             this.keys1 = new Collection<TKey1>();
             this.keys2 = new Collection<TKey2>();
             this.values = new Collection<T>();
-        }
-
-        /// <summary>
-        /// Constructor for serialization interface
-        /// </summary>
-        /// <param name="info">info</param>
-        /// <param name="context">context</param>
-        protected DictionaryBase(SerializationInfo info, StreamingContext context)
-        {
-            this.keys1 = (Collection<TKey1>)info.GetValue("keys1", typeof(Collection<TKey1>));
-            this.keys2 = (Collection<TKey2>)info.GetValue("keys2", typeof(Collection<TKey2>));
-            this.values = (Collection<T>)info.GetValue("values", typeof(Collection<T>));
         }
 
         // properties
@@ -557,20 +545,6 @@ namespace Tasslehoff.Library.Collections
         IEnumerator IEnumerable.GetEnumerator()
         {
             return this.GetEnumerator();
-        }
-
-        [SecurityPermission(SecurityAction.Demand, SerializationFormatter = true)]
-        protected void GetObjectData(SerializationInfo info, StreamingContext context)
-        {
-            info.AddValue("keys1", this.keys1);
-            info.AddValue("keys2", this.keys2);
-            info.AddValue("values", this.values);
-        }
-
-        [SecurityPermission(SecurityAction.LinkDemand, Flags = SecurityPermissionFlag.SerializationFormatter)]
-        void ISerializable.GetObjectData(SerializationInfo info, StreamingContext context)
-        {
-            this.GetObjectData(info, context);
         }
     }
 }

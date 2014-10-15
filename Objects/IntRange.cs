@@ -28,8 +28,9 @@ namespace Tasslehoff.Library.Objects
     /// <summary>
     /// IntRange class.
     /// </summary>
+    [Serializable]
     [DataContract]
-    public class IntRange : ICloneable, IEnumerable, ISerializable
+    public class IntRange : ICloneable, IEnumerable
     {
         // fields
 
@@ -56,17 +57,6 @@ namespace Tasslehoff.Library.Objects
         {
             this.start = start;
             this.end = end;
-        }
-
-        /// <summary>
-        /// Constructor for serialization interface
-        /// </summary>
-        /// <param name="info">info</param>
-        /// <param name="context">context</param>
-        protected IntRange(SerializationInfo info, StreamingContext context)
-        {
-            this.start = info.GetInt32("start");
-            this.end = info.GetInt32("end");
         }
 
         // properties
@@ -149,19 +139,6 @@ namespace Tasslehoff.Library.Objects
         IEnumerator IEnumerable.GetEnumerator()
         {
             return this.GetEnumerator();
-        }
-
-        [SecurityPermission(SecurityAction.Demand, SerializationFormatter = true)]
-        protected void GetObjectData(SerializationInfo info, StreamingContext context)
-        {
-            info.AddValue("start", this.start);
-            info.AddValue("end", this.end);
-        }
-
-        [SecurityPermission(SecurityAction.LinkDemand, Flags = SecurityPermissionFlag.SerializationFormatter)]
-        void ISerializable.GetObjectData(SerializationInfo info, StreamingContext context)
-        {
-            this.GetObjectData(info, context);
         }
     }
 }

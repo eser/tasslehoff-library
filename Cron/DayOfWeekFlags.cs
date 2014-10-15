@@ -21,51 +21,62 @@
 namespace Tasslehoff.Library.Cron
 {
     using System;
+    using System.Runtime.Serialization;
 
     /// <summary>
     /// DayOfWeekFlags enumeration.
     /// </summary>
+    [Serializable]
+    [DataContract]
     [Flags]
     public enum DayOfWeekFlags
     {
         /// <summary>
         /// None of them.
         /// </summary>
+        [EnumMember]
         None = 0,
 
         /// <summary>
         /// Day Sunday.
         /// </summary>
+        [EnumMember]
         Sunday = 1,
 
         /// <summary>
         /// Day Monday.
         /// </summary>
+        [EnumMember]
         Monday = 2,
 
         /// <summary>
         /// Day Tuesday.
         /// </summary>
+        [EnumMember]
         Tuesday = 4,
 
         /// <summary>
         /// Day Wednesday.
         /// </summary>
+        [EnumMember]
         Wednesday = 8,
 
         /// <summary>
         /// Day Thursday.
         /// </summary>
+        [EnumMember]
         Thursday = 16,
 
         /// <summary>
         /// Day Friday.
         /// </summary>
+        [EnumMember]
         Friday = 32,
 
         /// <summary>
         /// Day Saturday.
         /// </summary>
+        [EnumMember]
         Saturday = 64
     }
 }

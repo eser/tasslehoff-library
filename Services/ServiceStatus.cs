@@ -20,25 +20,32 @@
 
 namespace Tasslehoff.Library.Services
 {
+    using System;
+    using System.Runtime.Serialization;
 
     /// <summary>
     /// Status of the service instance.
     /// </summary>
+    [Serializable]
+    [DataContract]
     public enum ServiceStatus
     {
         /// <summary>
         /// The passive
         /// </summary>
+        [EnumMember]
         Passive,
 
         /// <summary>
         /// The running
         /// </summary>
+        [EnumMember]
         Running,
 
         /// <summary>
         /// The stopped
         /// </summary>
+        [EnumMember]
         Stopped
     }
 }
