@@ -305,33 +305,33 @@ namespace Tasslehoff.Library.Layout
         {
             jsonOutputWriter.WriteStartObject();
 
-            jsonOutputWriter.WriteProperty("type", this.type);
+            jsonOutputWriter.WriteProperty("Type", this.type);
 
             if (!string.IsNullOrEmpty(this.id))
             {
-                jsonOutputWriter.WriteProperty("id", this.id);
+                jsonOutputWriter.WriteProperty("Id", this.id);
             }
 
             if (!string.IsNullOrEmpty(this.cssClass))
             {
-                jsonOutputWriter.WriteProperty("cssClass", this.cssClass);
+                jsonOutputWriter.WriteProperty("CssClass", this.cssClass);
             }
 
             if (this.span != 0)
             {
-                jsonOutputWriter.WriteProperty("span", this.span);
+                jsonOutputWriter.WriteProperty("Span", this.span);
             }
 
             if (this.offset != 0)
             {
-                jsonOutputWriter.WriteProperty("offset", this.offset);
+                jsonOutputWriter.WriteProperty("Offset", this.offset);
             }
 
             this.OnExport(jsonOutputWriter);
 
             if (this.children.Count > 0)
             {
-                jsonOutputWriter.WritePropertyName("children");
+                jsonOutputWriter.WritePropertyName("Children");
 
                 jsonOutputWriter.WriteStartArray();
                 foreach (ILayoutControl control in this.children)

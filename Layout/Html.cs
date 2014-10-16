@@ -149,17 +149,17 @@ namespace Tasslehoff.Library.Layout
         {
             if (this.tagName != "div")
             {
-                jsonOutputWriter.WriteProperty("tagName", this.tagName);
+                jsonOutputWriter.WriteProperty("TagName", this.tagName);
             }
 
             if (this.encodeContents != false)
             {
-                jsonOutputWriter.WriteProperty("encodeContents", this.encodeContents);
+                jsonOutputWriter.WriteProperty("EncodeContents", this.encodeContents);
             }
 
             if (!string.IsNullOrEmpty(this.innerContent))
             {
-                jsonOutputWriter.WriteProperty("innerContent", this.innerContent);
+                jsonOutputWriter.WriteProperty("InnerContent", this.innerContent);
             }
         }
     }

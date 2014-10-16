@@ -86,7 +86,7 @@ namespace Tasslehoff.Library.Layout
         {
             if (this.tagName != "div")
             {
-                jsonOutputWriter.WriteProperty("tagName", this.tagName);
+                jsonOutputWriter.WriteProperty("TagName", this.tagName);
             }
         }
     }
