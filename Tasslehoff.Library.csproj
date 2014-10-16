@@ -85,9 +85,9 @@
     <Compile Include="DataEntities\IDataEntity.cs" />
     <Compile Include="DataEntities\IDataEntityMap.cs" />
     <Compile Include="Layout\Container.cs" />
-    <Compile Include="Layout\Control.cs" />
-    <Compile Include="Layout\ControlRegistry.cs" />
-    <Compile Include="Layout\IControl.cs" />
+    <Compile Include="Layout\LayoutControl.cs" />
+    <Compile Include="Layout\LayoutControlRegistry.cs" />
+    <Compile Include="Layout\ILayoutControl.cs" />
     <Compile Include="Objects\CharRange.cs" />
     <Compile Include="Objects\Charset.cs" />
     <Compile Include="Counter\Counter.cs" />

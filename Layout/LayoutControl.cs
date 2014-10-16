@@ -1,5 +1,5 @@
 ﻿// -----------------------------------------------------------------------
-// <copyright file="Control.cs" company="-">
+// <copyright file="LayoutControl.cs" company="-">
 // Copyright (c) 2013 larukedi (eser@sent.com). All rights reserved.
 // </copyright>
 // <author>larukedi (http://github.com/larukedi/)</author>
@@ -18,7 +18,7 @@
 //// You should have received a copy of the GNU General Public License
 //// along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-namespace Tasslehoff.Library
+namespace Tasslehoff.Library.Layout
 {
     using System;
     using System.Collections.Generic;
@@ -28,11 +28,11 @@ namespace Tasslehoff.Library
     using WebUI = System.Web.UI;
 
     /// <summary>
-    /// Control class.
+    /// LayoutControl class.
     /// </summary>
     [Serializable]
     [DataContract]
-    public abstract class Control : IControl
+    public abstract class LayoutControl : ILayoutControl
     {
         // fields
 
@@ -40,7 +40,7 @@ namespace Tasslehoff.Library
         /// Child objects
         /// </summary>
         [DataMember]
-        private List<IControl> children;
+        private List<ILayoutControl> children;
 
         /// <summary>
         /// Id
@@ -75,17 +75,17 @@ namespace Tasslehoff.Library
         // constructors
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="Control"/> class.
+        /// Initializes a new instance of the <see cref="LayoutControl"/> class.
         /// </summary>
-        public Control()
+        public LayoutControl()
         {
-            this.children = new List<IControl>();
+            this.children = new List<ILayoutControl>();
         }
 
         /// <summary>
-        /// Finalizes an instance of the <see cref="Control"/> class.
+        /// Finalizes an instance of the <see cref="LayoutControl"/> class.
         /// </summary>
-        ~Control()
+        ~LayoutControl()
         {
             this.Dispose(false);
         }
@@ -99,7 +99,7 @@ namespace Tasslehoff.Library
         /// Child objects
         /// </value>
         [IgnoreDataMember]
-        public virtual List<IControl> Children
+        public virtual List<ILayoutControl> Children
         {
             get
             {
@@ -267,7 +267,7 @@ namespace Tasslehoff.Library
         /// <param name="createdControl">The created control</param>
         protected virtual void AddWebControlChildren(WebUI.Control createdControl)
         {
-            foreach (IControl control in this.Children)
+            foreach (ILayoutControl control in this.Children)
             {
                 WebUI.Control webUIcontrol = control.CreateWebControl();
 
@@ -323,7 +323,7 @@ namespace Tasslehoff.Library
                 jsonOutputWriter.WritePropertyName("children");
 
                 jsonOutputWriter.WriteStartArray();
-                foreach (IControl control in this.children)
+                foreach (ILayoutControl control in this.children)
                 {
                     control.Export(jsonOutputWriter);
                 }

@@ -1,5 +1,5 @@
 // -----------------------------------------------------------------------
-// <copyright file="ControlRegistry.cs" company="-">
+// <copyright file="LayoutControlRegistry.cs" company="-">
 // Copyright (c) 2013 larukedi (eser@sent.com). All rights reserved.
 // </copyright>
 // <author>larukedi (http://github.com/larukedi/)</author>
@@ -18,35 +18,35 @@
 //// You should have received a copy of the GNU General Public License
 //// along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-namespace Tasslehoff.Library.DataEntities
+namespace Tasslehoff.Library.Layout
 {
     using System;
     using System.Runtime.InteropServices;
     using Tasslehoff.Library.Collections;
 
     /// <summary>
-    /// ControlRegistry class.
+    /// LayoutControlRegistry class.
     /// </summary>
     [ComVisible(false)]
-    public class ControlRegistry : DictionaryBase<string, Type>
+    public class LayoutControlRegistry : DictionaryBase<string, Type>
     {
         // fields
 
         /// <summary>
         /// Singleton instance.
         /// </summary>
-        private static ControlRegistry instance = null;
+        private static LayoutControlRegistry instance = null;
 
         // constructors
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="ControlRegistry"/> class.
+        /// Initializes a new instance of the <see cref="LayoutControlRegistry"/> class.
         /// </summary>
-        public ControlRegistry()
+        public LayoutControlRegistry()
         {
-            if (ControlRegistry.instance == null)
+            if (LayoutControlRegistry.instance == null)
             {
-                ControlRegistry.instance = this;
+                LayoutControlRegistry.instance = this;
             }
         }
 
@@ -55,15 +55,15 @@ namespace Tasslehoff.Library.DataEntities
         /// <summary>
         /// Gets or Sets singleton instance.
         /// </summary>
-        public static ControlRegistry Instance
+        public static LayoutControlRegistry Instance
         {
             get
             {
-                return ControlRegistry.instance;
+                return LayoutControlRegistry.instance;
             }
             set
             {
-                ControlRegistry.instance = value;
+                LayoutControlRegistry.instance = value;
             }
         }
 
@@ -73,7 +73,7 @@ namespace Tasslehoff.Library.DataEntities
         /// Registers a data entity class.
         /// </summary>
         /// <typeparam name="T">IDataEntity implementation.</typeparam>
-        public void Register<T>() where T : IControl, new()
+        public void Register<T>() where T : ILayoutControl, new()
         {
             Type type = typeof(T);
             this.Add(type.Name, type);

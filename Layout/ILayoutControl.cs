@@ -1,5 +1,5 @@
 ﻿// -----------------------------------------------------------------------
-// <copyright file="IControl.cs" company="-">
+// <copyright file="ILayoutControl.cs" company="-">
 // Copyright (c) 2013 larukedi (eser@sent.com). All rights reserved.
 // </copyright>
 // <author>larukedi (http://github.com/larukedi/)</author>
@@ -18,7 +18,7 @@
 //// You should have received a copy of the GNU General Public License
 //// along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-namespace Tasslehoff.Library
+namespace Tasslehoff.Library.Layout
 {
     using System;
     using System.Collections.Generic;
@@ -26,9 +26,9 @@ namespace Tasslehoff.Library
     using WebUI = System.Web.UI;
 
     /// <summary>
-    /// IControl interface.
+    /// ILayoutControl interface.
     /// </summary>
-    public interface IControl : IDisposable
+    public interface ILayoutControl : IDisposable
     {
         // properties
 
@@ -38,7 +38,7 @@ namespace Tasslehoff.Library
         /// <value>
         /// Child objects
         /// </value>
-        List<IControl> Children { get; }
+        List<ILayoutControl> Children { get; }
 
         /// <summary>
         /// Gets or sets id

@@ -18,7 +18,7 @@
 //// You should have received a copy of the GNU General Public License
 //// along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-namespace Tasslehoff.Library
+namespace Tasslehoff.Library.Layout
 {
 
     /// <summary>
@@ -32,6 +32,6 @@ namespace Tasslehoff.Library
         /// Make the object aware of its layout control
         /// </summary>
         /// <param name="control">Control instance</param>
-        void LayoutAwareness(IControl control);
+        void LayoutAwareness(ILayoutControl control);
     }
 }
