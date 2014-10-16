@@ -22,7 +22,9 @@ namespace Tasslehoff.Library.Layout
 {
     using System;
     using System.Runtime.InteropServices;
+    using Newtonsoft.Json;
     using Tasslehoff.Library.Collections;
+    using Tasslehoff.Library.Utils;
 
     /// <summary>
     /// LayoutControlRegistry class.
@@ -84,11 +86,19 @@ namespace Tasslehoff.Library.Layout
         /// </summary>
         /// <param name="key">Key of the element</param>
         /// <returns>Created instance</returns>
-        public object Create(string key)
+        public ILayoutControl Create(string key)
         {
             Type type = this[key];
 
-            return Activator.CreateInstance(type);
+            return Activator.CreateInstance(type) as ILayoutControl;
+        }
+
+        public ILayoutControl ImportJson(string json)
+        {
+            JsonSerializerSettings settings = SerializationUtils.GetSerializerSettings();
+            settings.Converters.Add(new LayoutControlConverter(this));
+
+            return JsonConvert.DeserializeObject<ILayoutControl>(json, settings);
         }
     }
 }

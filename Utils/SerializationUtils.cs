@@ -155,7 +155,8 @@ namespace Tasslehoff.Library.Utils
         /// </returns>
         public static T JsonDeserialize<T>(string value)
         {
-            return JsonConvert.DeserializeObject<T>(value, SerializationUtils.GetSerializerSettings());
+            JsonSerializerSettings settings = SerializationUtils.GetSerializerSettings();
+            return JsonConvert.DeserializeObject<T>(value, settings);
         }
     }
 }

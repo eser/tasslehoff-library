@@ -63,6 +63,7 @@
     <Compile Include="Config\ConfigRegistry.cs" />
     <Compile Include="Layout\Html.cs" />
     <Compile Include="Layout\ILayoutAware.cs" />
+    <Compile Include="Layout\LayoutControlConverter.cs" />
     <Compile Include="Text\JsonOutputWriterPropertyValue.cs" />
     <Compile Include="Text\JsonOutputWriter.cs" />
     <Compile Include="Utils\Serialization\OrderedContractResolver.cs" />
