@@ -230,15 +230,15 @@ namespace Laroux.ScabbiaLibrary.Threading
         /// <summary>
         /// Releases unmanaged and - optionally - managed resources
         /// </summary>
-        /// <param name="disposing"><c>true</c> to release both managed and unmanaged resources; <c>false</c> to release only unmanaged resources.</param>
-        protected virtual void Dispose(bool disposing)
+        /// <param name="releaseManagedResources"><c>true</c> to release both managed and unmanaged resources; <c>false</c> to release only unmanaged resources.</param>
+        protected virtual void Dispose(bool releaseManagedResources)
         {
             if (this.disposed)
             {
                 return;
             }
 
-            if (disposing)
+            if (releaseManagedResources)
             {
                 this.OnDispose();
             }

@@ -23,6 +23,7 @@ namespace Tasslehoff.Library
     using System;
     using System.Collections.Generic;
     using System.Web.UI.WebControls;
+    using Tasslehoff.Library.Text;
 
     /// <summary>
     /// IControl interface.
@@ -79,6 +80,10 @@ namespace Tasslehoff.Library
         /// <returns>Web control</returns>
         WebControl CreateWebControl();
 
-        string Export(int indent = 0);
+        /// <summary>
+        /// Serializes control into json
+        /// </summary>
+        /// <param name="jsonOutputWriter">Json Output Writer</param>
+        void Export(JsonOutputWriter jsonOutputWriter);
     }
 }

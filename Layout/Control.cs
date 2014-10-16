@@ -24,6 +24,7 @@ namespace Tasslehoff.Library
     using System.Collections.Generic;
     using System.Runtime.Serialization;
     using System.Web.UI.WebControls;
+    using Tasslehoff.Library.Text;
 
     /// <summary>
     /// Control class.
@@ -213,64 +214,47 @@ namespace Tasslehoff.Library
         /// <returns>Web control</returns>
         public abstract WebControl CreateWebControl();
 
-        public string Export(int indent = 0)
+        /// <summary>
+        /// Serializes control into json
+        /// </summary>
+        /// <param name="jsonOutputWriter">Json Output Writer</param>
+        public void Export(JsonOutputWriter jsonOutputWriter)
         {
-            List<string> props = new List<string>();
+            jsonOutputWriter.WriteStartObject();
 
-            this.OnExport(props, indent);
-
-            string indentStr = new string('\t', indent);
-            string result = indentStr + "{";
-            bool firstLoop = true;
-
-            foreach (string prop in props)
+            if (!string.IsNullOrEmpty(this.id))
             {
-                if (firstLoop)
-                {
-                    firstLoop = false;
-                }
-                else
-                {
-                    result += ",";
-                }
-
-                result += Environment.NewLine + indentStr + "\t" + prop;
+                jsonOutputWriter.WriteProperty("id", this.span);
             }
 
-            if (!firstLoop)
+            if (!string.IsNullOrEmpty(this.cssClass))
             {
-                result += Environment.NewLine + indentStr;
+                jsonOutputWriter.WriteProperty("cssClass", this.cssClass);
             }
 
-            result += "}";
-
-
-            return result;
-        }
-
-        protected void OnExport(List<string> props, int indent)
-        {
             if (this.span != 0)
             {
-                props.Add(string.Format("span: {0}", this.span));
+                jsonOutputWriter.WriteProperty("span", this.span);
             }
 
             if (this.offset != 0)
             {
-                props.Add(string.Format("offset: {0}", this.offset));
+                jsonOutputWriter.WriteProperty("offset", this.offset);
             }
 
             if (this.children.Count > 0)
             {
-                string childrenText = "children: [";
+                jsonOutputWriter.WritePropertyName("children");
+
+                jsonOutputWriter.WriteStartArray();
                 foreach (IControl control in this.children)
                 {
-                    childrenText += control.Export(indent + 1);
+                    control.Export(jsonOutputWriter);
                 }
-                childrenText += "]";
-
-                props.Add(childrenText);
+                jsonOutputWriter.WriteEnd();
             }
+
+            jsonOutputWriter.WriteEnd();
         }
 
         /// <summary>
@@ -302,15 +286,15 @@ namespace Tasslehoff.Library
         /// <summary>
         /// Releases unmanaged and - optionally - managed resources.
         /// </summary>
-        /// <param name="disposing"><c>true</c> to release both managed and unmanaged resources; <c>false</c> to release only unmanaged resources</param>
-        protected virtual void Dispose(bool disposing)
+        /// <param name="releaseManagedResources"><c>true</c> to release both managed and unmanaged resources; <c>false</c> to release only unmanaged resources</param>
+        protected virtual void Dispose(bool releaseManagedResources)
         {
             if (this.disposed)
             {
                 return;
             }
 
-            if (disposing)
+            if (releaseManagedResources)
             {
                 this.OnDispose();
             }
