@@ -318,6 +318,8 @@ namespace Tasslehoff.Library.Layout
                 jsonOutputWriter.WriteProperty("offset", this.offset);
             }
 
+            this.OnExport(jsonOutputWriter);
+
             if (this.children.Count > 0)
             {
                 jsonOutputWriter.WritePropertyName("children");
@@ -332,6 +334,12 @@ namespace Tasslehoff.Library.Layout
 
             jsonOutputWriter.WriteEnd();
         }
+
+        /// <summary>
+        /// Occurs when [export].
+        /// </summary>
+        /// <param name="jsonOutputWriter">Json Output Writer</param>
+        public abstract void OnExport(JsonOutputWriter jsonOutputWriter);
 
         /// <summary>
         /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.

@@ -23,6 +23,7 @@ namespace Tasslehoff.Library.Layout
     using System;
     using System.Runtime.Serialization;
     using System.Web.UI.HtmlControls;
+    using Tasslehoff.Library.Text;
     using WebUI = System.Web.UI;
 
     /// <summary>
@@ -69,12 +70,24 @@ namespace Tasslehoff.Library.Layout
         /// <returns>Web control</returns>
         public override WebUI.Control CreateWebControl()
         {
-            HtmlGenericControl div = new HtmlGenericControl(this.tagName);
-            this.AddWebControlAttributes(div.Attributes);
-            this.AddWebControlChildren(div);
-            this.MakeWebControlAwareOf(div);
+            HtmlGenericControl element = new HtmlGenericControl(this.tagName);
+            this.AddWebControlAttributes(element.Attributes);
+            this.AddWebControlChildren(element);
+            this.MakeWebControlAwareOf(element);
 
-            return div;
+            return element;
+        }
+
+        /// <summary>
+        /// Occurs when [export].
+        /// </summary>
+        /// <param name="jsonOutputWriter">Json Output Writer</param>
+        public override void OnExport(JsonOutputWriter jsonOutputWriter)
+        {
+            if (this.tagName != "div")
+            {
+                jsonOutputWriter.WriteProperty("tagName", this.tagName);
+            }
         }
     }
 }

@@ -23,6 +23,7 @@ namespace Tasslehoff.Library.Layout
     using System;
     using System.Runtime.Serialization;
     using System.Web.UI.HtmlControls;
+    using Tasslehoff.Library.Text;
     using WebUI = System.Web.UI;
 
     /// <summary>
@@ -138,6 +139,28 @@ namespace Tasslehoff.Library.Layout
             this.MakeWebControlAwareOf(element);
 
             return element;
+        }
+
+        /// <summary>
+        /// Occurs when [export].
+        /// </summary>
+        /// <param name="jsonOutputWriter">Json Output Writer</param>
+        public override void OnExport(JsonOutputWriter jsonOutputWriter)
+        {
+            if (this.tagName != "div")
+            {
+                jsonOutputWriter.WriteProperty("tagName", this.tagName);
+            }
+
+            if (this.encodeContents != false)
+            {
+                jsonOutputWriter.WriteProperty("encodeContents", this.encodeContents);
+            }
+
+            if (!string.IsNullOrEmpty(this.innerContent))
+            {
+                jsonOutputWriter.WriteProperty("innerContent", this.innerContent);
+            }
         }
     }
 }
