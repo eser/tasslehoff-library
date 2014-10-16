@@ -32,6 +32,35 @@ namespace Tasslehoff.Library
     [DataContract]
     public class Container : Control
     {
+        // fields
+
+        /// <summary>
+        /// Tag name
+        /// </summary>
+        [DataMember]
+        private string tagName = "div";
+
+        // properties
+
+        /// <summary>
+        /// Gets or sets tag name
+        /// </summary>
+        /// <value>
+        /// Tag name
+        /// </value>
+        [IgnoreDataMember]
+        public virtual string TagName
+        {
+            get
+            {
+                return this.tagName;
+            }
+            set
+            {
+                this.tagName = value;
+            }
+        }
+
         // methods
 
         /// <summary>
@@ -40,7 +69,7 @@ namespace Tasslehoff.Library
         /// <returns>Web control</returns>
         public override WebUI.Control CreateWebControl()
         {
-            HtmlGenericControl div = new HtmlGenericControl("div");
+            HtmlGenericControl div = new HtmlGenericControl(this.tagName);
             this.AddWebControlAttributes(div.Attributes);
             this.AddWebControlChildren(div);
             this.MakeWebControlAwareOf(div);

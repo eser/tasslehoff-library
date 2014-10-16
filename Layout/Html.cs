@@ -1,5 +1,5 @@
 ﻿// -----------------------------------------------------------------------
-// <copyright file="Container.cs" company="-">
+// <copyright file="Html.cs" company="-">
 // Copyright (c) 2013 larukedi (eser@sent.com). All rights reserved.
 // </copyright>
 // <author>larukedi (http://github.com/larukedi/)</author>
@@ -26,7 +26,7 @@ namespace Tasslehoff.Library
     using WebUI = System.Web.UI;
 
     /// <summary>
-    /// Container class.
+    /// Html class.
     /// </summary>
     [Serializable]
     [DataContract]
