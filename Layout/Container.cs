@@ -32,9 +32,6 @@ namespace Tasslehoff.Library
     [DataContract]
     public class Container : Control
     {
-        // constructors
-                
-
         // methods
 
         /// <summary>
