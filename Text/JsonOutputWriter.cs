@@ -59,11 +59,22 @@ namespace Tasslehoff.Library.Text
         /// <summary>
         /// Initializes a new instance of the <see cref="JsonOutputWriter"/> class.
         /// </summary>
-        public JsonOutputWriter() : base()
+        public JsonOutputWriter()
+            : this(new StringBuilder())
         {
-            this.stringBuilder = new StringBuilder();
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="JsonOutputWriter"/> class.
+        /// </summary>
+        /// <param name="stringBuilder">The string builder</param>
+        public JsonOutputWriter(StringBuilder stringBuilder)
+            : base()
+        {
+            this.stringBuilder = stringBuilder;
             this.textWriter = new StringWriter(this.stringBuilder);
-            this.jsonTextWriter = new JsonTextWriter(this.textWriter) {
+            this.jsonTextWriter = new JsonTextWriter(this.textWriter)
+            {
                 Formatting = Formatting.Indented
             };
         }

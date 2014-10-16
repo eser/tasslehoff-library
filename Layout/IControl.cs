@@ -22,8 +22,8 @@ namespace Tasslehoff.Library
 {
     using System;
     using System.Collections.Generic;
-    using System.Web.UI.WebControls;
     using Tasslehoff.Library.Text;
+    using WebUI = System.Web.UI;
 
     /// <summary>
     /// IControl interface.
@@ -78,7 +78,7 @@ namespace Tasslehoff.Library
         /// Creates web control
         /// </summary>
         /// <returns>Web control</returns>
-        WebControl CreateWebControl();
+        WebUI.Control CreateWebControl();
 
         /// <summary>
         /// Serializes control into json

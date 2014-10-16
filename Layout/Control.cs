@@ -24,8 +24,8 @@ namespace Tasslehoff.Library
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
     using System.Runtime.Serialization;
-    using System.Web.UI.WebControls;
     using Tasslehoff.Library.Text;
+    using WebUI = System.Web.UI;
 
     /// <summary>
     /// Control class.
@@ -213,7 +213,70 @@ namespace Tasslehoff.Library
         /// Creates web control
         /// </summary>
         /// <returns>Web control</returns>
-        public abstract WebControl CreateWebControl();
+        public abstract WebUI.Control CreateWebControl();
+
+        /// <summary>
+        /// Constructs class names for created element
+        /// </summary>
+        /// <returns>Class names</returns>
+        protected virtual string GetWebControlClassNames()
+        {
+            string classNames = this.cssClass ?? string.Empty;
+
+            if (this.span != 0)
+            {
+                if (classNames.Length > 0)
+                {
+                    classNames += " ";
+                }
+
+                classNames += "col-xs-" + this.span;
+            }
+
+            if (this.offset != 0)
+            {
+                if (classNames.Length > 0)
+                {
+                    classNames += " ";
+                }
+
+                classNames += "col-xs-offset-" + this.offset;
+            }
+
+            return classNames;
+        }
+
+        /// <summary>
+        /// Assigns attributes of the new created control
+        /// </summary>
+        /// <param name="attributes">The attributes property of created control</param>
+        protected virtual void AddWebControlAttributes(WebUI.AttributeCollection attributes)
+        {
+            attributes["id"] = this.Id;
+
+            string classNames = this.GetWebControlClassNames();
+            if (!string.IsNullOrEmpty(classNames))
+            {
+                attributes["class"] = classNames;
+            }
+        }
+
+        /// <summary>
+        /// Adds children web elements into new created control
+        /// </summary>
+        /// <param name="createdControl">The created control</param>
+        protected virtual void AddWebControlChildren(WebUI.Control createdControl)
+        {
+            foreach (IControl control in this.Children)
+            {
+                WebUI.Control webUIcontrol = control.CreateWebControl();
+
+                if (webUIcontrol != null)
+                {
+                    createdControl.Controls.Add(webUIcontrol);
+                }
+            }
+        }
 
         /// <summary>
         /// Serializes control into json
