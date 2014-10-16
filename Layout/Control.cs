@@ -279,6 +279,18 @@ namespace Tasslehoff.Library
         }
 
         /// <summary>
+        /// Make the created control aware of layout system
+        /// </summary>
+        /// <param name="createdControl">The created control</param>
+        protected virtual void MakeWebControlAwareOf(WebUI.Control createdControl)
+        {
+            if (createdControl is ILayoutAware)
+            {
+                (createdControl as ILayoutAware).LayoutAwareness(this);
+            }
+        }
+
+        /// <summary>
         /// Serializes control into json
         /// </summary>
         /// <param name="jsonOutputWriter">Json Output Writer</param>

@@ -1,5 +1,5 @@
 ﻿// -----------------------------------------------------------------------
-// <copyright file="Container.cs" company="-">
+// <copyright file="ILayoutAware.cs" company="-">
 // Copyright (c) 2013 larukedi (eser@sent.com). All rights reserved.
 // </copyright>
 // <author>larukedi (http://github.com/larukedi/)</author>
@@ -20,35 +20,18 @@
 
 namespace Tasslehoff.Library
 {
-    using System;
-    using System.Runtime.Serialization;
-    using System.Web.UI.HtmlControls;
-    using WebUI = System.Web.UI;
 
     /// <summary>
-    /// Container class.
+    /// ILayoutAware interface.
     /// </summary>
-    [Serializable]
-    [DataContract]
-    public class Container : Control
+    public interface ILayoutAware
     {
-        // constructors
-                
-
         // methods
 
         /// <summary>
-        /// Creates web control
+        /// Make the object aware of its layout control
         /// </summary>
-        /// <returns>Web control</returns>
-        public override WebUI.Control CreateWebControl()
-        {
-            HtmlGenericControl div = new HtmlGenericControl("div");
-            this.AddWebControlAttributes(div.Attributes);
-            this.AddWebControlChildren(div);
-            this.MakeWebControlAwareOf(div);
-
-            return div;
-        }
+        /// <param name="control">Control instance</param>
+        void LayoutAwareness(IControl control);
     }
 }
