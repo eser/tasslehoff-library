@@ -37,6 +37,12 @@ namespace Tasslehoff.Library.Layout
         // fields
 
         /// <summary>
+        /// Id
+        /// </summary>
+        [DataMember]
+        private readonly string type;
+
+        /// <summary>
         /// Child objects
         /// </summary>
         [DataMember]
@@ -79,6 +85,7 @@ namespace Tasslehoff.Library.Layout
         /// </summary>
         public LayoutControl()
         {
+            this.type = this.GetType().Name;
             this.children = new List<ILayoutControl>();
         }
 
@@ -297,6 +304,8 @@ namespace Tasslehoff.Library.Layout
         public virtual void Export(JsonOutputWriter jsonOutputWriter)
         {
             jsonOutputWriter.WriteStartObject();
+
+            jsonOutputWriter.WriteProperty("type", this.type);
 
             if (!string.IsNullOrEmpty(this.id))
             {
