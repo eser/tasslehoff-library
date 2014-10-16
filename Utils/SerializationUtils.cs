@@ -24,6 +24,7 @@ namespace Tasslehoff.Library.Utils
     using System.Runtime.Serialization;
     using System.Runtime.Serialization.Formatters.Binary;
     using Newtonsoft.Json;
+    using Newtonsoft.Json.Converters;
     using Tasslehoff.Library.Utils.Serialization;
 
     /// <summary>
@@ -128,6 +129,8 @@ namespace Tasslehoff.Library.Utils
                 MissingMemberHandling = MissingMemberHandling.Ignore,
                 ContractResolver = new OrderedContractResolver()
             };
+
+            settings.Converters.Add(new StringEnumConverter());
 
             return settings;
         }

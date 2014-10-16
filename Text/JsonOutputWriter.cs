@@ -199,8 +199,8 @@ namespace Tasslehoff.Library.Text
         /// <param name="escape">Whether escaping is enabled or not</param>
         public void WriteProperty(string name, object value, bool escape = true)
         {
-            this.jsonTextWriter.WritePropertyName(name, escape);
-            this.jsonTextWriter.WriteValue(value);
+            this.WritePropertyName(name, escape);
+            this.WriteValue(value);
         }
 
         /// <summary>
@@ -235,6 +235,12 @@ namespace Tasslehoff.Library.Text
                 return;
             }
 
+            if (value != null && value.GetType().IsEnum)
+            {
+                this.jsonTextWriter.WriteValue(value.ToString());
+                return;
+            }
+
             this.jsonTextWriter.WriteValue(value);
         }
 
@@ -245,6 +251,14 @@ namespace Tasslehoff.Library.Text
         public void WriteValueRaw(string value)
         {
             this.jsonTextWriter.WriteRawValue(value);
+        }
+
+        /// <summary>
+        /// Writes the new line
+        /// </summary>
+        public void WriteLine()
+        {
+            // this.jsonTextWriter.WriteRaw(Environment.NewLine);
         }
 
         /// <summary>

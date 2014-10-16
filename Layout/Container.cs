@@ -70,7 +70,7 @@ namespace Tasslehoff.Library.Layout
         /// <returns>Web control</returns>
         public override WebUI.Control CreateWebControl()
         {
-            HtmlGenericControl element = new HtmlGenericControl(this.tagName);
+            HtmlGenericControl element = new HtmlGenericControl(this.TagName);
             this.AddWebControlAttributes(element.Attributes);
             this.AddWebControlChildren(element);
             this.MakeWebControlAwareOf(element);
@@ -84,9 +84,9 @@ namespace Tasslehoff.Library.Layout
         /// <param name="jsonOutputWriter">Json Output Writer</param>
         public override void OnExport(JsonOutputWriter jsonOutputWriter)
         {
-            if (this.tagName != "div")
+            if (this.TagName != "div")
             {
-                jsonOutputWriter.WriteProperty("TagName", this.tagName);
+                jsonOutputWriter.WriteProperty("TagName", this.TagName);
             }
         }
     }

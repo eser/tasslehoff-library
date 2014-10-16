@@ -100,6 +100,21 @@ namespace Tasslehoff.Library.Layout
         // properties
 
         /// <summary>
+        /// Gets or sets type
+        /// </summary>
+        /// <value>
+        /// Type
+        /// </value>
+        [IgnoreDataMember]
+        public virtual string Type
+        {
+            get
+            {
+                return this.type;
+            }
+        }
+
+        /// <summary>
         /// Gets or sets child objects
         /// </summary>
         /// <value>
@@ -228,26 +243,26 @@ namespace Tasslehoff.Library.Layout
         /// <returns>Class names</returns>
         protected virtual string GetWebControlClassNames()
         {
-            string classNames = this.cssClass ?? string.Empty;
+            string classNames = this.CssClass ?? string.Empty;
 
-            if (this.span != 0)
+            if (this.Span != 0)
             {
                 if (classNames.Length > 0)
                 {
                     classNames += " ";
                 }
 
-                classNames += "col-xs-" + this.span;
+                classNames += "col-xs-" + this.Span;
             }
 
-            if (this.offset != 0)
+            if (this.Offset != 0)
             {
                 if (classNames.Length > 0)
                 {
                     classNames += " ";
                 }
 
-                classNames += "col-xs-offset-" + this.offset;
+                classNames += "col-xs-offset-" + this.Offset;
             }
 
             return classNames;
@@ -305,36 +320,38 @@ namespace Tasslehoff.Library.Layout
         {
             jsonOutputWriter.WriteStartObject();
 
-            jsonOutputWriter.WriteProperty("Type", this.type);
+            jsonOutputWriter.WriteProperty("Type", this.Type);
 
-            if (!string.IsNullOrEmpty(this.id))
+            if (!string.IsNullOrEmpty(this.Id))
             {
-                jsonOutputWriter.WriteProperty("Id", this.id);
+                jsonOutputWriter.WriteProperty("Id", this.Id);
             }
 
-            if (!string.IsNullOrEmpty(this.cssClass))
+            jsonOutputWriter.WriteLine();
+
+            if (!string.IsNullOrEmpty(this.CssClass))
             {
-                jsonOutputWriter.WriteProperty("CssClass", this.cssClass);
+                jsonOutputWriter.WriteProperty("CssClass", this.CssClass);
             }
 
-            if (this.span != 0)
+            if (this.Span != 0)
             {
-                jsonOutputWriter.WriteProperty("Span", this.span);
+                jsonOutputWriter.WriteProperty("Span", this.Span);
             }
 
-            if (this.offset != 0)
+            if (this.Offset != 0)
             {
-                jsonOutputWriter.WriteProperty("Offset", this.offset);
+                jsonOutputWriter.WriteProperty("Offset", this.Offset);
             }
 
             this.OnExport(jsonOutputWriter);
 
-            if (this.children.Count > 0)
+            if (this.Children.Count > 0)
             {
                 jsonOutputWriter.WritePropertyName("Children");
 
                 jsonOutputWriter.WriteStartArray();
-                foreach (ILayoutControl control in this.children)
+                foreach (ILayoutControl control in this.Children)
                 {
                     control.Export(jsonOutputWriter);
                 }

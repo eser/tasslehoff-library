@@ -120,19 +120,19 @@ namespace Tasslehoff.Library.Layout
         /// <returns>Web control</returns>
         public override WebUI.Control CreateWebControl()
         {
-            HtmlGenericControl element = new HtmlGenericControl(this.tagName);
+            HtmlGenericControl element = new HtmlGenericControl(this.TagName);
             this.AddWebControlAttributes(element.Attributes);
 
             this.AddWebControlChildren(element);
             if (element.Controls.Count == 0)
             {
-                if (this.encodeContents)
+                if (this.EncodeContents)
                 {
-                    element.InnerText = this.innerContent;
+                    element.InnerText = this.InnerContent;
                 }
                 else
                 {
-                    element.InnerHtml = this.innerContent;
+                    element.InnerHtml = this.InnerContent;
                 }
             }
 
@@ -147,19 +147,19 @@ namespace Tasslehoff.Library.Layout
         /// <param name="jsonOutputWriter">Json Output Writer</param>
         public override void OnExport(JsonOutputWriter jsonOutputWriter)
         {
-            if (this.tagName != "div")
+            if (this.TagName != "div")
             {
-                jsonOutputWriter.WriteProperty("TagName", this.tagName);
+                jsonOutputWriter.WriteProperty("TagName", this.TagName);
             }
 
-            if (this.encodeContents != false)
+            if (this.EncodeContents != false)
             {
-                jsonOutputWriter.WriteProperty("EncodeContents", this.encodeContents);
+                jsonOutputWriter.WriteProperty("EncodeContents", this.EncodeContents);
             }
 
-            if (!string.IsNullOrEmpty(this.innerContent))
+            if (!string.IsNullOrEmpty(this.InnerContent))
             {
-                jsonOutputWriter.WriteProperty("InnerContent", this.innerContent);
+                jsonOutputWriter.WriteProperty("InnerContent", this.InnerContent);
             }
         }
     }
