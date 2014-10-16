@@ -129,7 +129,7 @@ namespace Tasslehoff.Library.Collections
                 int index = this.keys.IndexOf(key);
                 if (index == -1)
                 {
-                    throw new IndexOutOfRangeException();
+                    throw new KeyNotFoundException();
                 }
 
                 return this.values[index];

@@ -23,7 +23,6 @@ namespace Tasslehoff.Library.Objects
     using System;
     using System.Globalization;
     using System.Runtime.Serialization;
-    using System.Security.Permissions;
     using System.Threading;
 
     /// <summary>
@@ -135,7 +134,7 @@ namespace Tasslehoff.Library.Objects
         /// <returns>
         /// A new object that is a copy of this instance.
         /// </returns>
-        object ICloneable.Clone()
+        public object Clone()
         {
             return this.MemberwiseClone();
         }

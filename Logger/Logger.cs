@@ -21,6 +21,7 @@
 namespace Tasslehoff.Library.Logger
 {
     using System;
+    using System.Diagnostics.CodeAnalysis;
     using System.Globalization;
     using System.Text;
 
@@ -224,7 +225,7 @@ namespace Tasslehoff.Library.Logger
         /// <summary>
         /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
         /// </summary>
-        void IDisposable.Dispose()
+        public void Dispose()
         {
             this.Dispose(true);
 
@@ -288,31 +289,29 @@ namespace Tasslehoff.Library.Logger
         /// <summary>
         /// Called when [dispose].
         /// </summary>
-        protected virtual void OnDispose()
+        /// <param name="releaseManagedResources"><c>true</c> to release both managed and unmanaged resources; <c>false</c> to release only unmanaged resources</param>
+        protected virtual void OnDispose(bool releaseManagedResources)
         {
+            // singleton pattern
+            if (Logger.context == this)
+            {
+                Logger.context = null;
+            }
         }
 
         /// <summary>
         /// Releases unmanaged and - optionally - managed resources.
         /// </summary>
         /// <param name="releaseManagedResources"><c>true</c> to release both managed and unmanaged resources; <c>false</c> to release only unmanaged resources</param>
-        protected virtual void Dispose(bool releaseManagedResources)
+        [SuppressMessage("Microsoft.Design", "CA1063:ImplementIDisposableCorrectly")]
+        protected void Dispose(bool releaseManagedResources)
         {
             if (this.disposed)
             {
                 return;
             }
 
-            // singleton pattern
-            if (Logger.context == this)
-            {
-                Logger.context = null;
-            }
-
-            if (releaseManagedResources)
-            {
-                this.OnDispose();
-            }
+            this.OnDispose(releaseManagedResources);
 
             this.disposed = true;
         }

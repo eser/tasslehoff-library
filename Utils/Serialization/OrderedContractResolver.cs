@@ -23,9 +23,11 @@ namespace Tasslehoff.Library.Utils.Serialization
     using System;
     using System.Collections.Generic;
     using System.Reflection;
+    using System.Runtime.InteropServices;
     using Newtonsoft.Json;
     using Newtonsoft.Json.Serialization;
 
+    [ComVisible(false)]
     public class OrderedContractResolver : DefaultContractResolver
     {
         protected override IList<JsonProperty> CreateProperties(Type type, MemberSerialization memberSerialization)

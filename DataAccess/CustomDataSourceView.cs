@@ -24,11 +24,13 @@ namespace Tasslehoff.Library.DataAccess
     using System.Collections;
     using System.Collections.Generic;
     using System.Data;
+    using System.Runtime.InteropServices;
     using System.Web.UI;
 
     /// <summary>
     /// CustomDataSourceView class.
     /// </summary>
+    [ComVisible(false)]
     public class CustomDataSourceView : DataSourceView
     {
         // fields

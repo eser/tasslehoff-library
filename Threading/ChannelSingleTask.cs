@@ -21,6 +21,7 @@
 namespace Laroux.ScabbiaLibrary.Threading
 {
     using System;
+    using System.Diagnostics.CodeAnalysis;
     using System.Threading;
     using System.Threading.Tasks;
     using Tasslehoff.Library.Utils;
@@ -168,7 +169,7 @@ namespace Laroux.ScabbiaLibrary.Threading
         /// <summary>
         /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
         /// </summary>
-        void IDisposable.Dispose()
+        public void Dispose()
         {
             this.Dispose(true);
 
@@ -222,7 +223,8 @@ namespace Laroux.ScabbiaLibrary.Threading
         /// <summary>
         /// Called when [dispose].
         /// </summary>
-        protected virtual void OnDispose()
+        /// <param name="releaseManagedResources"><c>true</c> to release both managed and unmanaged resources; <c>false</c> to release only unmanaged resources</param>
+        protected virtual void OnDispose(bool releaseManagedResources)
         {
             VariableUtils.CheckAndDispose<CancellationTokenSource>(ref this.cancellationTokenSource);
         }
@@ -231,17 +233,16 @@ namespace Laroux.ScabbiaLibrary.Threading
         /// Releases unmanaged and - optionally - managed resources
         /// </summary>
         /// <param name="releaseManagedResources"><c>true</c> to release both managed and unmanaged resources; <c>false</c> to release only unmanaged resources.</param>
-        protected virtual void Dispose(bool releaseManagedResources)
+        [SuppressMessage("Microsoft.Design", "CA1063:ImplementIDisposableCorrectly")]
+        [SuppressMessage("Microsoft.Usage", "CA2213:DisposableFieldsShouldBeDisposed", MessageId = "cancellationTokenSource")]
+        protected void Dispose(bool releaseManagedResources)
         {
             if (this.disposed)
             {
                 return;
             }
 
-            if (releaseManagedResources)
-            {
-                this.OnDispose();
-            }
+            this.OnDispose(releaseManagedResources);
 
             this.disposed = true;
         }

@@ -41,14 +41,18 @@ namespace Tasslehoff.Library.DataAccess
         // events
 
         /// <summary>
-        /// On data source has changed.
+        ///  Occurs when a data source control has changed in some way that affects data-bound controls.
         /// </summary>
+#pragma warning disable 0067
         public event EventHandler DataSourceChanged;
+#pragma warning restore 0067
 
         /// <summary>
-        /// On exception has thrown.
+        /// Occurs when a data field fails to validate.
         /// </summary>
+#pragma warning disable 0067
         public event EventHandler<DynamicValidatorEventArgs> Exception;
+#pragma warning restore 0067
 
         /// <summary>
         /// Before select query.

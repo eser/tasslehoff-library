@@ -22,6 +22,7 @@ namespace Tasslehoff.Library.Profiler
 {
     using System;
     using System.Diagnostics;
+    using System.Diagnostics.CodeAnalysis;
     using Tasslehoff.Library.Utils;
 
     /// <summary>
@@ -178,7 +179,7 @@ namespace Tasslehoff.Library.Profiler
         /// <summary>
         /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
         /// </summary>
-        void IDisposable.Dispose()
+        public void Dispose()
         {
             this.Dispose(true);
 
@@ -188,7 +189,8 @@ namespace Tasslehoff.Library.Profiler
         /// <summary>
         /// Called when [dispose].
         /// </summary>
-        protected virtual void OnDispose()
+        /// <param name="releaseManagedResources"><c>true</c> to release both managed and unmanaged resources; <c>false</c> to release only unmanaged resources</param>
+        protected virtual void OnDispose(bool releaseManagedResources)
         {
             VariableUtils.CheckAndDispose<PerformanceCounter>(ref this.performanceCounter);
         }
@@ -197,17 +199,16 @@ namespace Tasslehoff.Library.Profiler
         /// Releases unmanaged and - optionally - managed resources.
         /// </summary>
         /// <param name="releaseManagedResources"><c>true</c> to release both managed and unmanaged resources; <c>false</c> to release only unmanaged resources</param>
-        protected virtual void Dispose(bool releaseManagedResources)
+        [SuppressMessage("Microsoft.Design", "CA1063:ImplementIDisposableCorrectly")]
+        [SuppressMessage("Microsoft.Usage", "CA2213:DisposableFieldsShouldBeDisposed", MessageId = "performanceCounter")]
+        protected void Dispose(bool releaseManagedResources)
         {
             if (this.disposed)
             {
                 return;
             }
 
-            if (releaseManagedResources)
-            {
-                this.OnDispose();
-            }
+            this.OnDispose(releaseManagedResources);
 
             this.disposed = true;
         }

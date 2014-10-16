@@ -28,14 +28,14 @@ namespace Tasslehoff.Library.Config
     /// <summary>
     /// Config class
     /// </summary>
-    public abstract class Config
+    public class Config
     {
         // constructors
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Config"/> class.
         /// </summary>
-        public Config()
+        protected Config()
         {
             this.Reset(true);
         }
@@ -46,7 +46,7 @@ namespace Tasslehoff.Library.Config
         /// Serializes a configuration object into a string
         /// </summary>
         /// <returns>Serialized config object</returns>
-        public string Dump()
+        public virtual string Dump()
         {
             return SerializationUtils.JsonSerialize(this);
         }
@@ -64,7 +64,7 @@ namespace Tasslehoff.Library.Config
         /// Resets the specified config object.
         /// </summary>
         /// <param name="isFirstInit">Whether it is called during initialization or not</param>
-        public void Reset(bool isFirstInit = false)
+        protected void Reset(bool isFirstInit)
         {
             Type type = this.GetType();
 
@@ -85,17 +85,14 @@ namespace Tasslehoff.Library.Config
 
                 property.SetValue(this, value, null);
             }
-
-            this.OnReset(isFirstInit);
         }
 
         /// <summary>
-        /// Gets called during the reset of the specified config object.
+        /// Resets the specified config object.
         /// </summary>
-        /// <param name="isFirstInit">Whether it is called during initialization or not</param>
-        protected virtual void OnReset(bool isFirstInit = false)
+        public virtual void Reset()
         {
-
+            this.Reset(false);
         }
     }
 }

@@ -21,6 +21,7 @@
 namespace Tasslehoff.Library.Cron
 {
     using System;
+    using System.Diagnostics.CodeAnalysis;
     using System.Threading;
     using Tasslehoff.Library.Utils;
 
@@ -68,10 +69,11 @@ namespace Tasslehoff.Library.Cron
         {
             this.source = source;
             this.actionStarted = actionStarted;
+            this.lifetime = lifetime;
 
             if (lifetime != TimeSpan.Zero)
             {
-                this.cancellationTokenSource = new CancellationTokenSource(lifetime);
+                this.cancellationTokenSource = new CancellationTokenSource(this.lifetime);
             }
             else
             {
@@ -118,6 +120,20 @@ namespace Tasslehoff.Library.Cron
         }
 
         /// <summary>
+        /// Gets the lifetime.
+        /// </summary>
+        /// <value>
+        /// The lifetime.
+        /// </value>
+        public TimeSpan LifeTime
+        {
+            get
+            {
+                return this.lifetime;
+            }
+        }
+
+        /// <summary>
         /// Gets the cancellation token source.
         /// </summary>
         /// <value>
@@ -155,7 +171,7 @@ namespace Tasslehoff.Library.Cron
         /// <summary>
         /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
         /// </summary>
-        void IDisposable.Dispose()
+        public void Dispose()
         {
             this.Dispose(true);
 
@@ -165,7 +181,8 @@ namespace Tasslehoff.Library.Cron
         /// <summary>
         /// Called when [dispose].
         /// </summary>
-        protected virtual void OnDispose()
+        /// <param name="releaseManagedResources"><c>true</c> to release both managed and unmanaged resources; <c>false</c> to release only unmanaged resources</param>
+        protected virtual void OnDispose(bool releaseManagedResources)
         {
             VariableUtils.CheckAndDispose<CancellationTokenSource>(ref this.cancellationTokenSource);
         }
@@ -174,17 +191,16 @@ namespace Tasslehoff.Library.Cron
         /// Releases unmanaged and - optionally - managed resources.
         /// </summary>
         /// <param name="releaseManagedResources"><c>true</c> to release both managed and unmanaged resources; <c>false</c> to release only unmanaged resources</param>
-        protected virtual void Dispose(bool releaseManagedResources)
+        [SuppressMessage("Microsoft.Design", "CA1063:ImplementIDisposableCorrectly")]
+        [SuppressMessage("Microsoft.Usage", "CA2213:DisposableFieldsShouldBeDisposed", MessageId = "cancellationTokenSource")]
+        protected void Dispose(bool releaseManagedResources)
         {
             if (this.disposed)
             {
                 return;
             }
 
-            if (releaseManagedResources)
-            {
-                this.OnDispose();
-            }
+            this.OnDispose(releaseManagedResources);
 
             this.disposed = true;
         }

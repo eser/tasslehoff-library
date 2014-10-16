@@ -21,6 +21,7 @@
 namespace Tasslehoff.Library.Text
 {
     using System;
+    using System.Diagnostics.CodeAnalysis;
     using System.IO;
     using System.Text;
     using Newtonsoft.Json;
@@ -264,19 +265,16 @@ namespace Tasslehoff.Library.Text
         }
 
         /// <summary>
-        /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
-        /// </summary>
-        void IDisposable.Dispose()
-        {
-            this.Dispose();
-        }
-
-        /// <summary>
         /// Called when [dispose].
         /// </summary>
-        protected virtual void OnDispose()
+        /// <param name="releaseManagedResources"><c>true</c> to release both managed and unmanaged resources; <c>false</c> to release only unmanaged resources</param>
+        protected virtual void OnDispose(bool releaseManagedResources)
         {
-            this.Close();
+            if (releaseManagedResources)
+            {
+                this.Close();
+            }
+
             VariableUtils.CheckAndDispose<TextWriter>(ref this.textWriter);
         }
 
@@ -284,17 +282,16 @@ namespace Tasslehoff.Library.Text
         /// Releases unmanaged and - optionally - managed resources.
         /// </summary>
         /// <param name="releaseManagedResources"><c>true</c> to release both managed and unmanaged resources; <c>false</c> to release only unmanaged resources</param>
-        protected virtual void Dispose(bool releaseManagedResources)
+        [SuppressMessage("Microsoft.Design", "CA1063:ImplementIDisposableCorrectly")]
+        [SuppressMessage("Microsoft.Usage", "CA2213:DisposableFieldsShouldBeDisposed", MessageId = "textWriter")]
+        protected void Dispose(bool releaseManagedResources)
         {
             if (this.disposed)
             {
                 return;
             }
 
-            if (releaseManagedResources)
-            {
-                this.OnDispose();
-            }
+            this.OnDispose(releaseManagedResources);
 
             this.disposed = true;
         }

@@ -21,6 +21,7 @@
 namespace Tasslehoff.Library.Logger
 {
     using System;
+    using System.Diagnostics.CodeAnalysis;
     using System.Text;
     using Tasslehoff.Library.Utils;
 
@@ -253,7 +254,7 @@ namespace Tasslehoff.Library.Logger
         /// <summary>
         /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
         /// </summary>
-        void IDisposable.Dispose()
+        public void Dispose()
         {
             this.Dispose(true);
 
@@ -263,7 +264,8 @@ namespace Tasslehoff.Library.Logger
         /// <summary>
         /// Called when [dispose].
         /// </summary>
-        protected virtual void OnDispose()
+        /// <param name="releaseManagedResources"><c>true</c> to release both managed and unmanaged resources; <c>false</c> to release only unmanaged resources</param>
+        protected virtual void OnDispose(bool releaseManagedResources)
         {
             VariableUtils.CheckAndDispose<Logger>(ref this.assignedLogger);
         }
@@ -272,17 +274,16 @@ namespace Tasslehoff.Library.Logger
         /// Releases unmanaged and - optionally - managed resources.
         /// </summary>
         /// <param name="releaseManagedResources"><c>true</c> to release both managed and unmanaged resources; <c>false</c> to release only unmanaged resources</param>
-        protected virtual void Dispose(bool releaseManagedResources)
+        [SuppressMessage("Microsoft.Design", "CA1063:ImplementIDisposableCorrectly")]
+        [SuppressMessage("Microsoft.Usage", "CA2213:DisposableFieldsShouldBeDisposed", MessageId = "assignedLogger")]
+        protected void Dispose(bool releaseManagedResources)
         {
             if (this.disposed)
             {
                 return;
             }
-            
-            if (releaseManagedResources)
-            {
-                this.OnDispose();
-            }
+
+            this.OnDispose(releaseManagedResources);
             
             this.disposed = true;
         }

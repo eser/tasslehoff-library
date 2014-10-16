@@ -22,6 +22,7 @@ namespace Tasslehoff.Library
 {
     using System;
     using System.Collections.Generic;
+    using System.Diagnostics.CodeAnalysis;
     using System.Runtime.Serialization;
     using System.Web.UI.WebControls;
     using Tasslehoff.Library.Text;
@@ -218,13 +219,13 @@ namespace Tasslehoff.Library
         /// Serializes control into json
         /// </summary>
         /// <param name="jsonOutputWriter">Json Output Writer</param>
-        public void Export(JsonOutputWriter jsonOutputWriter)
+        public virtual void Export(JsonOutputWriter jsonOutputWriter)
         {
             jsonOutputWriter.WriteStartObject();
 
             if (!string.IsNullOrEmpty(this.id))
             {
-                jsonOutputWriter.WriteProperty("id", this.span);
+                jsonOutputWriter.WriteProperty("id", this.id);
             }
 
             if (!string.IsNullOrEmpty(this.cssClass))
@@ -268,17 +269,10 @@ namespace Tasslehoff.Library
         }
 
         /// <summary>
-        /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
-        /// </summary>
-        void IDisposable.Dispose()
-        {
-            this.Dispose();
-        }
-
-        /// <summary>
         /// Called when [dispose].
         /// </summary>
-        protected virtual void OnDispose()
+        /// <param name="releaseManagedResources"><c>true</c> to release both managed and unmanaged resources; <c>false</c> to release only unmanaged resources</param>
+        protected virtual void OnDispose(bool releaseManagedResources)
         {
             // VariableUtils.CheckAndDispose<LoggerDelegate>(ref this.log);
         }
@@ -287,17 +281,15 @@ namespace Tasslehoff.Library
         /// Releases unmanaged and - optionally - managed resources.
         /// </summary>
         /// <param name="releaseManagedResources"><c>true</c> to release both managed and unmanaged resources; <c>false</c> to release only unmanaged resources</param>
-        protected virtual void Dispose(bool releaseManagedResources)
+        [SuppressMessage("Microsoft.Design", "CA1063:ImplementIDisposableCorrectly")]
+        protected void Dispose(bool releaseManagedResources)
         {
             if (this.disposed)
             {
                 return;
             }
 
-            if (releaseManagedResources)
-            {
-                this.OnDispose();
-            }
+            this.OnDispose(releaseManagedResources);
 
             this.disposed = true;
         }

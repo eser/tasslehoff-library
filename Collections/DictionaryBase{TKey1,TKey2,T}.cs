@@ -184,7 +184,7 @@ namespace Tasslehoff.Library.Collections
                 int index = this.keys1.IndexOf(key);
                 if (index == -1)
                 {
-                    throw new IndexOutOfRangeException();
+                    throw new KeyNotFoundException();
                 }
 
                 return this.values[index];
@@ -211,7 +211,7 @@ namespace Tasslehoff.Library.Collections
                 int index = this.keys2.IndexOf(key);
                 if (index == -1)
                 {
-                    throw new IndexOutOfRangeException();
+                    throw new KeyNotFoundException();
                 }
 
                 return this.values[index];
