@@ -22,37 +22,46 @@ namespace Tasslehoff.Library.DataAccess
 {
     using System;
     using System.Collections.Generic;
+    using System.Runtime.Serialization;
 
     /// <summary>
     /// DatabaseManager class.
     /// </summary>
+    [Serializable]
+    [DataContract]
     public class DatabaseManager
     {
         // fields
 
         /// <summary>
-        /// Default database instance.
+        /// Default database key.
         /// </summary>
-        private Database defaultDatabase;
+        [DataMember(Name = "DefaultDatabaseKey")]
+        private string defaultDatabaseKey;
 
         /// <summary>
         /// Connections
         /// </summary>
+        [DataMember(Name = "Connections")]
         private Dictionary<string, DatabaseManagerConnection> connections;
 
         /// <summary>
         /// Database instances
         /// </summary>
+        [NonSerialized]
+        [IgnoreDataMember]
         private Dictionary<string, Database> databaseInstances;
 
         /// <summary>
         /// Queries
         /// </summary>
+        [DataMember(Name = "Queries")]
         private Dictionary<string, DatabaseManagerQuery> queries;
 
         /// <summary>
         /// Query placeholders.
         /// </summary>
+        [DataMember(Name = "QueryPlaceholders")]
         private Dictionary<string, string> queryPlaceholders;
 
         // constructors
@@ -71,11 +80,11 @@ namespace Tasslehoff.Library.DataAccess
         /// <summary>
         /// Initializes a new instance of the <see cref="DatabaseManager"/> class.
         /// </summary>
-        /// <param name="database"></param>
-        public DatabaseManager(Database defaultDatabase)
+        /// <param name="defaultDatabaseKey">Key for default database</param>
+        public DatabaseManager(string defaultDatabaseKey)
             : this()
         {
-            this.defaultDatabase = defaultDatabase;
+            this.defaultDatabaseKey = defaultDatabaseKey;
         }
 
         // events
@@ -88,24 +97,26 @@ namespace Tasslehoff.Library.DataAccess
         // properties
 
         /// <summary>
-        /// Gets or Sets default database instance.
+        /// Gets or Sets default database key.
         /// </summary>
-        public Database DefaultDatabase
+        [IgnoreDataMember]
+        public string DefaultDatabaseKey
         {
             get
             {
-                return this.defaultDatabase;
+                return this.defaultDatabaseKey;
             }
 
             set
             {
-                this.defaultDatabase = value;
+                this.defaultDatabaseKey = value;
             }
         }
 
         /// <summary>
         /// Gets or Sets connections.
         /// </summary>
+        [IgnoreDataMember]
         public Dictionary<string, DatabaseManagerConnection> Connections
         {
             get
@@ -122,6 +133,7 @@ namespace Tasslehoff.Library.DataAccess
         /// <summary>
         /// Gets or Sets database instances.
         /// </summary>
+        [IgnoreDataMember]
         public Dictionary<string, Database> DatabaseInstances
         {
             get
@@ -138,6 +150,7 @@ namespace Tasslehoff.Library.DataAccess
         /// <summary>
         /// Gets or Sets queries.
         /// </summary>
+        [IgnoreDataMember]
         public Dictionary<string, DatabaseManagerQuery> Queries
         {
             get
@@ -154,7 +167,9 @@ namespace Tasslehoff.Library.DataAccess
         /// <summary>
         /// Gets or Sets query placeholders.
         /// </summary>
-        public Dictionary<string, string> QueryPlaceholders {
+        [IgnoreDataMember]
+        public Dictionary<string, string> QueryPlaceholders
+        {
             get
             {
                 return this.queryPlaceholders;
@@ -173,8 +188,13 @@ namespace Tasslehoff.Library.DataAccess
         /// </summary>
         /// <param name="databaseKey">Database key</param>
         /// <returns>Database instance</returns>
-        public virtual Database GetDatabase(string databaseKey)
+        public virtual Database GetDatabase(string databaseKey = null)
         {
+            if (databaseKey == null)
+            {
+                databaseKey = this.DefaultDatabaseKey;
+            }
+
             if (!this.DatabaseInstances.ContainsKey(databaseKey))
             {
                 DatabaseManagerConnection database = this.Connections[databaseKey];
@@ -192,7 +212,7 @@ namespace Tasslehoff.Library.DataAccess
         /// <returns>DataQuery instance</returns>
         public virtual DataQuery GetQuery(string queryKey, Dictionary<string, string> replacements = null)
         {
-            return this.GetQuery(this.DefaultDatabase, queryKey, replacements);
+            return this.GetQuery(this.DefaultDatabaseKey, queryKey, replacements);
         }
 
         /// <summary>
@@ -233,15 +253,6 @@ namespace Tasslehoff.Library.DataAccess
             }
 
             return dataQuery;
-        }
-
-        /// <summary>
-        /// Sets the default database key
-        /// </summary>
-        /// <param name="databaseKey">Database key</param>
-        public virtual void SetDefaultDatabase(string databaseKey)
-        {
-            this.DefaultDatabase = this.GetDatabase(databaseKey);
         }
     }
 }
