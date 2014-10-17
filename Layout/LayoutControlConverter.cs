@@ -32,10 +32,17 @@ namespace Tasslehoff.Library.Layout
     {
         // fields
 
+        /// <summary>
+        /// 
+        /// </summary>
         private readonly LayoutControlRegistry registry;
 
         // constructors
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="registry"></param>
         public LayoutControlConverter(LayoutControlRegistry registry)
             : base()
         {
@@ -43,22 +50,47 @@ namespace Tasslehoff.Library.Layout
         }
 
         // methods
+        
+        /// <summary>
+        /// Constructs target instance in proper type
+        /// </summary>
+        /// <param name="registry"></param>
+        /// <param name="jObject"></param>
+        /// <returns></returns>
+        internal static ILayoutControl ConstructProperTarget(LayoutControlRegistry registry, JObject jObject)
+        {
+            // Get type from JObject
+            string type = (string)jObject.Property("Type");
 
+            // Create target object based on JObject
+            return registry.Create(type);
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="objectType"></param>
+        /// <returns></returns>
         public override ILayoutControl Create(Type objectType)
         {
             throw new NotImplementedException();
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="reader"></param>
+        /// <param name="objectType"></param>
+        /// <param name="existingValue"></param>
+        /// <param name="serializer"></param>
+        /// <returns></returns>
         public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
         {
             // Load JObject from stream
             JObject jObject = JObject.Load(reader);
 
-            // Get type from JObject
-            string type = (string)jObject.Property("Type");
-
             // Create target object based on JObject
-            ILayoutControl target = this.registry.Create(type);
+            ILayoutControl target = LayoutControlConverter.ConstructProperTarget(this.registry, jObject);
 
             // Populate the object properties
             serializer.Populate(jObject.CreateReader(), target);

@@ -98,6 +98,10 @@ namespace Tasslehoff.Library.Layout
             JsonSerializerSettings settings = SerializationUtils.GetSerializerSettings();
             settings.Converters.Add(new LayoutControlConverter(this));
 
+            //JObject jObject = JObject.Parse(json);
+            //Type type = this[(string)jObject.Property("Type")];
+
+            //return (ILayoutControl)JsonConvert.DeserializeObject(json, type, settings);
             return JsonConvert.DeserializeObject<ILayoutControl>(json, settings);
         }
     }
