@@ -37,13 +37,13 @@ namespace Tasslehoff.Library.Objects
         /// <summary>
         /// The start char
         /// </summary>
-        [DataMember]
+        [DataMember(Name = "StartChar")]
         private readonly char startChar;
 
         /// <summary>
         /// The end char
         /// </summary>
-        [DataMember]
+        [DataMember(Name = "EndChar")]
         private readonly char endChar;
 
         // constructors

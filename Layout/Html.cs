@@ -38,19 +38,19 @@ namespace Tasslehoff.Library.Layout
         /// <summary>
         /// Tag name
         /// </summary>
-        [DataMember]
+        [DataMember(Name = "TagName")]
         private string tagName = "div";
 
         /// <summary>
         /// Inner content
         /// </summary>
-        [DataMember]
+        [DataMember(Name = "InnerContent")]
         private string innerContent;
 
         /// <summary>
         /// Whether encode contents or not
         /// </summary>
-        [DataMember]
+        [DataMember(Name = "EncodeContents")]
         private bool encodeContents;
 
         // properties

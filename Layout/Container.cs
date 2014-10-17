@@ -38,7 +38,7 @@ namespace Tasslehoff.Library.Layout
         /// <summary>
         /// Tag name
         /// </summary>
-        [DataMember]
+        [DataMember(Name = "TagName")]
         private string tagName = "div";
 
         // properties

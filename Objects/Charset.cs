@@ -37,7 +37,7 @@ namespace Tasslehoff.Library.Objects
         /// <summary>
         /// The table
         /// </summary>
-        [DataMember]
+        [DataMember(Name = "Table")]
         private char[] table;
 
         // constructors

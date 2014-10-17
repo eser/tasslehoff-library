@@ -39,7 +39,7 @@ namespace Tasslehoff.Library.Collections
         /// <summary>
         /// The values
         /// </summary>
-        [DataMember]
+        [DataMember(Name = "Values")]
         private List<T> values;
 
         // constructors

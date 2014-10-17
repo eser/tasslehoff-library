@@ -35,13 +35,13 @@ namespace Tasslehoff.Library.WebServices
         /// <summary>
         /// The name
         /// </summary>
-        [DataMember]
+        [DataMember(Name = "Name")]
         private string name;
 
         /// <summary>
         /// The type
         /// </summary>
-        [DataMember]
+        [DataMember(Name = "Type")]
         private Type type;
 
         // constructors

@@ -39,43 +39,43 @@ namespace Tasslehoff.Library.Layout
         /// <summary>
         /// Id
         /// </summary>
-        [DataMember]
+        [IgnoreDataMember]
         private readonly string type;
 
         /// <summary>
         /// Child objects
         /// </summary>
-        [DataMember]
+        [DataMember(Name = "Children")]
         private List<ILayoutControl> children;
 
         /// <summary>
         /// Id
         /// </summary>
-        [DataMember]
+        [DataMember(Name = "Id")]
         private string id;
 
         /// <summary>
         /// Css Class
         /// </summary>
-        [DataMember]
+        [DataMember(Name = "CssClass")]
         private string cssClass;
 
         /// <summary>
         /// Span
         /// </summary>
-        [DataMember]
+        [DataMember(Name = "Span")]
         private int span;
 
         /// <summary>
         /// Offset
         /// </summary>
-        [DataMember]
+        [DataMember(Name = "Offset")]
         private int offset;
 
         /// <summary>
         /// The disposed
         /// </summary>
-        [DataMember]
+        [DataMember(Name = "Disposed")]
         private bool disposed;
 
         // constructors

@@ -37,19 +37,19 @@ namespace Tasslehoff.Library.Objects
         /// <summary>
         /// Value
         /// </summary>
-        [DataMember]
+        [DataMember(Name = "Value")]
         private T value;
 
         /// <summary>
         /// SortIndex
         /// </summary>
-        [DataMember]
+        [DataMember(Name = "SortIndex")]
         private int sortIndex;
 
         /// <summary>
         /// Children
         /// </summary>
-        [DataMember]
+        [DataMember(Name = "Children")]
         private SortedList<TreeNode<T>> children;
 
         // constructors

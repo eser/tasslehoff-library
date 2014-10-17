@@ -38,6 +38,7 @@ namespace Tasslehoff.Library
         /// <summary>
         /// The exception object
         /// </summary>
+        [DataMember(Name = "ExceptionObject")]
         private T exceptionObject;
 
         // constructors
@@ -91,7 +92,7 @@ namespace Tasslehoff.Library
         /// <value>
         /// The exception object.
         /// </value>
-        [DataMember]
+        [IgnoreDataMember]
         public T ExceptionObject
         {
             get

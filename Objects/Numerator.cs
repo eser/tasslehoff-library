@@ -42,7 +42,7 @@ namespace Tasslehoff.Library.Objects
         /// <summary>
         /// The next number
         /// </summary>
-        [DataMember]
+        [DataMember(Name = "NextNumber")]
         private int nextNumber;
 
         // constructors

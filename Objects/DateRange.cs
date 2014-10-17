@@ -37,13 +37,13 @@ namespace Tasslehoff.Library.Objects
         /// <summary>
         /// The start
         /// </summary>
-        [DataMember]
+        [DataMember(Name = "Start")]
         private readonly DateTime start;
 
         /// <summary>
         /// The end
         /// </summary>
-        [DataMember]
+        [DataMember(Name = "End")]
         private readonly DateTime end;
 
         // constructors

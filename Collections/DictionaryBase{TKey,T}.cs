@@ -41,13 +41,13 @@ namespace Tasslehoff.Library.Collections
         /// <summary>
         /// The keys
         /// </summary>
-        [DataMember]
+        [DataMember(Name = "Keys")]
         private Collection<TKey> keys;
 
         /// <summary>
         /// The values
         /// </summary>
-        [DataMember]
+        [DataMember(Name = "Values")]
         private Collection<T> values;
 
         // constructors
