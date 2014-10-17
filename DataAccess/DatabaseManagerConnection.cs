@@ -1,5 +1,5 @@
 // -----------------------------------------------------------------------
-// <copyright file="DataQueryManagerItem.cs" company="-">
+// <copyright file="DatabaseManagerConnection.cs" company="-">
 // Copyright (c) 2013 larukedi (eser@sent.com). All rights reserved.
 // </copyright>
 // <author>larukedi (http://github.com/larukedi/)</author>
@@ -20,30 +20,42 @@
 
 namespace Tasslehoff.Library.DataAccess
 {
+    using System;
+    using System.Runtime.Serialization;
 
     /// <summary>
     /// DataQueryManagerItem class.
     /// </summary>
-    public class DataQueryManagerItem
+    [Serializable]
+    [DataContract]
+    public class DatabaseManagerConnection
     {
         // fields
 
         /// <summary>
         /// Key.
         /// </summary>
+        [DataMember(Name = "Key")]
         private string key;
 
         /// <summary>
-        /// Sql Command.
+        /// Driver.
         /// </summary>
-        private string sqlCommand;
+        [DataMember(Name = "Driver")]
+        private string driver;
+
+        /// <summary>
+        /// Connection string.
+        /// </summary>
+        [DataMember(Name = "ConnectionString")]
+        private string connectionString;
 
         // constructors
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="DataQueryManagerItem"/> class.
+        /// Initializes a new instance of the <see cref="DatabaseManagerConnection"/> class.
         /// </summary>
-        public DataQueryManagerItem()
+        public DatabaseManagerConnection()
         {
         }
 
@@ -52,6 +64,7 @@ namespace Tasslehoff.Library.DataAccess
         /// <summary>
         /// Gets or Sets the key.
         /// </summary>
+        [IgnoreDataMember]
         public string Key
         {
             get
@@ -66,18 +79,36 @@ namespace Tasslehoff.Library.DataAccess
         }
 
         /// <summary>
-        /// Gets or Sets the sql command.
+        /// Gets or Sets the driver.
         /// </summary>
-        public string SqlCommand
+        [IgnoreDataMember]
+        public string Driver
         {
             get
             {
-                return this.sqlCommand;
+                return this.driver;
             }
 
             set
             {
-                this.sqlCommand = value;
+                this.driver = value;
+            }
+        }
+
+        /// <summary>
+        /// Gets or Sets the connection string.
+        /// </summary>
+        [IgnoreDataMember]
+        public string ConnectionString
+        {
+            get
+            {
+                return this.connectionString;
+            }
+
+            set
+            {
+                this.connectionString = value;
             }
         }
     }

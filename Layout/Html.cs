@@ -147,6 +147,8 @@ namespace Tasslehoff.Library.Layout
         /// <param name="jsonOutputWriter">Json Output Writer</param>
         public override void OnExport(JsonOutputWriter jsonOutputWriter)
         {
+            // base.OnExport(jsonOutputWriter);
+
             if (this.TagName != "div")
             {
                 jsonOutputWriter.WriteProperty("TagName", this.TagName);
