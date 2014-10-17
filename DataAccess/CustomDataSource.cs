@@ -166,7 +166,7 @@ namespace Tasslehoff.Library.DataAccess
             this.dataSourceViews = new Dictionary<string, DataSourceView>();
         }
 
-        // attributes
+        // properties
 
         /// <summary>
         /// Gets or Sets the data query object for select queries.

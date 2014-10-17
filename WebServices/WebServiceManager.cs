@@ -77,7 +77,7 @@ namespace Tasslehoff.Library.WebServices
             this.endpoints = new Collection<WebServiceEndpoint>();
         }
 
-        // attributes
+        // properties
 
         /// <summary>
         /// Gets the name.

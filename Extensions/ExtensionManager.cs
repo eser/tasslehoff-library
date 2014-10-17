@@ -52,7 +52,7 @@ namespace Tasslehoff.Library.Extensions
             this.assemblies = new Collection<Assembly>();
         }
 
-        // attributes
+        // properties
 
         /// <summary>
         /// Gets the name.

@@ -65,7 +65,7 @@ namespace Tasslehoff.Library.DataEntities
             this.database = database;
         }
 
-        // attributes
+        // properties
 
         /// <summary>
         /// Gets or Sets singleton instance.

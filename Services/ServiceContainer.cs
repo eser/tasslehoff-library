@@ -55,7 +55,7 @@ namespace Tasslehoff.Library.Services
         /// </summary>
         public event EventHandler OnStartWithChildren;
 
-        // attributes
+        // properties
 
         /// <summary>
         /// Gets the children.

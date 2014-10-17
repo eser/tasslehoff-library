@@ -75,7 +75,7 @@ namespace Tasslehoff.Library.Logger
             this.Dispose(false);
         }
 
-        // attributes
+        // properties
 
         /// <summary>
         /// Gets or sets the application.

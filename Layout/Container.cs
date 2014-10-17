@@ -71,7 +71,7 @@ namespace Tasslehoff.Library.Layout
         public override WebUI.Control CreateWebControl()
         {
             HtmlGenericControl element = new HtmlGenericControl(this.TagName);
-            this.AddWebControlAttributes(element.Attributes);
+            this.AddWebControlAttributes(element, element.Attributes);
             this.AddWebControlChildren(element);
             this.MakeWebControlAwareOf(element);
 

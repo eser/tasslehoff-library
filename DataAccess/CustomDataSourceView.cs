@@ -52,7 +52,7 @@ namespace Tasslehoff.Library.DataAccess
             this.owner = owner as CustomDataSource;
         }
 
-        // attributes
+        // properties
 
         /// <summary>
         /// Gets a value indicating whether the System.Web.UI.DataSourceView object associated with the current System.Web.UI.DataSourceControl object

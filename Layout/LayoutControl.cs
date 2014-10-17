@@ -271,10 +271,12 @@ namespace Tasslehoff.Library.Layout
         /// <summary>
         /// Assigns attributes of the new created control
         /// </summary>
+        /// <param name="createdControl">The created control</param>
         /// <param name="attributes">The attributes property of created control</param>
-        protected virtual void AddWebControlAttributes(WebUI.AttributeCollection attributes)
+        protected virtual void AddWebControlAttributes(WebUI.Control control, WebUI.AttributeCollection attributes)
         {
-            attributes["id"] = this.Id;
+            control.ID = this.Id;
+            // attributes["id"] = this.Id;
 
             string classNames = this.GetWebControlClassNames();
             if (!string.IsNullOrEmpty(classNames))

@@ -52,7 +52,7 @@ namespace Tasslehoff.Library.Layout
             }
         }
 
-        // attributes
+        // properties
 
         /// <summary>
         /// Gets or Sets singleton instance.

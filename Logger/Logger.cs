@@ -91,7 +91,7 @@ namespace Tasslehoff.Library.Logger
             this.Dispose(false);
         }
 
-        // attributes
+        // properties
 
         /// <summary>
         /// Gets the context.

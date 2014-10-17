@@ -115,8 +115,8 @@ namespace Tasslehoff.Library.DataAccess
         {
             this.sqlString = sqlString;
         }
-        
-        // attributes
+
+        // properties
 
         /// <summary>
         /// Database instance

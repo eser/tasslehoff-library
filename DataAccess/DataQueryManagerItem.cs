@@ -1,5 +1,5 @@
 // -----------------------------------------------------------------------
-// <copyright file="ServiceContainer.cs" company="-">
+// <copyright file="DataQueryManagerItem.cs" company="-">
 // Copyright (c) 2013 larukedi (eser@sent.com). All rights reserved.
 // </copyright>
 // <author>larukedi (http://github.com/larukedi/)</author>
@@ -18,86 +18,67 @@
 //// You should have received a copy of the GNU General Public License
 //// along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-namespace Tasslehoff.Library.Services
+namespace Tasslehoff.Library.DataAccess
 {
 
     /// <summary>
-    /// BlankServiceContainer class.
+    /// DataQueryManagerItem class.
     /// </summary>
-    public class BlankServiceContainer : ServiceContainer
+    public class DataQueryManagerItem
     {
         // fields
 
         /// <summary>
-        /// Name
+        /// Key.
         /// </summary>
-        private readonly string name;
+        private string key;
 
         /// <summary>
-        /// Description
+        /// Sql Command.
         /// </summary>
-        private readonly string description;
+        private string sqlCommand;
 
         // constructors
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="BlankServiceContainer"/> class.
+        /// Initializes a new instance of the <see cref="DataQueryManagerItem"/> class.
         /// </summary>
-        /// <param name="name">Name</param>
-        /// <param name="description">Description</param>
-        public BlankServiceContainer(string name, string description = "")
-            : base()
+        public DataQueryManagerItem()
         {
-            this.name = name;
-            this.description = description;
         }
 
         // properties
 
         /// <summary>
-        /// Gets the name.
+        /// Gets or Sets the key.
         /// </summary>
-        /// <value>
-        /// The name.
-        /// </value>
-        public override string Name
+        public string Key
         {
             get
             {
-                return this.name;
+                return this.key;
+            }
+
+            set
+            {
+                this.key = value;
             }
         }
 
         /// <summary>
-        /// Gets the description.
+        /// Gets or Sets the sql command.
         /// </summary>
-        /// <value>
-        /// The description.
-        /// </value>
-        public override string Description
+        public string SqlCommand
         {
             get
             {
-                return this.description;
+                return this.sqlCommand;
             }
-        }
 
-        // methods
-
-        /// <summary>
-        /// 
-        /// </summary>
-        protected override void ServiceStart()
-        {
-            
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        protected override void ServiceStop()
-        {
-            
+            set
+            {
+                this.sqlCommand = value;
+            }
         }
     }
 }

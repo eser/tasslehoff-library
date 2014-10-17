@@ -53,7 +53,7 @@ namespace Tasslehoff.Library.Logger
             this.outputEncoding = encoding ?? Encoding.Default;
         }
 
-        // attributes
+        // properties
 
         /// <summary>
         /// Gets the output stream.

@@ -61,6 +61,8 @@
     <Compile Include="Collections\DictionaryBase{TKey1,TKey2,T}.cs" />
     <Compile Include="Config\Config.cs" />
     <Compile Include="Config\ConfigRegistry.cs" />
+    <Compile Include="DataAccess\DataQueryManagerItem.cs" />
+    <Compile Include="DataAccess\DataQueryManager.cs" />
     <Compile Include="Layout\Html.cs" />
     <Compile Include="Layout\ILayoutAware.cs" />
     <Compile Include="Layout\LayoutControlConverter.cs" />

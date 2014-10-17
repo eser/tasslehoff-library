@@ -45,7 +45,7 @@ namespace Tasslehoff.Library.Config
             this.SourcePath = path;
         }
 
-        // attributes
+        // properties
 
         /// <summary>
         /// Gets or sets the source path

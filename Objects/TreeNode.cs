@@ -72,7 +72,7 @@ namespace Tasslehoff.Library.Objects
             this.children = new SortedList<TreeNode<T>>();
         }
 
-        // attributes
+        // properties
 
         /// <summary>
         /// Gets or sets the value

@@ -54,7 +54,7 @@ namespace Tasslehoff.Library.Config
         {
         }
 
-        // attributes
+        // properties
 
         /// <summary>
         /// Gets or sets the default value.

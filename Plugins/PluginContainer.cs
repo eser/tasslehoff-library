@@ -48,7 +48,7 @@ namespace Tasslehoff.Library.Plugins
             this.extensionManager = extensionManager;
         }
 
-        // attributes
+        // properties
 
         /// <summary>
         /// Gets the name.
