@@ -29,7 +29,7 @@ namespace Tasslehoff.Library.DataAccess
     /// </summary>
     [Serializable]
     [DataContract]
-    public class DatabaseManager
+    public class DatabaseManager : ICloneable
     {
         // fields
 
@@ -253,6 +253,44 @@ namespace Tasslehoff.Library.DataAccess
             }
 
             return dataQuery;
+        }
+
+        /// <summary>
+        /// Merges a DatabaseManager with another one
+        /// </summary>
+        /// <param name="other">The other DatabaseManager instance</param>
+        public void Merge(DatabaseManager other)
+        {
+            foreach (KeyValuePair<string, DatabaseManagerConnection> pair in other.Connections)
+            {
+                this.Connections[pair.Key] = pair.Value;
+            }
+
+            foreach (KeyValuePair<string, Database> pair in other.DatabaseInstances)
+            {
+                this.DatabaseInstances[pair.Key] = pair.Value;
+            }
+
+            foreach (KeyValuePair<string, DatabaseManagerQuery> pair in other.Queries)
+            {
+                this.Queries[pair.Key] = pair.Value;
+            }
+
+            foreach (KeyValuePair<string, string> pair in other.QueryPlaceholders)
+            {
+                this.QueryPlaceholders[pair.Key] = pair.Value;
+            }
+        }
+
+        /// <summary>
+        /// Creates a new object that is a copy of the current instance.
+        /// </summary>
+        /// <returns>
+        /// A new object that is a copy of this instance.
+        /// </returns>
+        public object Clone()
+        {
+            return this.MemberwiseClone();
         }
     }
 }

@@ -33,12 +33,6 @@ namespace Tasslehoff.Library.DataAccess
         // fields
 
         /// <summary>
-        /// Key.
-        /// </summary>
-        [DataMember(Name = "Key")]
-        private string key;
-
-        /// <summary>
         /// Driver.
         /// </summary>
         [DataMember(Name = "Driver")]
@@ -60,23 +54,6 @@ namespace Tasslehoff.Library.DataAccess
         }
 
         // properties
-
-        /// <summary>
-        /// Gets or Sets the key.
-        /// </summary>
-        [IgnoreDataMember]
-        public string Key
-        {
-            get
-            {
-                return this.key;
-            }
-
-            set
-            {
-                this.key = value;
-            }
-        }
 
         /// <summary>
         /// Gets or Sets the driver.
