@@ -90,7 +90,8 @@ namespace Tasslehoff.Library.Layout
         {
             Type type = this[key];
 
-            return Activator.CreateInstance(type) as ILayoutControl;
+            ILayoutControl instance = Activator.CreateInstance(type) as ILayoutControl;
+            return instance;
         }
 
         public ILayoutControl ImportJson(string json)

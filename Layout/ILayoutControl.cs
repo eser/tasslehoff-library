@@ -72,13 +72,26 @@ namespace Tasslehoff.Library.Layout
         /// </value>
         int Offset { get; }
 
+        /// <summary>
+        /// Gets or sets webcontrol
+        /// </summary>
+        /// <value>
+        /// Webcontrol
+        /// </value>
+        WebUI.Control WebControl { get; }
+
         // methods
 
         /// <summary>
         /// Creates web control
         /// </summary>
-        /// <returns>Web control</returns>
-        WebUI.Control CreateWebControl();
+        void CreateWebControl();
+
+        /// <summary>
+        /// Set parameters of the control and its children
+        /// </summary>
+        /// <param name="parameters">Parameters</param>
+        void SetParameters(Dictionary<string, object> parameters);
 
         /// <summary>
         /// Serializes control into json

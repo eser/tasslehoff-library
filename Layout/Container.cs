@@ -24,7 +24,6 @@ namespace Tasslehoff.Library.Layout
     using System.Runtime.Serialization;
     using System.Web.UI.HtmlControls;
     using Tasslehoff.Library.Text;
-    using WebUI = System.Web.UI;
 
     /// <summary>
     /// Container class.
@@ -67,15 +66,14 @@ namespace Tasslehoff.Library.Layout
         /// <summary>
         /// Creates web control
         /// </summary>
-        /// <returns>Web control</returns>
-        public override WebUI.Control CreateWebControl()
+        public override void CreateWebControl()
         {
             HtmlGenericControl element = new HtmlGenericControl(this.TagName);
             this.AddWebControlAttributes(element, element.Attributes);
             this.AddWebControlChildren(element);
             this.MakeWebControlAwareOf(element);
 
-            return element;
+            this.WebControl = element;
         }
 
         /// <summary>

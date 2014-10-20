@@ -39,8 +39,16 @@ namespace Tasslehoff.Library.Layout
         /// <summary>
         /// Id
         /// </summary>
+        [NonSerialized]
         [IgnoreDataMember]
         private readonly string type;
+
+        /// <summary>
+        /// Parameters
+        /// </summary>
+        [NonSerialized]
+        [IgnoreDataMember]
+        private Dictionary<string, object> parameters;
 
         /// <summary>
         /// Child objects
@@ -73,11 +81,17 @@ namespace Tasslehoff.Library.Layout
         private int offset;
 
         /// <summary>
+        /// The webcontrol
+        /// </summary>
+        [IgnoreDataMember]
+        private WebUI.Control webControl;
+
+        /// <summary>
         /// The disposed
         /// </summary>
         [DataMember(Name = "Disposed")]
         private bool disposed;
-
+        
         // constructors
 
         /// <summary>
@@ -111,6 +125,25 @@ namespace Tasslehoff.Library.Layout
             get
             {
                 return this.type;
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets parameters
+        /// </summary>
+        /// <value>
+        /// Parameters
+        /// </value>
+        [IgnoreDataMember]
+        public virtual Dictionary<string, object> Parameters
+        {
+            get
+            {
+                return this.parameters;
+            }
+            set
+            {
+                this.parameters = value;
             }
         }
 
@@ -209,6 +242,27 @@ namespace Tasslehoff.Library.Layout
             }
         }
 
+
+        /// <summary>
+        /// Gets or sets webcontrol
+        /// </summary>
+        /// <value>
+        /// Webcontrol
+        /// </value>
+        [IgnoreDataMember]
+        public WebUI.Control WebControl
+        {
+            get
+            {
+                return this.webControl;
+            }
+
+            set
+            {
+                this.webControl = value;
+            }
+        }
+
         /// <summary>
         /// Gets or sets a value indicating whether this <see cref="Service"/> is disposed.
         /// </summary>
@@ -234,8 +288,7 @@ namespace Tasslehoff.Library.Layout
         /// <summary>
         /// Creates web control
         /// </summary>
-        /// <returns>Web control</returns>
-        public abstract WebUI.Control CreateWebControl();
+        public abstract void CreateWebControl();
 
         /// <summary>
         /// Constructs class names for created element
@@ -293,11 +346,11 @@ namespace Tasslehoff.Library.Layout
         {
             foreach (ILayoutControl control in this.Children)
             {
-                WebUI.Control webUIcontrol = control.CreateWebControl();
+                control.CreateWebControl();
 
-                if (webUIcontrol != null)
+                if (control.WebControl != null)
                 {
-                    createdControl.Controls.Add(webUIcontrol);
+                    createdControl.Controls.Add(control.WebControl);
                 }
             }
         }
@@ -312,6 +365,30 @@ namespace Tasslehoff.Library.Layout
             {
                 (createdControl as ILayoutAware).LayoutAwareness(this);
             }
+        }
+
+        /// <summary>
+        /// Updates the control and its children with given parameters
+        /// </summary>
+        /// <param name="parameters">Parameters</param>
+        public void SetParameters(Dictionary<string, object> parameters)
+        {
+            this.Parameters = parameters;
+
+            this.OnUpdate(parameters);
+
+            foreach (ILayoutControl layoutControl in this.Children)
+            {
+                layoutControl.SetParameters(parameters);
+            }
+        }
+
+        /// <summary>
+        /// Occurs when [update].
+        /// </summary>
+        /// <param name="parameters">Parameters</param>
+        public virtual void OnUpdate(Dictionary<string, object> parameters)
+        {
         }
 
         /// <summary>
