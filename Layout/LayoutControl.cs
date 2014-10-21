@@ -63,6 +63,12 @@ namespace Tasslehoff.Library.Layout
         private string id;
 
         /// <summary>
+        /// Static client id
+        /// </summary>
+        [DataMember(Name = "StaticClientId")]
+        private bool staticClientId;
+
+        /// <summary>
         /// Css Class
         /// </summary>
         [DataMember(Name = "CssClass")]
@@ -182,6 +188,25 @@ namespace Tasslehoff.Library.Layout
             set
             {
                 this.id = value;
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets static client id
+        /// </summary>
+        /// <value>
+        /// Static client id
+        /// </value>
+        [IgnoreDataMember]
+        public virtual bool StaticClientId
+        {
+            get
+            {
+                return this.staticClientId;
+            }
+            set
+            {
+                this.staticClientId = value;
             }
         }
 
@@ -328,8 +353,16 @@ namespace Tasslehoff.Library.Layout
         /// <param name="attributes">The attributes property of created control</param>
         protected virtual void AddWebControlAttributes(WebUI.Control control, WebUI.AttributeCollection attributes)
         {
-            control.ID = this.Id;
             // attributes["id"] = this.Id;
+            if (!string.IsNullOrEmpty(this.Id))
+            {
+                control.ID = this.Id;
+            }
+
+            if (this.StaticClientId)
+            {
+                control.ClientIDMode = WebUI.ClientIDMode.Static;
+            }
 
             string classNames = this.GetWebControlClassNames();
             if (!string.IsNullOrEmpty(classNames))
