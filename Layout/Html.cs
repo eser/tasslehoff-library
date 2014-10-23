@@ -21,6 +21,7 @@
 namespace Tasslehoff.Library.Layout
 {
     using System;
+    using System.Collections.Generic;
     using System.Runtime.Serialization;
     using System.Web.UI.HtmlControls;
     using Tasslehoff.Library.Text;
@@ -53,6 +54,21 @@ namespace Tasslehoff.Library.Layout
         private bool encodeContents;
 
         // properties
+
+        /// <summary>
+        /// Gets icon
+        /// </summary>
+        /// <value>
+        /// Icon
+        /// </value>
+        [IgnoreDataMember]
+        public override string Icon
+        {
+            get
+            {
+                return "header";
+            }
+        }
 
         /// <summary>
         /// Gets or sets tag name
@@ -143,7 +159,7 @@ namespace Tasslehoff.Library.Layout
         /// Occurs when [export].
         /// </summary>
         /// <param name="jsonOutputWriter">Json Output Writer</param>
-        public override void OnExport(JsonOutputWriter jsonOutputWriter)
+        public override void OnExport(MultiFormatOutputWriter jsonOutputWriter)
         {
             // base.OnExport(jsonOutputWriter);
 
@@ -161,6 +177,17 @@ namespace Tasslehoff.Library.Layout
             {
                 jsonOutputWriter.WriteProperty("InnerContent", this.InnerContent);
             }
+        }
+
+        /// <summary>
+        /// Occurs when [export].
+        /// </summary>
+        /// <param name="jsonOutputWriter">Json Output Writer</param>
+        public override void OnGetEditProperties(List<string> properties)
+        {
+            properties.Add("TagName");
+            properties.Add("InnerContent");
+            properties.Add("EncodeContents");
         }
     }
 }

@@ -37,7 +37,21 @@ namespace Tasslehoff.Library.Layout
         // fields
 
         /// <summary>
-        /// Id
+        /// Tree Id
+        /// </summary>
+        [NonSerialized]
+        [IgnoreDataMember]
+        private Guid treeId;
+
+        /// <summary>
+        /// Parent Tree Id
+        /// </summary>
+        [NonSerialized]
+        [IgnoreDataMember]
+        private Guid parentTreeId;
+
+        /// <summary>
+        /// Type
         /// </summary>
         [NonSerialized]
         [IgnoreDataMember]
@@ -120,7 +134,45 @@ namespace Tasslehoff.Library.Layout
         // properties
 
         /// <summary>
-        /// Gets or sets type
+        /// Gets or sets tree id
+        /// </summary>
+        /// <value>
+        /// Tree Id
+        /// </value>
+        [IgnoreDataMember]
+        public virtual Guid TreeId
+        {
+            get
+            {
+                return this.treeId;
+            }
+            set
+            {
+                this.treeId = value;
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets parent tree id
+        /// </summary>
+        /// <value>
+        /// Parent Tree Id
+        /// </value>
+        [IgnoreDataMember]
+        public virtual Guid ParentTreeId
+        {
+            get
+            {
+                return this.parentTreeId;
+            }
+            set
+            {
+                this.parentTreeId = value;
+            }
+        }
+
+        /// <summary>
+        /// Gets type
         /// </summary>
         /// <value>
         /// Type
@@ -131,6 +183,36 @@ namespace Tasslehoff.Library.Layout
             get
             {
                 return this.type;
+            }
+        }
+
+        /// <summary>
+        /// Gets description
+        /// </summary>
+        /// <value>
+        /// Description
+        /// </value>
+        [IgnoreDataMember]
+        public virtual string Description
+        {
+            get
+            {
+                return this.Type;
+            }
+        }
+
+        /// <summary>
+        /// Gets icon
+        /// </summary>
+        /// <value>
+        /// Icon
+        /// </value>
+        [IgnoreDataMember]
+        public virtual string Icon
+        {
+            get
+            {
+                return "file-o";
             }
         }
 
@@ -425,10 +507,42 @@ namespace Tasslehoff.Library.Layout
         }
 
         /// <summary>
+        /// Sets some ids to produce a tree
+        /// </summary>
+        /// <param name="isRoot">Whether this node is root or not</param>
+        public virtual void MakeTree(bool isRoot = false)
+        {
+            this.TreeId = (isRoot) ? Guid.Empty : Guid.NewGuid();
+
+            foreach (ILayoutControl control in this.Children)
+            {
+                control.ParentTreeId = this.TreeId;
+                control.MakeTree();
+            }
+        }
+
+        /// <summary>
+        /// Flattens tree into one list
+        /// </summary>
+        /// <returns>Generated list</returns>
+        public virtual List<ILayoutControl> FlattenTree()
+        {
+            List<ILayoutControl> flattenTree = new List<ILayoutControl>();
+
+            flattenTree.Add(this);
+            foreach (ILayoutControl control in this.Children)
+            {
+                flattenTree.AddRange(control.FlattenTree());
+            }
+
+            return flattenTree;
+        }
+
+        /// <summary>
         /// Serializes control into json
         /// </summary>
         /// <param name="jsonOutputWriter">Json Output Writer</param>
-        public virtual void Export(JsonOutputWriter jsonOutputWriter)
+        public virtual void Export(MultiFormatOutputWriter jsonOutputWriter)
         {
             jsonOutputWriter.WriteStartObject();
 
@@ -477,7 +591,31 @@ namespace Tasslehoff.Library.Layout
         /// Occurs when [export].
         /// </summary>
         /// <param name="jsonOutputWriter">Json Output Writer</param>
-        public abstract void OnExport(JsonOutputWriter jsonOutputWriter);
+        public abstract void OnExport(MultiFormatOutputWriter jsonOutputWriter);
+
+        /// <summary>
+        /// Gets editable properties
+        /// </summary>
+        /// <returns>List of properties</returns>
+        public virtual List<string> GetEditProperties()
+        {
+            List<string> properties = new List<string>();
+            properties.Add("Id");
+            properties.Add("StaticClientId");
+            properties.Add("CssClass");
+            properties.Add("Span");
+            properties.Add("Offset");
+
+            this.OnGetEditProperties(properties);
+
+            return properties;
+        }
+
+        /// <summary>
+        /// Occurs when [export].
+        /// </summary>
+        /// <param name="jsonOutputWriter">Json Output Writer</param>
+        public abstract void OnGetEditProperties(List<string> properties);
 
         /// <summary>
         /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.

@@ -33,6 +33,46 @@ namespace Tasslehoff.Library.Layout
         // properties
 
         /// <summary>
+        /// Gets or sets tree id
+        /// </summary>
+        /// <value>
+        /// Tree Id
+        /// </value>
+        Guid TreeId { get; set; }
+
+        /// <summary>
+        /// Gets or sets parent tree id
+        /// </summary>
+        /// <value>
+        /// Parent Tree Id
+        /// </value>
+        Guid ParentTreeId { get; set;  }
+
+        /// <summary>
+        /// Gets type
+        /// </summary>
+        /// <value>
+        /// Type
+        /// </value>
+        string Type { get; }
+
+        /// <summary>
+        /// Gets description
+        /// </summary>
+        /// <value>
+        /// Description
+        /// </value>
+        string Description { get; }
+
+        /// <summary>
+        /// Gets icon
+        /// </summary>
+        /// <value>
+        /// Icon
+        /// </value>
+        string Icon { get; }
+
+        /// <summary>
         /// Gets or sets child objects
         /// </summary>
         /// <value>
@@ -94,9 +134,27 @@ namespace Tasslehoff.Library.Layout
         void SetParameters(Dictionary<string, object> parameters);
 
         /// <summary>
+        /// Sets some ids to produce a tree
+        /// </summary>
+        /// <param name="isRoot">Whether this node is root or not</param>
+        void MakeTree(bool isRoot = false);
+
+        /// <summary>
+        /// Flattens tree into one list
+        /// </summary>
+        /// <returns>Generated list</returns>
+        List<ILayoutControl> FlattenTree();
+
+        /// <summary>
         /// Serializes control into json
         /// </summary>
         /// <param name="jsonOutputWriter">Json Output Writer</param>
-        void Export(JsonOutputWriter jsonOutputWriter);
+        void Export(MultiFormatOutputWriter jsonOutputWriter);
+
+        /// <summary>
+        /// Gets editable properties
+        /// </summary>
+        /// <returns>List of properties</returns>
+        List<string> GetEditProperties();
     }
 }

@@ -1,5 +1,5 @@
 ﻿// -----------------------------------------------------------------------
-// <copyright file="JsonOutputWriterPropertyValue.cs" company="-">
+// <copyright file="MultiFormatOutputWriterPropertyValue.cs" company="-">
 // Copyright (c) 2013 larukedi (eser@sent.com). All rights reserved.
 // </copyright>
 // <author>larukedi (http://github.com/larukedi/)</author>
@@ -24,11 +24,11 @@ namespace Tasslehoff.Library.Text
     using System.Runtime.Serialization;
 
     /// <summary>
-    /// JsonOutputWriterPropertyValue enumeration.
+    /// MultiFormatOutputWriterPropertyValue enumeration.
     /// </summary>
     [Serializable]
     [DataContract]
-    public enum JsonOutputWriterPropertyValue : int
+    public enum MultiFormatOutputWriterPropertyValue : int
     {
         // fields
 

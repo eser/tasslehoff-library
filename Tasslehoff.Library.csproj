@@ -67,8 +67,9 @@
     <Compile Include="Layout\Html.cs" />
     <Compile Include="Layout\ILayoutAware.cs" />
     <Compile Include="Layout\LayoutControlConverter.cs" />
-    <Compile Include="Text\JsonOutputWriterPropertyValue.cs" />
-    <Compile Include="Text\JsonOutputWriter.cs" />
+    <Compile Include="Text\MultiFormatOutputWriterFormat.cs" />
+    <Compile Include="Text\MultiFormatOutputWriterPropertyValue.cs" />
+    <Compile Include="Text\MultiFormatOutputWriter.cs" />
     <Compile Include="Utils\Serialization\OrderedContractResolver.cs" />
     <Compile Include="Cron\CronActionParameters.cs" />
     <Compile Include="Cron\CronItem.cs" />

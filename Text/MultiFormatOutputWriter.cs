@@ -1,5 +1,5 @@
 ﻿// -----------------------------------------------------------------------
-// <copyright file="JsonOutputWriter.cs" company="-">
+// <copyright file="MultiFormatOutputWriter.cs" company="-">
 // Copyright (c) 2013 larukedi (eser@sent.com). All rights reserved.
 // </copyright>
 // <author>larukedi (http://github.com/larukedi/)</author>
@@ -26,13 +26,19 @@ namespace Tasslehoff.Library.Text
     using System.Text;
     using Newtonsoft.Json;
     using Tasslehoff.Library.Utils;
+    using Xml = System.Xml;
 
     /// <summary>
-    /// GsmEncoding class.
+    /// MultiFormatOutputWriter class.
     /// </summary>
-    public class JsonOutputWriter : IDisposable
+    public class MultiFormatOutputWriter : IDisposable
     {
         // fields
+
+        /// <summary>
+        /// Format
+        /// </summary>
+        private readonly MultiFormatOutputWriterFormat format;
 
         /// <summary>
         /// StringBuilder
@@ -50,6 +56,11 @@ namespace Tasslehoff.Library.Text
         private JsonTextWriter jsonTextWriter;
 
         /// <summary>
+        /// Xml TextWriter
+        /// </summary>
+        private Xml.XmlTextWriter xmlTextWriter;
+
+        /// <summary>
         /// The disposed
         /// </summary>
         private bool disposed;
@@ -57,18 +68,21 @@ namespace Tasslehoff.Library.Text
         // constructors
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="JsonOutputWriter"/> class.
+        /// Initializes a new instance of the <see cref="MultiFormatOutputWriter"/> class.
         /// </summary>
-        public JsonOutputWriter()
-            : this(new StringBuilder())
+        /// <param name="format">Format</param>
+        public MultiFormatOutputWriter(MultiFormatOutputWriterFormat format)
+            : this(format, new StringBuilder())
         {
+            this.format = format;
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="JsonOutputWriter"/> class.
+        /// Initializes a new instance of the <see cref="MultiFormatOutputWriter"/> class.
         /// </summary>
+        /// <param name="format">Format</param>
         /// <param name="stringBuilder">The string builder</param>
-        public JsonOutputWriter(StringBuilder stringBuilder)
+        public MultiFormatOutputWriter(MultiFormatOutputWriterFormat format, StringBuilder stringBuilder)
             : base()
         {
             this.stringBuilder = stringBuilder;
@@ -77,17 +91,32 @@ namespace Tasslehoff.Library.Text
             {
                 Formatting = Formatting.Indented
             };
+            this.xmlTextWriter = new Xml.XmlTextWriter(this.textWriter)
+            {
+                Formatting = Xml.Formatting.Indented
+            };
         }
 
         /// <summary>
-        /// Finalizes an instance of the <see cref="JsonOutputWriter"/> class.
+        /// Finalizes an instance of the <see cref="MultiFormatOutputWriter"/> class.
         /// </summary>
-        ~JsonOutputWriter()
+        ~MultiFormatOutputWriter()
         {
             this.Dispose(false);
         }
 
         // properties
+
+        /// <summary>
+        /// Gets or Sets Format
+        /// </summary>
+        public MultiFormatOutputWriterFormat Format
+        {
+            get
+            {
+                return this.format;
+            }
+        }
 
         /// <summary>
         /// Gets or Sets StringBuilder
@@ -138,7 +167,23 @@ namespace Tasslehoff.Library.Text
         }
 
         /// <summary>
-        /// Gets or sets a value indicating whether this <see cref="JsonOutputWriter"/> is disposed.
+        /// Gets or Sets Xml TextWriter
+        /// </summary>
+        internal Xml.XmlTextWriter XmlTextWriter
+        {
+            get
+            {
+                return this.xmlTextWriter;
+            }
+
+            set
+            {
+                this.xmlTextWriter = value;
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether this <see cref="MultiFormatOutputWriter"/> is disposed.
         /// </summary>
         /// <value>
         ///   <c>true</c> if disposed; otherwise, <c>false</c>.
@@ -163,7 +208,7 @@ namespace Tasslehoff.Library.Text
         /// </summary>
         public void WriteEnd()
         {
-            this.jsonTextWriter.WriteEnd();
+            this.JsonTextWriter.WriteEnd();
         }
 
         /// <summary>
@@ -172,7 +217,14 @@ namespace Tasslehoff.Library.Text
         /// <param name="rawString">Raw Json</param>
         public void WriteRaw(string rawString)
         {
-            this.jsonTextWriter.WriteRaw(rawString);
+            if (this.Format == MultiFormatOutputWriterFormat.Json)
+            {
+                this.JsonTextWriter.WriteRaw(rawString);
+            }
+            else
+            {
+                this.XmlTextWriter.WriteRaw(rawString);
+            }
         }
 
         /// <summary>
@@ -180,7 +232,7 @@ namespace Tasslehoff.Library.Text
         /// </summary>
         public void WriteStartArray()
         {
-            this.jsonTextWriter.WriteStartArray();
+            this.JsonTextWriter.WriteStartArray();
         }
 
         /// <summary>
@@ -188,7 +240,7 @@ namespace Tasslehoff.Library.Text
         /// </summary>
         public void WriteStartObject()
         {
-            this.jsonTextWriter.WriteStartObject();
+            this.JsonTextWriter.WriteStartObject();
         }
 
         /// <summary>
@@ -210,7 +262,7 @@ namespace Tasslehoff.Library.Text
         /// <param name="escape">Whether escaping is enabled or not</param>
         public void WritePropertyName(string name, bool escape = true)
         {
-            this.jsonTextWriter.WritePropertyName(name, escape);
+            this.JsonTextWriter.WritePropertyName(name, escape);
         }
 
         /// <summary>
@@ -219,16 +271,16 @@ namespace Tasslehoff.Library.Text
         /// <param name="value">Value of the property</param>
         public void WriteValue(object value)
         {
-            if (value is JsonOutputWriterPropertyValue)
+            if (value is MultiFormatOutputWriterPropertyValue)
             {
-                switch ((JsonOutputWriterPropertyValue)value)
+                switch ((MultiFormatOutputWriterPropertyValue)value)
                 {
-                    case JsonOutputWriterPropertyValue.Undefined:
-                        this.jsonTextWriter.WriteUndefined();
+                    case MultiFormatOutputWriterPropertyValue.Undefined:
+                        this.JsonTextWriter.WriteUndefined();
                         break;
 
-                    case JsonOutputWriterPropertyValue.Null:
-                        this.jsonTextWriter.WriteNull();
+                    case MultiFormatOutputWriterPropertyValue.Null:
+                        this.JsonTextWriter.WriteNull();
                         break;
                 }
 
@@ -237,11 +289,11 @@ namespace Tasslehoff.Library.Text
 
             if (value != null && value.GetType().IsEnum)
             {
-                this.jsonTextWriter.WriteValue(value.ToString());
+                this.JsonTextWriter.WriteValue(value.ToString());
                 return;
             }
 
-            this.jsonTextWriter.WriteValue(value);
+            this.JsonTextWriter.WriteValue(value);
         }
 
         /// <summary>
@@ -250,7 +302,7 @@ namespace Tasslehoff.Library.Text
         /// <param name="value">Value in raw Json</param>
         public void WriteValueRaw(string value)
         {
-            this.jsonTextWriter.WriteRawValue(value);
+            this.JsonTextWriter.WriteRawValue(value);
         }
 
         /// <summary>
@@ -258,7 +310,7 @@ namespace Tasslehoff.Library.Text
         /// </summary>
         public void WriteLine()
         {
-            // this.jsonTextWriter.WriteRaw(Environment.NewLine);
+            // this.JsonTextWriter.WriteRaw(Environment.NewLine);
         }
 
         /// <summary>
@@ -266,8 +318,8 @@ namespace Tasslehoff.Library.Text
         /// </summary>
         public void Close()
         {
-            this.jsonTextWriter.Close();
-            this.textWriter.Close();
+            this.JsonTextWriter.Close();
+            this.TextWriter.Close();
         }
 
         /// <summary>
@@ -276,7 +328,7 @@ namespace Tasslehoff.Library.Text
         /// <returns>Json string</returns>
         public override string ToString()
         {
-            return this.stringBuilder.ToString();
+            return this.StringBuilder.ToString();
         }
 
         /// <summary>

@@ -127,16 +127,13 @@ namespace Tasslehoff.Library.Utils
             {
                 FieldInfo fieldInfo = member as FieldInfo;
 
-                if (fieldInfo.FieldType.IsEnum)
+                if (fieldInfo.FieldType.IsEnum && enumAsString)
                 {
-                    if (enumAsString)
-                    {
-                        value = Enum.Parse(fieldInfo.FieldType, value.ToString());
-                    }
-                    else
-                    {
-                        value = Convert.ChangeType(value, fieldInfo.FieldType);
-                    }
+                    value = Enum.Parse(fieldInfo.FieldType, value.ToString());
+                }
+                else if (fieldInfo.FieldType != value.GetType())
+                {
+                    value = Convert.ChangeType(value, fieldInfo.FieldType);
                 }
 
                 fieldInfo.SetValue(instance, value);
@@ -145,16 +142,13 @@ namespace Tasslehoff.Library.Utils
             {
                 PropertyInfo propertyInfo = member as PropertyInfo;
 
-                if (propertyInfo.PropertyType.IsEnum)
+                if (propertyInfo.PropertyType.IsEnum && enumAsString)
                 {
-                    if (enumAsString)
-                    {
-                        value = Enum.Parse(propertyInfo.PropertyType, value.ToString());
-                    }
-                    else
-                    {
-                        value = Convert.ChangeType(value, propertyInfo.PropertyType);
-                    }
+                    value = Enum.Parse(propertyInfo.PropertyType, value.ToString());
+                }
+                else if (propertyInfo.PropertyType != value.GetType())
+                {
+                    value = Convert.ChangeType(value, propertyInfo.PropertyType);
                 }
 
                 propertyInfo.SetValue(instance, value, null);
