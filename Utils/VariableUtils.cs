@@ -123,35 +123,44 @@ namespace Tasslehoff.Library.Utils
         /// <param name="enumAsString">Whether serialize enum as string or not</param>
         public static void WriteMemberValue(MemberInfo member, object instance, object value, bool enumAsString = false)
         {
+            FieldInfo fieldInfo = null;
+            PropertyInfo propertyInfo = null;
+            Type type;
+
             if (member.MemberType == MemberTypes.Field)
             {
-                FieldInfo fieldInfo = member as FieldInfo;
-
-                if (fieldInfo.FieldType.IsEnum && enumAsString)
-                {
-                    value = Enum.Parse(fieldInfo.FieldType, value.ToString());
-                }
-                else if (fieldInfo.FieldType != value.GetType())
-                {
-                    value = Convert.ChangeType(value, fieldInfo.FieldType);
-                }
-
-                fieldInfo.SetValue(instance, value);
+                fieldInfo = member as FieldInfo;
+                type = Nullable.GetUnderlyingType(fieldInfo.FieldType) ?? fieldInfo.FieldType;
             }
             else if (member.MemberType == MemberTypes.Property)
             {
-                PropertyInfo propertyInfo = member as PropertyInfo;
+                propertyInfo = member as PropertyInfo;
+                type = Nullable.GetUnderlyingType(propertyInfo.PropertyType) ?? propertyInfo.PropertyType;
+            }
+            else
+            {
+                return;
+            }
 
-                if (propertyInfo.PropertyType.IsEnum && enumAsString)
+            if (value != null)
+            {
+                if (type.IsEnum && enumAsString)
                 {
-                    value = Enum.Parse(propertyInfo.PropertyType, value.ToString());
+                    value = Enum.Parse(type, value.ToString());
                 }
-                else if (propertyInfo.PropertyType != value.GetType())
+                else if (type != value.GetType())
                 {
-                    value = Convert.ChangeType(value, propertyInfo.PropertyType);
+                    value = Convert.ChangeType(value, type);
                 }
+            }
 
-                propertyInfo.SetValue(instance, value, null);
+            if (member.MemberType == MemberTypes.Field)
+            {
+                fieldInfo.SetValue(instance, value);
+            }
+            else
+            {
+                propertyInfo.SetValue(instance, value);
             }
         }
 

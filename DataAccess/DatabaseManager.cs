@@ -49,7 +49,8 @@ namespace Tasslehoff.Library.DataAccess
         /// Database instances
         /// </summary>
         [IgnoreDataMember]
-        private Dictionary<string, Database> databaseInstances;
+        [NonSerialized]
+        private Dictionary<string, Database> databaseInstances = new Dictionary<string, Database>();
 
         /// <summary>
         /// Queries
@@ -71,7 +72,6 @@ namespace Tasslehoff.Library.DataAccess
         public DatabaseManager()
         {
             this.connections = new Dictionary<string, DatabaseManagerConnection>();
-            this.databaseInstances = new Dictionary<string, Database>();
             this.queries = new Dictionary<string, DatabaseManagerQuery>();
             this.queryPlaceholders = new Dictionary<string, string>();
         }

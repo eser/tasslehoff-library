@@ -531,6 +531,7 @@ namespace Tasslehoff.Library.Layout
             {
                 flattenTree.AddRange(control.FlattenTree());
             }
+            this.Children.Clear();
 
             return flattenTree;
         }
