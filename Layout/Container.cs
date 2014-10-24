@@ -31,6 +31,7 @@ namespace Tasslehoff.Library.Layout
     /// </summary>
     [Serializable]
     [DataContract]
+    [LayoutProperties(Icon = "th-large")]
     public class Container : LayoutControl
     {
         // fields
@@ -42,21 +43,6 @@ namespace Tasslehoff.Library.Layout
         private string tagName = "div";
 
         // properties
-
-        /// <summary>
-        /// Gets icon
-        /// </summary>
-        /// <value>
-        /// Icon
-        /// </value>
-        [IgnoreDataMember]
-        public override string Icon
-        {
-            get
-            {
-                return "th-large";
-            }
-        }
         
         /// <summary>
         /// Gets or sets tag name

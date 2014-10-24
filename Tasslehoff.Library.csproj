@@ -64,6 +64,7 @@
     <Compile Include="DataAccess\DatabaseManagerConnection.cs" />
     <Compile Include="DataAccess\DatabaseManagerQuery.cs" />
     <Compile Include="DataAccess\DatabaseManager.cs" />
+    <Compile Include="Layout\LayoutPropertiesAttribute.cs" />
     <Compile Include="Layout\Html.cs" />
     <Compile Include="Layout\ILayoutAware.cs" />
     <Compile Include="Layout\LayoutControlConverter.cs" />

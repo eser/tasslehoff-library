@@ -30,7 +30,7 @@ namespace Tasslehoff.Library.Layout
     /// LayoutControlRegistry class.
     /// </summary>
     [ComVisible(false)]
-    public class LayoutControlRegistry : DictionaryBase<string, Type>
+    public class LayoutControlRegistry : DictionaryBase<string, LayoutPropertiesAttribute>
     {
         // fields
 
@@ -78,7 +78,17 @@ namespace Tasslehoff.Library.Layout
         public void Register<T>() where T : ILayoutControl, new()
         {
             Type type = typeof(T);
-            this.Add(type.Name, type);
+
+            object[] attributes = type.GetCustomAttributes(typeof(LayoutPropertiesAttribute), true);
+            foreach (object attribute in attributes)
+            {
+                LayoutPropertiesAttribute typeAttribute = (LayoutPropertiesAttribute)attribute;
+
+                typeAttribute.Type = type;
+
+                this.Add(type.Name, typeAttribute);
+                break;
+            }
         }
 
         /// <summary>
@@ -88,12 +98,17 @@ namespace Tasslehoff.Library.Layout
         /// <returns>Created instance</returns>
         public ILayoutControl Create(string key)
         {
-            Type type = this[key];
+            LayoutPropertiesAttribute layoutProperties = this[key];
 
-            ILayoutControl instance = Activator.CreateInstance(type) as ILayoutControl;
+            ILayoutControl instance = Activator.CreateInstance(layoutProperties.Type) as ILayoutControl;
             return instance;
         }
 
+        /// <summary>
+        /// Imports Json
+        /// </summary>
+        /// <param name="json">Json string</param>
+        /// <returns>ILayoutControl implementation</returns>
         public ILayoutControl ImportJson(string json)
         {
             JsonSerializerSettings settings = SerializationUtils.GetSerializerSettings();

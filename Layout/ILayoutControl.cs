@@ -65,14 +65,6 @@ namespace Tasslehoff.Library.Layout
         string Description { get; }
 
         /// <summary>
-        /// Gets icon
-        /// </summary>
-        /// <value>
-        /// Icon
-        /// </value>
-        string Icon { get; }
-
-        /// <summary>
         /// Gets or sets child objects
         /// </summary>
         /// <value>

@@ -39,28 +39,24 @@ namespace Tasslehoff.Library.Layout
         /// <summary>
         /// Tree Id
         /// </summary>
-        [NonSerialized]
         [IgnoreDataMember]
         private Guid treeId;
 
         /// <summary>
         /// Parent Tree Id
         /// </summary>
-        [NonSerialized]
         [IgnoreDataMember]
         private Guid parentTreeId;
 
         /// <summary>
         /// Type
         /// </summary>
-        [NonSerialized]
         [IgnoreDataMember]
         private readonly string type;
 
         /// <summary>
         /// Parameters
         /// </summary>
-        [NonSerialized]
         [IgnoreDataMember]
         private Dictionary<string, object> parameters;
 
@@ -103,6 +99,7 @@ namespace Tasslehoff.Library.Layout
         /// <summary>
         /// The webcontrol
         /// </summary>
+        [NonSerialized]
         [IgnoreDataMember]
         private WebUI.Control webControl;
 

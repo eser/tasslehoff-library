@@ -48,7 +48,6 @@ namespace Tasslehoff.Library.DataAccess
         /// <summary>
         /// Database instances
         /// </summary>
-        [NonSerialized]
         [IgnoreDataMember]
         private Dictionary<string, Database> databaseInstances;
 

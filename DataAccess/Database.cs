@@ -26,11 +26,14 @@ namespace Tasslehoff.Library.DataAccess
     using System.Data;
     using System.Data.Common;
     using System.Diagnostics.CodeAnalysis;
+    using System.Runtime.Serialization;
     using Tasslehoff.Library.DataEntities;
 
     /// <summary>
     /// Database class.
     /// </summary>
+    [Serializable]
+    [DataContract]
     public class Database
     {
         // constants
@@ -43,13 +46,21 @@ namespace Tasslehoff.Library.DataAccess
         // fields
 
         /// <summary>
+        /// The database driver
+        /// </summary>
+        [DataMember]
+        private string databaseDriver;
+
+        /// <summary>
         /// The connection string
         /// </summary>
-        private readonly string connectionString;
+        [DataMember]
+        private string connectionString;
 
         /// <summary>
         /// The database provider factory
         /// </summary>
+        [NonSerialized]
         private DbProviderFactory providerFactory;
 
         // constructors
@@ -61,11 +72,25 @@ namespace Tasslehoff.Library.DataAccess
         /// <param name="connectionString">The connection string</param>
         public Database(string databaseDriver, string connectionString)
         {
-            this.providerFactory = DbProviderFactories.GetFactory(databaseDriver);
+            this.databaseDriver = databaseDriver;
             this.connectionString = connectionString;
         }
 
         // methods
+
+        /// <summary>
+        /// Gets the factory.
+        /// </summary>
+        /// <returns>The database factory class of the database driver</returns>
+        public DbProviderFactory GetFactory()
+        {
+            if (this.providerFactory == null)
+            {
+                this.providerFactory = DbProviderFactories.GetFactory(databaseDriver);
+            }
+
+            return this.providerFactory;
+        }
 
         /// <summary>
         /// Gets the connection.
@@ -74,7 +99,7 @@ namespace Tasslehoff.Library.DataAccess
         /// <exception cref="System.NotImplementedException">If connection could not be created.</exception>
         public DbConnection GetConnection()
         {
-            DbConnection connection = this.providerFactory.CreateConnection();
+            DbConnection connection = this.GetFactory().CreateConnection();
             if (connection == null)
             {
                 throw new NotImplementedException();
@@ -123,7 +148,7 @@ namespace Tasslehoff.Library.DataAccess
         /// <exception cref="System.NotImplementedException">If parameter object could not be created.</exception>
         public DbParameter GetParameter(string name, object value)
         {
-            DbParameter result = this.providerFactory.CreateParameter();
+            DbParameter result = this.GetFactory().CreateParameter();
             if (result == null)
             {
                 throw new NotImplementedException();

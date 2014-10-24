@@ -31,6 +31,7 @@ namespace Tasslehoff.Library.Layout
     /// </summary>
     [Serializable]
     [DataContract]
+    [LayoutProperties(Icon = "header")]
     public class Html : LayoutControl
     {
         // fields
@@ -54,21 +55,6 @@ namespace Tasslehoff.Library.Layout
         private bool encodeContents;
 
         // properties
-
-        /// <summary>
-        /// Gets icon
-        /// </summary>
-        /// <value>
-        /// Icon
-        /// </value>
-        [IgnoreDataMember]
-        public override string Icon
-        {
-            get
-            {
-                return "header";
-            }
-        }
 
         /// <summary>
         /// Gets or sets tag name
