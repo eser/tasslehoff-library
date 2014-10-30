@@ -35,6 +35,11 @@ namespace Tasslehoff.Library.Layout
         private Type type;
 
         /// <summary>
+        /// The display name
+        /// </summary>
+        private string displayName;
+
+        /// <summary>
         /// The icon
         /// </summary>
         private string icon;
@@ -67,6 +72,25 @@ namespace Tasslehoff.Library.Layout
             set
             {
                 this.type = value;
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the display name.
+        /// </summary>
+        /// <value>
+        /// The display name.
+        /// </value>
+        public string DisplayName
+        {
+            get
+            {
+                return this.displayName;
+            }
+
+            set
+            {
+                this.displayName = value;
             }
         }
 

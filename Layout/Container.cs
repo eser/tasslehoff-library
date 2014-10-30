@@ -31,7 +31,7 @@ namespace Tasslehoff.Library.Layout
     /// </summary>
     [Serializable]
     [DataContract]
-    [LayoutProperties(Icon = "th-large")]
+    [LayoutProperties(DisplayName = "Container", Icon = "th-large")]
     public class Container : LayoutControl
     {
         // fields

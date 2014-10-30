@@ -31,7 +31,7 @@ namespace Tasslehoff.Library.Layout
     /// </summary>
     [Serializable]
     [DataContract]
-    [LayoutProperties(Icon = "header")]
+    [LayoutProperties(DisplayName = "Html Content", Icon = "header")]
     public class Html : LayoutControl
     {
         // fields
