@@ -194,6 +194,11 @@ namespace Tasslehoff.Library.DataAccess
                 databaseKey = this.DefaultDatabaseKey;
             }
 
+            if (this.DatabaseInstances == null)
+            {
+                this.DatabaseInstances = new Dictionary<string, Database>();
+            }
+
             if (!this.DatabaseInstances.ContainsKey(databaseKey))
             {
                 DatabaseManagerConnection database = this.Connections[databaseKey];
@@ -260,24 +265,27 @@ namespace Tasslehoff.Library.DataAccess
         /// <param name="other">The other DatabaseManager instance</param>
         public void Merge(DatabaseManager other)
         {
-            foreach (KeyValuePair<string, DatabaseManagerConnection> pair in other.Connections)
+            if (other != null)
             {
-                this.Connections[pair.Key] = pair.Value;
-            }
+                foreach (KeyValuePair<string, DatabaseManagerConnection> pair in other.Connections)
+                {
+                    this.Connections[pair.Key] = pair.Value;
+                }
 
-            foreach (KeyValuePair<string, Database> pair in other.DatabaseInstances)
-            {
-                this.DatabaseInstances[pair.Key] = pair.Value;
-            }
+                foreach (KeyValuePair<string, Database> pair in other.DatabaseInstances)
+                {
+                    this.DatabaseInstances[pair.Key] = pair.Value;
+                }
 
-            foreach (KeyValuePair<string, DatabaseManagerQuery> pair in other.Queries)
-            {
-                this.Queries[pair.Key] = pair.Value;
-            }
+                foreach (KeyValuePair<string, DatabaseManagerQuery> pair in other.Queries)
+                {
+                    this.Queries[pair.Key] = pair.Value;
+                }
 
-            foreach (KeyValuePair<string, string> pair in other.QueryPlaceholders)
-            {
-                this.QueryPlaceholders[pair.Key] = pair.Value;
+                foreach (KeyValuePair<string, string> pair in other.QueryPlaceholders)
+                {
+                    this.QueryPlaceholders[pair.Key] = pair.Value;
+                }
             }
         }
 

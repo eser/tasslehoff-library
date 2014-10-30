@@ -28,7 +28,7 @@ namespace Tasslehoff.Library.Layout
     /// <summary>
     /// ILayoutControl interface.
     /// </summary>
-    public interface ILayoutControl : IDisposable
+    public interface ILayoutControl : IDisposable, ICloneable
     {
         // properties
 

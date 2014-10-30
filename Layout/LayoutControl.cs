@@ -550,6 +550,10 @@ namespace Tasslehoff.Library.Layout
             {
                 jsonOutputWriter.WriteProperty("Id", this.Id);
             }
+            if (this.StaticClientId != false)
+            {
+                jsonOutputWriter.WriteProperty("StaticClientId", this.StaticClientId);
+            }
 
             jsonOutputWriter.WriteLine();
 
@@ -610,10 +614,29 @@ namespace Tasslehoff.Library.Layout
         }
 
         /// <summary>
-        /// Occurs when [export].
+        /// Occurs when [get edit properties].
         /// </summary>
-        /// <param name="jsonOutputWriter">Json Output Writer</param>
+        /// <param name="properties">List of properties</param>
         public abstract void OnGetEditProperties(List<string> properties);
+
+        /// <summary>
+        /// Creates a new object that is a copy of the current instance.
+        /// </summary>
+        /// <returns>
+        /// A new object that is a copy of this instance.
+        /// </returns>
+        public object Clone()
+        {
+            LayoutControl clone = this.MemberwiseClone() as LayoutControl;
+
+            clone.Children.Clear();
+            foreach (ILayoutControl control in this.Children)
+            {
+                clone.Children.Add(control.Clone() as ILayoutControl);
+            }
+
+            return clone;
+        }
 
         /// <summary>
         /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.

@@ -256,6 +256,33 @@ namespace Tasslehoff.Library.Text
         }
 
         /// <summary>
+        /// Writes a complete raw Json property
+        /// </summary>
+        /// <param name="name">Name of the property</param>
+        /// <param name="value">Value of the property</param>
+        /// <param name="escape">Whether escaping is enabled or not</param>
+        public void WritePropertyRaw(string name, string value, bool escape = true)
+        {
+            this.WritePropertyName(name, escape);
+
+            int indentation = this.JsonTextWriter.Indentation;
+
+            string[] splitted = value.Split('\n');
+            StringBuilder newValue = new StringBuilder();
+            if (splitted.Length > 1)
+            {
+                newValue.AppendLine();
+            }
+            foreach (string line in splitted)
+            {
+                newValue.Append(new string(this.JsonTextWriter.IndentChar, indentation));
+                newValue.AppendLine(line.TrimEnd());
+            }
+
+            this.WriteValueRaw(newValue.ToString().TrimEnd());
+        }
+
+        /// <summary>
         /// Writes the name of a Json property
         /// </summary>
         /// <param name="name">Name of the property</param>
