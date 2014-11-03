@@ -49,6 +49,14 @@ namespace Tasslehoff.Library.Layout
         Guid ParentTreeId { get; set;  }
 
         /// <summary>
+        /// Gets or sets sort index
+        /// </summary>
+        /// <value>
+        /// Sort index
+        /// </value>
+        short SortIndex { get; set; }
+
+        /// <summary>
         /// Gets type
         /// </summary>
         /// <value>
@@ -147,6 +155,6 @@ namespace Tasslehoff.Library.Layout
         /// Gets editable properties
         /// </summary>
         /// <returns>List of properties</returns>
-        List<string> GetEditProperties();
+        Dictionary<string, string> GetEditProperties();
     }
 }

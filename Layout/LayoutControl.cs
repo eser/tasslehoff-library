@@ -23,6 +23,7 @@ namespace Tasslehoff.Library.Layout
     using System;
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
+    using System.Linq;
     using System.Runtime.Serialization;
     using Tasslehoff.Library.Text;
     using WebUI = System.Web.UI;
@@ -47,6 +48,12 @@ namespace Tasslehoff.Library.Layout
         /// </summary>
         [IgnoreDataMember]
         private Guid parentTreeId;
+
+        /// <summary>
+        /// Sort Index
+        /// </summary>
+        [IgnoreDataMember]
+        private short sortIndex;
 
         /// <summary>
         /// Type
@@ -169,6 +176,25 @@ namespace Tasslehoff.Library.Layout
         }
 
         /// <summary>
+        /// Gets or sets sort index
+        /// </summary>
+        /// <value>
+        /// Sort index
+        /// </value>
+        [IgnoreDataMember]
+        public virtual short SortIndex
+        {
+            get
+            {
+                return this.sortIndex;
+            }
+            set
+            {
+                this.sortIndex = value;
+            }
+        }
+
+        /// <summary>
         /// Gets type
         /// </summary>
         /// <value>
@@ -194,7 +220,7 @@ namespace Tasslehoff.Library.Layout
         {
             get
             {
-                return this.Type;
+                return null;
             }
         }
 
@@ -511,9 +537,11 @@ namespace Tasslehoff.Library.Layout
         {
             this.TreeId = (isRoot) ? Guid.Empty : Guid.NewGuid();
 
+            short idx = 0;
             foreach (ILayoutControl control in this.Children)
             {
                 control.ParentTreeId = this.TreeId;
+                control.SortIndex = idx++;
                 control.MakeTree();
             }
         }
@@ -579,7 +607,7 @@ namespace Tasslehoff.Library.Layout
                 jsonOutputWriter.WritePropertyName("Children");
 
                 jsonOutputWriter.WriteStartArray();
-                foreach (ILayoutControl control in this.Children)
+                foreach (ILayoutControl control in this.Children.OrderBy((x) => x.SortIndex))
                 {
                     control.Export(jsonOutputWriter);
                 }
@@ -599,14 +627,14 @@ namespace Tasslehoff.Library.Layout
         /// Gets editable properties
         /// </summary>
         /// <returns>List of properties</returns>
-        public virtual List<string> GetEditProperties()
+        public virtual Dictionary<string, string> GetEditProperties()
         {
-            List<string> properties = new List<string>();
-            properties.Add("Id");
-            properties.Add("StaticClientId");
-            properties.Add("CssClass");
-            properties.Add("Span");
-            properties.Add("Offset");
+            Dictionary<string, string> properties = new Dictionary<string, string>();
+            properties.Add("Id", "Id");
+            properties.Add("StaticClientId", "Static Client Id");
+            properties.Add("CssClass", "Css Class");
+            properties.Add("Span", "Span");
+            properties.Add("Offset", "Offset");
 
             this.OnGetEditProperties(properties);
 
@@ -617,7 +645,7 @@ namespace Tasslehoff.Library.Layout
         /// Occurs when [get edit properties].
         /// </summary>
         /// <param name="properties">List of properties</param>
-        public abstract void OnGetEditProperties(List<string> properties);
+        public abstract void OnGetEditProperties(Dictionary<string, string> properties);
 
         /// <summary>
         /// Creates a new object that is a copy of the current instance.

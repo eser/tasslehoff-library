@@ -126,10 +126,10 @@ namespace Tasslehoff.Library.Layout
         /// Occurs when [export].
         /// </summary>
         /// <param name="jsonOutputWriter">Json Output Writer</param>
-        public override void OnGetEditProperties(List<string> properties)
+        public override void OnGetEditProperties(Dictionary<string, string> properties)
         {
-            properties.Add("TagName");
-            properties.Add("Title");
+            properties.Add("TagName", "Tag Name");
+            properties.Add("Title", "Title");
         }
     }
 }
