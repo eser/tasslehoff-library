@@ -61,6 +61,10 @@
     <Compile Include="Collections\DictionaryBase{TKey1,TKey2,T}.cs" />
     <Compile Include="Config\Config.cs" />
     <Compile Include="Config\ConfigRegistry.cs" />
+    <Compile Include="DataAccess\CustomDataSourceExecuteSelectEventArgs.cs" />
+    <Compile Include="DataAccess\CustomDataSourceExecuteDeleteEventArgs.cs" />
+    <Compile Include="DataAccess\CustomDataSourceExecuteUpdateEventArgs.cs" />
+    <Compile Include="DataAccess\CustomDataSourceExecuteInsertEventArgs.cs" />
     <Compile Include="DataAccess\DatabaseManagerConnection.cs" />
     <Compile Include="DataAccess\DatabaseManagerQuery.cs" />
     <Compile Include="DataAccess\DatabaseManager.cs" />

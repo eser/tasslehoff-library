@@ -38,28 +38,6 @@ namespace Tasslehoff.Library.DataAccess
 
         private const string DefaultViewName = "";
 
-        // events
-
-        /// <summary>
-        ///  Occurs when a data source control has changed in some way that affects data-bound controls.
-        /// </summary>
-#pragma warning disable 0067
-        public event EventHandler DataSourceChanged;
-#pragma warning restore 0067
-
-        /// <summary>
-        /// Occurs when a data field fails to validate.
-        /// </summary>
-#pragma warning disable 0067
-        public event EventHandler<DynamicValidatorEventArgs> Exception;
-#pragma warning restore 0067
-
-        /// <summary>
-        /// Before select query.
-        /// </summary>
-        public event EventHandler BeforeSelectQuery;
-
-
         // fields
 
         /// <summary>
@@ -78,9 +56,19 @@ namespace Tasslehoff.Library.DataAccess
         private DataQuery selectQuery = null;
 
         /// <summary>
+        /// Field list for select queries.
+        /// </summary>
+        // private string[] selectFields = null;
+
+        /// <summary>
         /// Data query object for paged select queries.
         /// </summary>
         private DataQuery selectPagedQuery = null;
+
+        /// <summary>
+        /// Field list for paged select queries.
+        /// </summary>
+        // private string[] selectPagedFields = null;
 
         /// <summary>
         /// Data query object for select count queries.
@@ -88,9 +76,19 @@ namespace Tasslehoff.Library.DataAccess
         private DataQuery selectCountQuery = null;
 
         /// <summary>
+        /// Field list for select count queries.
+        /// </summary>
+        // private string[] selectCountFields = null;
+
+        /// <summary>
         /// Data query object for insert queries.
         /// </summary>
         private DataQuery insertQuery = null;
+
+        /// <summary>
+        /// Field list for insert queries.
+        /// </summary>
+        private string[] insertFields = null;
 
         /// <summary>
         /// Data query object for update queries.
@@ -98,9 +96,19 @@ namespace Tasslehoff.Library.DataAccess
         private DataQuery updateQuery = null;
 
         /// <summary>
+        /// Field list for update queries.
+        /// </summary>
+        private string[] updateFields = null;
+
+        /// <summary>
         /// Data query object for delete queries.
         /// </summary>
         private DataQuery deleteQuery = null;
+
+        /// <summary>
+        /// Field list for delete queries.
+        /// </summary>
+        // private string[] deleteFields = null;
 
         /// <summary>
         /// Primary key field for the data source.
@@ -166,6 +174,42 @@ namespace Tasslehoff.Library.DataAccess
             this.dataSourceViews = new Dictionary<string, DataSourceView>();
         }
 
+        // events
+
+        /// <summary>
+        ///  Occurs when a data source control has changed in some way that affects data-bound controls.
+        /// </summary>
+#pragma warning disable 0067
+        public event EventHandler DataSourceChanged;
+#pragma warning restore 0067
+
+        /// <summary>
+        /// Occurs when a data field fails to validate.
+        /// </summary>
+#pragma warning disable 0067
+        public event EventHandler<DynamicValidatorEventArgs> Exception;
+#pragma warning restore 0067
+
+        /// <summary>
+        /// Before select query.
+        /// </summary>
+        public event EventHandler<CustomDataSourceExecuteSelectEventArgs> OnExecuteSelect;
+        
+        /// <summary>
+        /// Occurs when [on execute insert].
+        /// </summary>
+        public event EventHandler<CustomDataSourceExecuteInsertEventArgs> OnExecuteInsert;
+
+        /// <summary>
+        /// Occurs when [on execute update].
+        /// </summary>
+        public event EventHandler<CustomDataSourceExecuteUpdateEventArgs> OnExecuteUpdate;
+
+        /// <summary>
+        /// Occurs when [on execute delete].
+        /// </summary>
+        public event EventHandler<CustomDataSourceExecuteDeleteEventArgs> OnExecuteDelete;
+
         // properties
 
         /// <summary>
@@ -229,6 +273,21 @@ namespace Tasslehoff.Library.DataAccess
         }
 
         /// <summary>
+        /// Gets or Sets the field list for insert queries.
+        /// </summary>
+        public string[] InsertFields
+        {
+            get
+            {
+                return this.insertFields;
+            }
+            set
+            {
+                this.insertFields = value;
+            }
+        }
+
+        /// <summary>
         /// Gets or Sets the data query object for update queries.
         /// </summary>
         public DataQuery UpdateQuery
@@ -241,7 +300,21 @@ namespace Tasslehoff.Library.DataAccess
             {
                 this.updateQuery = value;
             }
+        }
 
+        /// <summary>
+        /// Gets or Sets the field list for update queries.
+        /// </summary>
+        public string[] UpdateFields
+        {
+            get
+            {
+                return this.updateFields;
+            }
+            set
+            {
+                this.updateFields = value;
+            }
         }
 
         /// <summary>
@@ -444,14 +517,50 @@ namespace Tasslehoff.Library.DataAccess
         }
 
         /// <summary>
-        /// Invokes BeforeSelectQuery event.
+        /// Invokes ExecuteSelect event.
         /// </summary>
         /// <param name="e">The event arguments</param>
-        internal void InvokeBeforeSelectQuery(EventArgs e)
+        internal void InvokeExecuteSelect(CustomDataSourceExecuteSelectEventArgs e)
         {
-            if (this.BeforeSelectQuery != null)
+            if (this.OnExecuteSelect != null)
             {
-                this.BeforeSelectQuery(this, e);
+                this.OnExecuteSelect(this, e);
+            }
+        }
+
+        /// <summary>
+        /// Invokes ExecuteInsert event.
+        /// </summary>
+        /// <param name="e">The event arguments</param>
+        internal void InvokeExecuteInsert(CustomDataSourceExecuteInsertEventArgs e)
+        {
+            if (this.OnExecuteInsert != null)
+            {
+                this.OnExecuteInsert(this, e);
+            }
+        }
+
+        /// <summary>
+        /// Invokes ExecuteUpdate event.
+        /// </summary>
+        /// <param name="e">The event arguments</param>
+        internal void InvokeExecuteUpdate(CustomDataSourceExecuteUpdateEventArgs e)
+        {
+            if (this.OnExecuteUpdate != null)
+            {
+                this.OnExecuteUpdate(this, e);
+            }
+        }
+
+        /// <summary>
+        /// Invokes ExecuteDelete event.
+        /// </summary>
+        /// <param name="e">The event arguments</param>
+        internal void InvokeExecuteDelete(CustomDataSourceExecuteDeleteEventArgs e)
+        {
+            if (this.OnExecuteDelete != null)
+            {
+                this.OnExecuteDelete(this, e);
             }
         }
     }

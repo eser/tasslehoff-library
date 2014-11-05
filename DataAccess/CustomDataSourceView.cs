@@ -138,7 +138,7 @@ namespace Tasslehoff.Library.DataAccess
             DataQuery targetSelectQuery;
             DataQuery targetSelectCountQuery;
 
-            this.owner.InvokeBeforeSelectQuery(EventArgs.Empty);
+            this.owner.InvokeExecuteSelect(new CustomDataSourceExecuteSelectEventArgs(arguments));
 
             if (this.CanPage && this.owner.UsePagedQuery)
             {
@@ -197,6 +197,8 @@ namespace Tasslehoff.Library.DataAccess
                 return base.ExecuteInsert(values);
             }
 
+            this.owner.InvokeExecuteInsert(new CustomDataSourceExecuteInsertEventArgs(values));
+
             DataQuery targetQuery = this.owner.InsertQuery;
 
             List<string> queryPart1 = new List<string>();
@@ -205,7 +207,7 @@ namespace Tasslehoff.Library.DataAccess
             {
                 string key = entry.Key as string;
 
-                if (key == this.owner.PrimaryKeyField)
+                if (this.owner.InsertFields != null && Array.IndexOf(this.owner.InsertFields, key) != -1)
                 {
                     continue;
                 }
@@ -236,6 +238,8 @@ namespace Tasslehoff.Library.DataAccess
                 return base.ExecuteUpdate(keys, values, oldValues);
             }
 
+            this.owner.InvokeExecuteUpdate(new CustomDataSourceExecuteUpdateEventArgs(keys, values, oldValues));
+
             DataQuery targetQuery = this.owner.UpdateQuery
                 .AddParameters("ID", keys[this.owner.PrimaryKeyField]);
 
@@ -244,7 +248,7 @@ namespace Tasslehoff.Library.DataAccess
             {
                 string key = entry.Key as string;
 
-                if (key == this.owner.PrimaryKeyField)
+                if (this.owner.UpdateFields != null && Array.IndexOf(this.owner.UpdateFields, key) != -1)
                 {
                     continue;
                 }
@@ -271,6 +275,8 @@ namespace Tasslehoff.Library.DataAccess
             {
                 return base.ExecuteDelete(keys, oldValues);
             }
+
+            this.owner.InvokeExecuteDelete(new CustomDataSourceExecuteDeleteEventArgs(keys, oldValues));
 
             DataQuery targetQuery = this.owner.DeleteQuery
                 .AddParameters("ID", keys[this.owner.PrimaryKeyField]);
