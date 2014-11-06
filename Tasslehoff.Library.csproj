@@ -57,6 +57,7 @@
   <ItemGroup>
     <Compile Include="BaseException.cs" />
     <Compile Include="BaseException{T}.cs" />
+    <Compile Include="Collections\Translater.cs" />
     <Compile Include="Collections\SortedList{T}.cs" />
     <Compile Include="Collections\DictionaryBase{TKey1,TKey2,T}.cs" />
     <Compile Include="Config\Config.cs" />
