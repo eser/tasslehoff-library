@@ -34,7 +34,7 @@ namespace Tasslehoff.Library.Collections
     /// <typeparam name="T">Any object type can be stored in a collection</typeparam>
     [Serializable]
     [DataContract]
-    public class DictionaryBase<TKey, T> : IDictionary<TKey, T>
+    public class DictionaryBase<TKey, T> : IDictionary<TKey, T>, ICloneable
     {
         // fields
 
@@ -337,5 +337,17 @@ namespace Tasslehoff.Library.Collections
         {
             return this.GetEnumerator();
         }
+
+        /// <summary>
+        /// Creates a new object that is a copy of the current instance.
+        /// </summary>
+        /// <returns>
+        /// A new object that is a copy of this instance.
+        /// </returns>
+        public object Clone()
+        {
+            return this.MemberwiseClone();
+        }
+
     }
 }
