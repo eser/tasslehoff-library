@@ -23,7 +23,6 @@ namespace Tasslehoff.Library.Layout
     using System;
     using System.Collections.Generic;
     using Tasslehoff.Library.Text;
-    using WebUI = System.Web.UI;
 
     /// <summary>
     /// ILayoutControl interface.
@@ -118,7 +117,7 @@ namespace Tasslehoff.Library.Layout
         /// <value>
         /// Webcontrol
         /// </value>
-        WebUI.Control WebControl { get; }
+        object WebControl { get; }
 
         // methods
 

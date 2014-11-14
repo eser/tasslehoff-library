@@ -26,7 +26,6 @@ namespace Tasslehoff.Library.Layout
     using System.Linq;
     using System.Runtime.Serialization;
     using Tasslehoff.Library.Text;
-    using WebUI = System.Web.UI;
 
     /// <summary>
     /// LayoutControl class.
@@ -108,7 +107,7 @@ namespace Tasslehoff.Library.Layout
         /// </summary>
         [NonSerialized]
         [IgnoreDataMember]
-        private WebUI.Control webControl;
+        private object webControl;
 
         /// <summary>
         /// The disposed
@@ -380,7 +379,7 @@ namespace Tasslehoff.Library.Layout
         /// Webcontrol
         /// </value>
         [IgnoreDataMember]
-        public WebUI.Control WebControl
+        public object WebControl
         {
             get
             {
@@ -419,91 +418,6 @@ namespace Tasslehoff.Library.Layout
         /// Creates web control
         /// </summary>
         public abstract void CreateWebControl();
-
-        /// <summary>
-        /// Constructs class names for created element
-        /// </summary>
-        /// <returns>Class names</returns>
-        protected virtual string GetWebControlClassNames()
-        {
-            string classNames = this.CssClass ?? string.Empty;
-
-            if (this.Span != 0)
-            {
-                if (classNames.Length > 0)
-                {
-                    classNames += " ";
-                }
-
-                classNames += "col-xs-" + this.Span;
-            }
-
-            if (this.Offset != 0)
-            {
-                if (classNames.Length > 0)
-                {
-                    classNames += " ";
-                }
-
-                classNames += "col-xs-offset-" + this.Offset;
-            }
-
-            return classNames;
-        }
-
-        /// <summary>
-        /// Assigns attributes of the new created control
-        /// </summary>
-        /// <param name="createdControl">The created control</param>
-        /// <param name="attributes">The attributes property of created control</param>
-        protected virtual void AddWebControlAttributes(WebUI.Control control, WebUI.AttributeCollection attributes)
-        {
-            // attributes["id"] = this.Id;
-            if (!string.IsNullOrEmpty(this.Id))
-            {
-                control.ID = this.Id;
-            }
-
-            if (this.StaticClientId)
-            {
-                control.ClientIDMode = WebUI.ClientIDMode.Static;
-            }
-
-            string classNames = this.GetWebControlClassNames();
-            if (!string.IsNullOrEmpty(classNames))
-            {
-                attributes["class"] = classNames;
-            }
-        }
-
-        /// <summary>
-        /// Adds children web elements into new created control
-        /// </summary>
-        /// <param name="createdControl">The created control</param>
-        protected virtual void AddWebControlChildren(WebUI.Control createdControl)
-        {
-            foreach (ILayoutControl control in this.Children)
-            {
-                control.CreateWebControl();
-
-                if (control.WebControl != null)
-                {
-                    createdControl.Controls.Add(control.WebControl);
-                }
-            }
-        }
-
-        /// <summary>
-        /// Make the created control aware of layout system
-        /// </summary>
-        /// <param name="createdControl">The created control</param>
-        protected virtual void MakeWebControlAwareOf(WebUI.Control createdControl)
-        {
-            if (createdControl is ILayoutAware)
-            {
-                (createdControl as ILayoutAware).LayoutAwareness(this);
-            }
-        }
 
         /// <summary>
         /// Updates the control and its children with given parameters

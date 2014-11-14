@@ -71,7 +71,8 @@
     <Compile Include="DataAccess\DatabaseManagerQuery.cs" />
     <Compile Include="DataAccess\DatabaseManager.cs" />
     <Compile Include="Layout\LayoutPropertiesAttribute.cs" />
-    <Compile Include="Layout\Html.cs" />
+    <Compile Include="Layout\UI\Base.cs" />
+    <Compile Include="Layout\UI\Html.cs" />
     <Compile Include="Layout\ILayoutAware.cs" />
     <Compile Include="Layout\LayoutControlConverter.cs" />
     <Compile Include="Text\MultiFormatOutputWriterFormat.cs" />
@@ -96,7 +97,7 @@
     <Compile Include="DataEntities\DataEntity.cs" />
     <Compile Include="DataEntities\IDataEntity.cs" />
     <Compile Include="DataEntities\IDataEntityMap.cs" />
-    <Compile Include="Layout\Container.cs" />
+    <Compile Include="Layout\UI\Container.cs" />
     <Compile Include="Layout\LayoutControl.cs" />
     <Compile Include="Layout\LayoutControlRegistry.cs" />
     <Compile Include="Layout\ILayoutControl.cs" />
@@ -192,5 +193,7 @@
     <None Include="packages.config" />
     <None Include="Tasslehoff.Library.pfx" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Layout\Mvc\" />
+  </ItemGroup>
 </Project>

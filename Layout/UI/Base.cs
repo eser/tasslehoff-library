@@ -1,5 +1,5 @@
 ﻿// -----------------------------------------------------------------------
-// <copyright file="Html.cs" company="-">
+// <copyright file="Base.cs" company="-">
 // Copyright (c) 2013 larukedi (eser@sent.com). All rights reserved.
 // </copyright>
 // <author>larukedi (http://github.com/larukedi/)</author>
@@ -18,21 +18,21 @@
 //// You should have received a copy of the GNU General Public License
 //// along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-namespace Tasslehoff.Library.Layout
+namespace Tasslehoff.Library.Layout.UI
 {
     using System;
     using System.Collections.Generic;
     using System.Runtime.Serialization;
+    using System.Web.UI;
     using System.Web.UI.HtmlControls;
     using Tasslehoff.Library.Text;
 
     /// <summary>
-    /// Html class.
+    /// Container class.
     /// </summary>
     [Serializable]
     [DataContract]
-    [LayoutProperties(DisplayName = "Html Content", Icon = "header")]
-    public class Html : LayoutControl
+    public abstract class Base : LayoutControl
     {
         // fields
 
@@ -42,20 +42,8 @@ namespace Tasslehoff.Library.Layout
         [DataMember(Name = "TagName")]
         private string tagName = "div";
 
-        /// <summary>
-        /// Inner content
-        /// </summary>
-        [DataMember(Name = "InnerContent")]
-        private string innerContent;
-
-        /// <summary>
-        /// Whether encode contents or not
-        /// </summary>
-        [DataMember(Name = "EncodeContents")]
-        private bool encodeContents;
-
         // properties
-
+        
         /// <summary>
         /// Gets or sets tag name
         /// </summary>
@@ -74,46 +62,83 @@ namespace Tasslehoff.Library.Layout
                 this.tagName = value;
             }
         }
-
-        /// <summary>
-        /// Gets or sets inner content
-        /// </summary>
-        /// <value>
-        /// Inner content
-        /// </value>
-        [IgnoreDataMember]
-        public virtual string InnerContent
-        {
-            get
-            {
-                return this.innerContent;
-            }
-            set
-            {
-                this.innerContent = value;
-            }
-        }
-
-        /// <summary>
-        /// Gets or sets whether encode contents or not
-        /// </summary>
-        /// <value>
-        /// Whether encode contents or not
-        /// </value>
-        [IgnoreDataMember]
-        public virtual bool EncodeContents
-        {
-            get
-            {
-                return this.encodeContents;
-            }
-            set
-            {
-                this.encodeContents = value;
-            }
-        }
-
+        
         // methods
+
+        /// <summary>
+        /// Constructs class names for created element
+        /// </summary>
+        /// <returns>Class names</returns>
+        protected virtual string GetWebControlClassNames()
+        {
+            string classNames = this.CssClass ?? string.Empty;
+
+            if (this.Span != 0)
+            {
+                if (classNames.Length > 0)
+                {
+                    classNames += " ";
+                }
+
+                classNames += "col-xs-" + this.Span;
+            }
+
+            if (this.Offset != 0)
+            {
+                if (classNames.Length > 0)
+                {
+                    classNames += " ";
+                }
+
+                classNames += "col-xs-offset-" + this.Offset;
+            }
+
+            return classNames;
+        }
+
+        /// <summary>
+        /// Assigns attributes of the new created control
+        /// </summary>
+        /// <param name="createdControl">The created control</param>
+        /// <param name="attributes">The attributes property of created control</param>
+        protected virtual void AddWebControlAttributes(Control createdControl, AttributeCollection attributes)
+        {
+            if (!string.IsNullOrEmpty(this.Id))
+            {
+                createdControl.ID = this.Id;
+            }
+
+            if (this.StaticClientId)
+            {
+                createdControl.ClientIDMode = ClientIDMode.Static;
+            }
+
+            if (attributes != null)
+            {
+                string classNames = this.GetWebControlClassNames();
+                if (!string.IsNullOrEmpty(classNames))
+                {
+                    attributes["class"] = classNames;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Adds children web elements into new created control
+        /// </summary>
+        /// <param name="createdControl">The created control</param>
+        protected virtual void AddWebControlChildren(Control createdControl)
+        {
+            foreach (ILayoutControl control in this.Children)
+            {
+                control.CreateWebControl();
+
+                if (control.WebControl != null)
+                {
+                    createdControl.Controls.Add(control.WebControl as Control);
+                }
+            }
+        }
 
         /// <summary>
         /// Creates web control
@@ -121,22 +146,9 @@ namespace Tasslehoff.Library.Layout
         public override void CreateWebControl()
         {
             HtmlGenericControl element = new HtmlGenericControl(this.TagName);
+
             this.AddWebControlAttributes(element, element.Attributes);
-
             this.AddWebControlChildren(element);
-            if (element.Controls.Count == 0)
-            {
-                if (this.EncodeContents)
-                {
-                    element.InnerText = this.InnerContent;
-                }
-                else
-                {
-                    element.InnerHtml = this.InnerContent;
-                }
-            }
-
-            this.MakeWebControlAwareOf(element);
 
             this.WebControl = element;
         }
@@ -147,21 +159,9 @@ namespace Tasslehoff.Library.Layout
         /// <param name="jsonOutputWriter">Json Output Writer</param>
         public override void OnExport(MultiFormatOutputWriter jsonOutputWriter)
         {
-            // base.OnExport(jsonOutputWriter);
-
             if (this.TagName != "div")
             {
                 jsonOutputWriter.WriteProperty("TagName", this.TagName);
-            }
-
-            if (this.EncodeContents != false)
-            {
-                jsonOutputWriter.WriteProperty("EncodeContents", this.EncodeContents);
-            }
-
-            if (!string.IsNullOrEmpty(this.InnerContent))
-            {
-                jsonOutputWriter.WriteProperty("InnerContent", this.InnerContent);
             }
         }
 
@@ -172,8 +172,6 @@ namespace Tasslehoff.Library.Layout
         public override void OnGetEditProperties(Dictionary<string, string> properties)
         {
             properties.Add("TagName", "Tag Name");
-            properties.Add("InnerContent", "Inner Content");
-            properties.Add("EncodeContents", "Encode Contents");
         }
     }
 }
