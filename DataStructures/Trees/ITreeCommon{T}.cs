@@ -28,14 +28,6 @@ namespace Tasslehoff.Library.DataStructures.Trees
     {
         // properties
 
-        /// <summary>
-        /// Gets or sets sort index
-        /// </summary>
-        /// <value>
-        /// Sort index
-        /// </value>
-        short SortIndex { get; set; }
-
         /*
         /// <summary>
         /// Gets or sets value

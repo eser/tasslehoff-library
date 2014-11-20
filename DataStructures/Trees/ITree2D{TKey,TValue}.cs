@@ -46,6 +46,14 @@ namespace Tasslehoff.Library.DataStructures.Trees
         /// </value>
         TKey ParentTreeId { get; set; }
 
+        /// <summary>
+        /// Gets or sets sort index
+        /// </summary>
+        /// <value>
+        /// Sort index
+        /// </value>
+        short SortIndex { get; set; }
+
         // methods
 
         /// <summary>
