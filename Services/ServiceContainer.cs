@@ -1,8 +1,9 @@
 // -----------------------------------------------------------------------
 // <copyright file="ServiceContainer.cs" company="-">
-// Copyright (c) 2013 larukedi (eser@sent.com). All rights reserved.
+// Copyright (c) 2014 Eser Ozvataf (eser@sent.com). All rights reserved.
+// Web: http://eser.ozvataf.com/ GitHub: http://github.com/larukedi
 // </copyright>
-// <author>larukedi (http://github.com/larukedi/)</author>
+// <author>Eser Ozvataf (eser@sent.com)</author>
 // -----------------------------------------------------------------------
 
 //// This program is free software: you can redistribute it and/or modify
@@ -23,8 +24,8 @@ namespace Tasslehoff.Library.Services
     using System;
     using System.Collections.Generic;
     using System.Globalization;
+    using Tasslehoff.Library.Helpers;
     using Tasslehoff.Library.Logger;
-    using Tasslehoff.Library.Utils;
 
     /// <summary>
     /// ServiceContainer class.
@@ -131,7 +132,7 @@ namespace Tasslehoff.Library.Services
                 }
                 
                 // stop children
-                IService[] childServices = ArrayUtils.GetArray<IService>(this.children.Values);
+                IService[] childServices = ArrayHelpers.GetArray<IService>(this.children.Values);
                 Array.Reverse(childServices);
 
                 foreach (IService child in childServices)
@@ -159,7 +160,7 @@ namespace Tasslehoff.Library.Services
         /// <param name="releaseManagedResources"><c>true</c> to release both managed and unmanaged resources; <c>false</c> to release only unmanaged resources</param>
         protected override void OnDispose(bool releaseManagedResources)
         {
-            IService[] childServices = ArrayUtils.GetArray<IService>(this.children.Values);
+            IService[] childServices = ArrayHelpers.GetArray<IService>(this.children.Values);
             Array.Reverse(childServices);
 
             foreach (IService child in childServices)

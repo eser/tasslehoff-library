@@ -1,8 +1,9 @@
 // -----------------------------------------------------------------------
-// <copyright file="MimeUtils.cs" company="-">
-// Copyright (c) 2013 larukedi (eser@sent.com). All rights reserved.
+// <copyright file="MimeHelpers.cs" company="-">
+// Copyright (c) 2014 Eser Ozvataf (eser@sent.com). All rights reserved.
+// Web: http://eser.ozvataf.com/ GitHub: http://github.com/larukedi
 // </copyright>
-// <author>larukedi (http://github.com/larukedi/)</author>
+// <author>Eser Ozvataf (eser@sent.com)</author>
 // -----------------------------------------------------------------------
 
 //// This program is free software: you can redistribute it and/or modify
@@ -18,7 +19,7 @@
 //// You should have received a copy of the GNU General Public License
 //// along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-namespace Tasslehoff.Library.Utils
+namespace Tasslehoff.Library.Helpers
 {
     using System;
     using System.Collections.Generic;
@@ -26,7 +27,7 @@ namespace Tasslehoff.Library.Utils
     /// <summary>
     /// MimeUtils class.
     /// </summary>
-    public static class MimeUtils
+    public static class MimeHelpers
     {
         // fields
 
@@ -611,7 +612,7 @@ namespace Tasslehoff.Library.Utils
         {
             get
             {
-                return MimeUtils.mappings;
+                return MimeHelpers.mappings;
             }
         }
 
@@ -632,7 +633,7 @@ namespace Tasslehoff.Library.Utils
             }
 
             string mime;
-            return MimeUtils.mappings.TryGetValue(extension, out mime) ? mime : defaultMimetype;
+            return MimeHelpers.mappings.TryGetValue(extension, out mime) ? mime : defaultMimetype;
         }
 
         /// <summary>

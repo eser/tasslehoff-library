@@ -1,8 +1,9 @@
 // -----------------------------------------------------------------------
 // <copyright file="DataEntityMap{T}.cs" company="-">
-// Copyright (c) 2013 larukedi (eser@sent.com). All rights reserved.
+// Copyright (c) 2014 Eser Ozvataf (eser@sent.com). All rights reserved.
+// Web: http://eser.ozvataf.com/ GitHub: http://github.com/larukedi
 // </copyright>
-// <author>larukedi (http://github.com/larukedi/)</author>
+// <author>Eser Ozvataf (eser@sent.com)</author>
 // -----------------------------------------------------------------------
 
 //// This program is free software: you can redistribute it and/or modify
@@ -26,8 +27,8 @@ namespace Tasslehoff.Library.DataEntities
     using System.Data;
     using System.Reflection;
     using System.Runtime.InteropServices;
-    using Tasslehoff.Library.Collections;
-    using Tasslehoff.Library.Utils;
+    using Tasslehoff.Library.DataStructures.Collections;
+    using Tasslehoff.Library.Helpers;
 
     /// <summary>
     /// DataEntityMap class.
@@ -64,7 +65,7 @@ namespace Tasslehoff.Library.DataEntities
                     }
 
                     fieldAttribute.ClassMember = member;
-                    fieldAttribute.Type = VariableUtils.GetMemberType(member);
+                    fieldAttribute.Type = VariableHelpers.GetMemberType(member);
 
                     this.Add(fieldAttribute.FieldName, fieldAttribute);
                 }
@@ -87,7 +88,7 @@ namespace Tasslehoff.Library.DataEntities
 
             foreach (DataEntityFieldAttribute fieldAttribute in this.Values)
             {
-                object value = VariableUtils.ReadMemberValue(fieldAttribute.ClassMember, instance, fieldAttribute.EnumAsString);
+                object value = VariableHelpers.ReadMemberValue(fieldAttribute.ClassMember, instance, fieldAttribute.EnumAsString);
 
                 if (fieldAttribute.Serializer != null)
                 {
@@ -139,7 +140,7 @@ namespace Tasslehoff.Library.DataEntities
                     fieldValue = FieldSerializers.Get(attribute.Serializer).Deserializer(fieldValue);
                 }
 
-                VariableUtils.WriteMemberValue(attribute.ClassMember, instance, fieldValue, attribute.EnumAsString);
+                VariableHelpers.WriteMemberValue(attribute.ClassMember, instance, fieldValue, attribute.EnumAsString);
             }
 
             return instance;

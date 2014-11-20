@@ -1,8 +1,9 @@
 // -----------------------------------------------------------------------
-// <copyright file="IOUtils.cs" company="-">
-// Copyright (c) 2013 larukedi (eser@sent.com). All rights reserved.
+// <copyright file="IOHelpers.cs" company="-">
+// Copyright (c) 2014 Eser Ozvataf (eser@sent.com). All rights reserved.
+// Web: http://eser.ozvataf.com/ GitHub: http://github.com/larukedi
 // </copyright>
-// <author>larukedi (http://github.com/larukedi/)</author>
+// <author>Eser Ozvataf (eser@sent.com)</author>
 // -----------------------------------------------------------------------
 
 //// This program is free software: you can redistribute it and/or modify
@@ -18,7 +19,7 @@
 //// You should have received a copy of the GNU General Public License
 //// along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-namespace Tasslehoff.Library.Utils
+namespace Tasslehoff.Library.Helpers
 {
     using System;
     using System.IO;
@@ -26,7 +27,7 @@ namespace Tasslehoff.Library.Utils
     /// <summary>
     /// IOUtils class.
     /// </summary>
-    public static class IOUtils
+    public static class IOHelpers
     {
         // methods
 

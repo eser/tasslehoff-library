@@ -1,8 +1,9 @@
 // -----------------------------------------------------------------------
 // <copyright file="SortedList{T}.cs" company="-">
-// Copyright (c) 2013 larukedi (eser@sent.com). All rights reserved.
+// Copyright (c) 2014 Eser Ozvataf (eser@sent.com). All rights reserved.
+// Web: http://eser.ozvataf.com/ GitHub: http://github.com/larukedi
 // </copyright>
-// <author>larukedi (http://github.com/larukedi/)</author>
+// <author>Eser Ozvataf (eser@sent.com)</author>
 // -----------------------------------------------------------------------
 
 //// This program is free software: you can redistribute it and/or modify
@@ -18,7 +19,7 @@
 //// You should have received a copy of the GNU General Public License
 //// along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-namespace Tasslehoff.Library.Collections
+namespace Tasslehoff.Library.DataStructures.Collections
 {
     using System;
     using System.Collections;

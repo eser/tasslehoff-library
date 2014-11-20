@@ -1,8 +1,9 @@
 // -----------------------------------------------------------------------
 // <copyright file="WebServiceManager.cs" company="-">
-// Copyright (c) 2013 larukedi (eser@sent.com). All rights reserved.
+// Copyright (c) 2014 Eser Ozvataf (eser@sent.com). All rights reserved.
+// Web: http://eser.ozvataf.com/ GitHub: http://github.com/larukedi
 // </copyright>
-// <author>larukedi (http://github.com/larukedi/)</author>
+// <author>Eser Ozvataf (eser@sent.com)</author>
 // -----------------------------------------------------------------------
 
 //// This program is free software: you can redistribute it and/or modify
@@ -24,8 +25,8 @@ namespace Tasslehoff.Library.WebServices
     using System.Collections.Generic;
     using System.Collections.ObjectModel;
     using System.ServiceModel.Web;
+    using Tasslehoff.Library.Helpers;
     using Tasslehoff.Library.Services;
-    using Tasslehoff.Library.Utils;
 
     /// <summary>
     /// WebServiceManager class.
@@ -187,7 +188,7 @@ namespace Tasslehoff.Library.WebServices
         /// </summary>
         protected override void ServiceStop()
         {
-            WebServiceHost[] serviceHosts = ArrayUtils.GetArray<WebServiceHost>(this.serviceHosts.Values);
+            WebServiceHost[] serviceHosts = ArrayHelpers.GetArray<WebServiceHost>(this.serviceHosts.Values);
             Array.Reverse(serviceHosts);
 
             foreach (WebServiceHost serviceHost in serviceHosts)

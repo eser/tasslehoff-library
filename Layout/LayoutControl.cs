@@ -1,8 +1,9 @@
 ﻿// -----------------------------------------------------------------------
 // <copyright file="LayoutControl.cs" company="-">
-// Copyright (c) 2013 larukedi (eser@sent.com). All rights reserved.
+// Copyright (c) 2014 Eser Ozvataf (eser@sent.com). All rights reserved.
+// Web: http://eser.ozvataf.com/ GitHub: http://github.com/larukedi
 // </copyright>
-// <author>larukedi (http://github.com/larukedi/)</author>
+// <author>Eser Ozvataf (eser@sent.com)</author>
 // -----------------------------------------------------------------------
 
 //// This program is free software: you can redistribute it and/or modify
@@ -70,7 +71,7 @@ namespace Tasslehoff.Library.Layout
         /// Child objects
         /// </summary>
         [DataMember(Name = "Children")]
-        private List<ILayoutControl> children;
+        private IList<ILayoutControl> children;
 
         /// <summary>
         /// Id
@@ -264,7 +265,7 @@ namespace Tasslehoff.Library.Layout
         /// Child objects
         /// </value>
         [IgnoreDataMember]
-        public virtual List<ILayoutControl> Children
+        public virtual IList<ILayoutControl> Children
         {
             get
             {

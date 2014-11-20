@@ -1,8 +1,9 @@
 // -----------------------------------------------------------------------
-// <copyright file="RandomUtils.cs" company="-">
-// Copyright (c) 2013 larukedi (eser@sent.com). All rights reserved.
+// <copyright file="RandomHelpers.cs" company="-">
+// Copyright (c) 2014 Eser Ozvataf (eser@sent.com). All rights reserved.
+// Web: http://eser.ozvataf.com/ GitHub: http://github.com/larukedi
 // </copyright>
-// <author>larukedi (http://github.com/larukedi/)</author>
+// <author>Eser Ozvataf (eser@sent.com)</author>
 // -----------------------------------------------------------------------
 
 //// This program is free software: you can redistribute it and/or modify
@@ -18,7 +19,7 @@
 //// You should have received a copy of the GNU General Public License
 //// along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-namespace Tasslehoff.Library.Utils
+namespace Tasslehoff.Library.Helpers
 {
     using System;
     using System.Text;
@@ -26,7 +27,7 @@ namespace Tasslehoff.Library.Utils
     /// <summary>
     /// RandomUtils class.
     /// </summary>
-    public static class RandomUtils
+    public static class RandomHelpers
     {
         // fields
 
@@ -38,11 +39,11 @@ namespace Tasslehoff.Library.Utils
         // constructors
 
         /// <summary>
-        /// Initializes static members of the <see cref="RandomUtils"/> class.
+        /// Initializes static members of the <see cref="RandomHelpers"/> class.
         /// </summary>
-        static RandomUtils()
+        static RandomHelpers()
         {
-            RandomUtils.randomObject = new Random();
+            RandomHelpers.randomObject = new Random();
         }
 
         // properties
@@ -57,12 +58,12 @@ namespace Tasslehoff.Library.Utils
         {
             get
             {
-                return RandomUtils.randomObject;
+                return RandomHelpers.randomObject;
             }
 
             set
             {
-                RandomUtils.randomObject = value;
+                RandomHelpers.randomObject = value;
             }
         }
 
@@ -78,7 +79,7 @@ namespace Tasslehoff.Library.Utils
 
             for (int i = 0; i < seed.Length; i++)
             {
-                seed[i] = (byte)RandomUtils.randomObject.Next(255);
+                seed[i] = (byte)RandomHelpers.randomObject.Next(255);
             }
 
             return new Guid(seed);
@@ -92,7 +93,7 @@ namespace Tasslehoff.Library.Utils
         /// <returns>Generated number</returns>
         public static int RandomNumber(int min, int max)
         {
-            return RandomUtils.RandomNumber(RandomUtils.randomObject, min, max);
+            return RandomHelpers.RandomNumber(RandomHelpers.randomObject, min, max);
         }
 
         /// <summary>
@@ -114,7 +115,7 @@ namespace Tasslehoff.Library.Utils
         /// <returns>Generated string</returns>
         public static string RandomString(int size)
         {
-            return RandomUtils.RandomString(RandomUtils.randomObject, size);
+            return RandomHelpers.RandomString(RandomHelpers.randomObject, size);
         }
 
         /// <summary>

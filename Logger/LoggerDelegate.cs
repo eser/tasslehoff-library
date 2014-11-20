@@ -1,8 +1,9 @@
 // -----------------------------------------------------------------------
 // <copyright file="LoggerDelegate.cs" company="-">
-// Copyright (c) 2013 larukedi (eser@sent.com). All rights reserved.
+// Copyright (c) 2014 Eser Ozvataf (eser@sent.com). All rights reserved.
+// Web: http://eser.ozvataf.com/ GitHub: http://github.com/larukedi
 // </copyright>
-// <author>larukedi (http://github.com/larukedi/)</author>
+// <author>Eser Ozvataf (eser@sent.com)</author>
 // -----------------------------------------------------------------------
 
 //// This program is free software: you can redistribute it and/or modify
@@ -23,7 +24,7 @@ namespace Tasslehoff.Library.Logger
     using System;
     using System.Diagnostics.CodeAnalysis;
     using System.Text;
-    using Tasslehoff.Library.Utils;
+    using Tasslehoff.Library.Helpers;
 
     /// <summary>
     /// A delegate for the Logger instance.
@@ -267,7 +268,7 @@ namespace Tasslehoff.Library.Logger
         /// <param name="releaseManagedResources"><c>true</c> to release both managed and unmanaged resources; <c>false</c> to release only unmanaged resources</param>
         protected virtual void OnDispose(bool releaseManagedResources)
         {
-            VariableUtils.CheckAndDispose<Logger>(ref this.assignedLogger);
+            VariableHelpers.CheckAndDispose<Logger>(ref this.assignedLogger);
         }
         
         /// <summary>

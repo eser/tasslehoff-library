@@ -1,5 +1,5 @@
 ﻿// -----------------------------------------------------------------------
-// <copyright file="CustomDataSourceExecuteSelectEventArgs.cs" company="-">
+// <copyright file="ITree2D{TKey,TValue}.cs" company="-">
 // Copyright (c) 2014 Eser Ozvataf (eser@sent.com). All rights reserved.
 // Web: http://eser.ozvataf.com/ GitHub: http://github.com/larukedi
 // </copyright>
@@ -19,46 +19,45 @@
 //// You should have received a copy of the GNU General Public License
 //// along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-namespace Tasslehoff.Library.DataAccess
+namespace Tasslehoff.Library.DataStructures.Trees
 {
-    using System;
-    using System.Web.UI;
+    using System.Collections.Generic;
 
     /// <summary>
-    /// CustomDataSourceExecuteSelectEventArgs class.
+    /// ITree2D&lt;TKey, TValue&gt; interface.
     /// </summary>
-    public class CustomDataSourceExecuteSelectEventArgs : EventArgs
+    public interface ITree2D<TKey, TValue> : ITreeCommon<TValue>
     {
-        // fields
-
-        /// <summary>
-        /// The arguments
-        /// </summary>
-        private readonly DataSourceSelectArguments arguments;
-
-        // constructors
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="CustomDataSourceExecuteSelectEventArgs"/> class.
-        /// </summary>
-        /// <param name="arguments">The arguments</param>
-        public CustomDataSourceExecuteSelectEventArgs(DataSourceSelectArguments arguments)
-            : base()
-        {
-            this.arguments = arguments;
-        }
-
         // properties
 
         /// <summary>
-        /// Gets the arguments.
+        /// Gets or sets tree id
         /// </summary>
-        public DataSourceSelectArguments Arguments
-        {
-            get
-            {
-                return this.arguments;
-            }
-        }
+        /// <value>
+        /// Tree Id
+        /// </value>
+        TKey TreeId { get; set;  }
+
+        /// <summary>
+        /// Gets or sets parent tree id
+        /// </summary>
+        /// <value>
+        /// Parent Tree Id
+        /// </value>
+        TKey ParentTreeId { get; set; }
+
+        // methods
+
+        /// <summary>
+        /// Sets some ids to produce a tree
+        /// </summary>
+        /// <param name="isRoot">Whether this node is root or not</param>
+        void MakeTree(bool isRoot = false);
+
+        /// <summary>
+        /// Flattens tree into one list
+        /// </summary>
+        /// <returns>Generated list</returns>
+        List<TValue> FlattenTree();
     }
 }

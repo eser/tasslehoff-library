@@ -1,8 +1,9 @@
 ﻿// -----------------------------------------------------------------------
 // <copyright file="TreeNode{T}.cs" company="-">
-// Copyright (c) 2013 larukedi (eser@sent.com). All rights reserved.
+// Copyright (c) 2014 Eser Ozvataf (eser@sent.com). All rights reserved.
+// Web: http://eser.ozvataf.com/ GitHub: http://github.com/larukedi
 // </copyright>
-// <author>larukedi (http://github.com/larukedi/)</author>
+// <author>Eser Ozvataf (eser@sent.com)</author>
 // -----------------------------------------------------------------------
 
 //// This program is free software: you can redistribute it and/or modify
@@ -18,11 +19,12 @@
 //// You should have received a copy of the GNU General Public License
 //// along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-namespace Tasslehoff.Library.Objects
+namespace Tasslehoff.Library.DataStructures.Trees
 {
     using System;
+    using System.Collections.Generic;
     using System.Runtime.Serialization;
-    using Tasslehoff.Library.Collections;
+    using Tasslehoff.Library.DataStructures.Collections;
 
     /// <summary>
     /// A node in tree data structure
@@ -30,7 +32,7 @@ namespace Tasslehoff.Library.Objects
     /// <typeparam name="T">Type</typeparam>
     [Serializable]
     [DataContract]
-    public class TreeNode<T> : ICloneable, IComparable
+    public class TreeNode<T> : ITree3D<TreeNode<T>>, ICloneable, IComparable
     {
         // fields
 
@@ -44,13 +46,13 @@ namespace Tasslehoff.Library.Objects
         /// SortIndex
         /// </summary>
         [DataMember(Name = "SortIndex")]
-        private int sortIndex;
+        private short sortIndex;
 
         /// <summary>
         /// Children
         /// </summary>
         [DataMember(Name = "Children")]
-        private SortedList<TreeNode<T>> children;
+        private IList<TreeNode<T>> children;
 
         // constructors
 
@@ -93,7 +95,7 @@ namespace Tasslehoff.Library.Objects
         /// Gets or sets the sort index
         /// </summary>
         [IgnoreDataMember]
-        public int SortIndex
+        public short SortIndex
         {
             get
             {
@@ -109,7 +111,7 @@ namespace Tasslehoff.Library.Objects
         /// Gets or sets the children
         /// </summary>
         [IgnoreDataMember]
-        public SortedList<TreeNode<T>> Children
+        public IList<TreeNode<T>> Children
         {
             get
             {
@@ -129,7 +131,7 @@ namespace Tasslehoff.Library.Objects
         /// <param name="value">The value</param>
         /// <param name="sortIndex">The sort index</param>
         /// <returns>Child object created</returns>
-        public TreeNode<T> AddChild(T value, int? sortIndex = null)
+        public TreeNode<T> AddChild(T value, short? sortIndex = null)
         {
             TreeNode<T> node = new TreeNode<T>(value);
             if (sortIndex.HasValue)

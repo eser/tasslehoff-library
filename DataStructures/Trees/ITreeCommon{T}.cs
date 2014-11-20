@@ -1,5 +1,5 @@
 ﻿// -----------------------------------------------------------------------
-// <copyright file="CustomDataSourceExecuteSelectEventArgs.cs" company="-">
+// <copyright file="ITreeCommon{T}.cs" company="-">
 // Copyright (c) 2014 Eser Ozvataf (eser@sent.com). All rights reserved.
 // Web: http://eser.ozvataf.com/ GitHub: http://github.com/larukedi
 // </copyright>
@@ -19,46 +19,31 @@
 //// You should have received a copy of the GNU General Public License
 //// along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-namespace Tasslehoff.Library.DataAccess
+namespace Tasslehoff.Library.DataStructures.Trees
 {
-    using System;
-    using System.Web.UI;
-
     /// <summary>
-    /// CustomDataSourceExecuteSelectEventArgs class.
+    /// ITreeCommon&lt;T&gt; interface.
     /// </summary>
-    public class CustomDataSourceExecuteSelectEventArgs : EventArgs
+    public interface ITreeCommon<T>
     {
-        // fields
-
-        /// <summary>
-        /// The arguments
-        /// </summary>
-        private readonly DataSourceSelectArguments arguments;
-
-        // constructors
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="CustomDataSourceExecuteSelectEventArgs"/> class.
-        /// </summary>
-        /// <param name="arguments">The arguments</param>
-        public CustomDataSourceExecuteSelectEventArgs(DataSourceSelectArguments arguments)
-            : base()
-        {
-            this.arguments = arguments;
-        }
-
         // properties
 
         /// <summary>
-        /// Gets the arguments.
+        /// Gets or sets sort index
         /// </summary>
-        public DataSourceSelectArguments Arguments
-        {
-            get
-            {
-                return this.arguments;
-            }
-        }
+        /// <value>
+        /// Sort index
+        /// </value>
+        short SortIndex { get; set; }
+
+        /*
+        /// <summary>
+        /// Gets or sets value
+        /// </summary>
+        /// <value>
+        /// Value
+        /// </value>
+        T Value { get; set; }
+        */
     }
 }

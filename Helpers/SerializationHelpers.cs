@@ -1,8 +1,9 @@
 // -----------------------------------------------------------------------
-// <copyright file="SerializationUtils.cs" company="-">
-// Copyright (c) 2013 larukedi (eser@sent.com). All rights reserved.
+// <copyright file="SerializationHelpers.cs" company="-">
+// Copyright (c) 2014 Eser Ozvataf (eser@sent.com). All rights reserved.
+// Web: http://eser.ozvataf.com/ GitHub: http://github.com/larukedi
 // </copyright>
-// <author>larukedi (http://github.com/larukedi/)</author>
+// <author>Eser Ozvataf (eser@sent.com)</author>
 // -----------------------------------------------------------------------
 
 //// This program is free software: you can redistribute it and/or modify
@@ -18,7 +19,7 @@
 //// You should have received a copy of the GNU General Public License
 //// along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-namespace Tasslehoff.Library.Utils
+namespace Tasslehoff.Library.Helpers
 {
     using System.IO;
     using System.Runtime.Serialization;
@@ -30,7 +31,7 @@ namespace Tasslehoff.Library.Utils
     /// <summary>
     /// SerializationUtils class.
     /// </summary>
-    public static class SerializationUtils
+    public static class SerializationHelpers
     {
         // methods
 
@@ -142,7 +143,7 @@ namespace Tasslehoff.Library.Utils
         /// <returns>Serialized data</returns>
         public static string JsonSerialize(object graph)
         {
-            return JsonConvert.SerializeObject(graph, SerializationUtils.GetSerializerSettings());
+            return JsonConvert.SerializeObject(graph, SerializationHelpers.GetSerializerSettings());
         }
 
         /// <summary>
@@ -155,7 +156,7 @@ namespace Tasslehoff.Library.Utils
         /// </returns>
         public static T JsonDeserialize<T>(string value)
         {
-            JsonSerializerSettings settings = SerializationUtils.GetSerializerSettings();
+            JsonSerializerSettings settings = SerializationHelpers.GetSerializerSettings();
             return JsonConvert.DeserializeObject<T>(value, settings);
         }
     }

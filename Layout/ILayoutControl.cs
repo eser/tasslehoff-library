@@ -1,8 +1,9 @@
 ﻿// -----------------------------------------------------------------------
 // <copyright file="ILayoutControl.cs" company="-">
-// Copyright (c) 2013 larukedi (eser@sent.com). All rights reserved.
+// Copyright (c) 2014 Eser Ozvataf (eser@sent.com). All rights reserved.
+// Web: http://eser.ozvataf.com/ GitHub: http://github.com/larukedi
 // </copyright>
-// <author>larukedi (http://github.com/larukedi/)</author>
+// <author>Eser Ozvataf (eser@sent.com)</author>
 // -----------------------------------------------------------------------
 
 //// This program is free software: you can redistribute it and/or modify
@@ -22,38 +23,15 @@ namespace Tasslehoff.Library.Layout
 {
     using System;
     using System.Collections.Generic;
+    using Tasslehoff.Library.DataStructures.Trees;
     using Tasslehoff.Library.Text;
 
     /// <summary>
     /// ILayoutControl interface.
     /// </summary>
-    public interface ILayoutControl : IDisposable, ICloneable
+    public interface ILayoutControl : ITree2D<Guid, ILayoutControl>, ITree3D<ILayoutControl>, IDisposable, ICloneable
     {
         // properties
-
-        /// <summary>
-        /// Gets or sets tree id
-        /// </summary>
-        /// <value>
-        /// Tree Id
-        /// </value>
-        Guid TreeId { get; set; }
-
-        /// <summary>
-        /// Gets or sets parent tree id
-        /// </summary>
-        /// <value>
-        /// Parent Tree Id
-        /// </value>
-        Guid ParentTreeId { get; set;  }
-
-        /// <summary>
-        /// Gets or sets sort index
-        /// </summary>
-        /// <value>
-        /// Sort index
-        /// </value>
-        short SortIndex { get; set; }
 
         /// <summary>
         /// Gets type
@@ -70,14 +48,6 @@ namespace Tasslehoff.Library.Layout
         /// Description
         /// </value>
         string Description { get; }
-
-        /// <summary>
-        /// Gets or sets child objects
-        /// </summary>
-        /// <value>
-        /// Child objects
-        /// </value>
-        List<ILayoutControl> Children { get; }
 
         /// <summary>
         /// Gets or sets id
@@ -131,18 +101,6 @@ namespace Tasslehoff.Library.Layout
         /// </summary>
         /// <param name="parameters">Parameters</param>
         void SetParameters(Dictionary<string, object> parameters);
-
-        /// <summary>
-        /// Sets some ids to produce a tree
-        /// </summary>
-        /// <param name="isRoot">Whether this node is root or not</param>
-        void MakeTree(bool isRoot = false);
-
-        /// <summary>
-        /// Flattens tree into one list
-        /// </summary>
-        /// <returns>Generated list</returns>
-        List<ILayoutControl> FlattenTree();
 
         /// <summary>
         /// Serializes control into json

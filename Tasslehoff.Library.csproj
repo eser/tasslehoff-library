@@ -43,7 +43,6 @@
     <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Ecommerce\packages\Newtonsoft.Json.6.0.6\lib\net45\Newtonsoft.Json.dll</HintPath>
-      <Private>True</Private>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
@@ -58,9 +57,9 @@
   <ItemGroup>
     <Compile Include="BaseException.cs" />
     <Compile Include="BaseException{T}.cs" />
-    <Compile Include="Collections\Translater.cs" />
-    <Compile Include="Collections\SortedList{T}.cs" />
-    <Compile Include="Collections\DictionaryBase{TKey1,TKey2,T}.cs" />
+    <Compile Include="DataStructures\Collections\Translater.cs" />
+    <Compile Include="DataStructures\Collections\SortedList{T}.cs" />
+    <Compile Include="DataStructures\Collections\DictionaryBase{TKey1,TKey2,T}.cs" />
     <Compile Include="Config\Config.cs" />
     <Compile Include="Config\ConfigRegistry.cs" />
     <Compile Include="DataAccess\CustomDataSourceExecuteSelectEventArgs.cs" />
@@ -78,7 +77,10 @@
     <Compile Include="Text\MultiFormatOutputWriterFormat.cs" />
     <Compile Include="Text\MultiFormatOutputWriterPropertyValue.cs" />
     <Compile Include="Text\MultiFormatOutputWriter.cs" />
-    <Compile Include="Utils\Serialization\OrderedContractResolver.cs" />
+    <Compile Include="DataStructures\Trees\ITree3D{T}.cs" />
+    <Compile Include="DataStructures\Trees\ITreeCommon{T}.cs" />
+    <Compile Include="DataStructures\Trees\ITree2D{TKey,TValue}.cs" />
+    <Compile Include="Helpers\Serialization\OrderedContractResolver.cs" />
     <Compile Include="Cron\CronActionParameters.cs" />
     <Compile Include="Cron\CronItem.cs" />
     <Compile Include="Cron\CronItemStatus.cs" />
@@ -101,14 +103,14 @@
     <Compile Include="Layout\LayoutControl.cs" />
     <Compile Include="Layout\LayoutControlRegistry.cs" />
     <Compile Include="Layout\ILayoutControl.cs" />
-    <Compile Include="Objects\CharRange.cs" />
-    <Compile Include="Objects\Charset.cs" />
-    <Compile Include="Counter\Counter.cs" />
-    <Compile Include="Counter\CounterPoppedEventArgs.cs" />
-    <Compile Include="Objects\DateRange.cs" />
-    <Compile Include="Objects\IntRange.cs" />
-    <Compile Include="Objects\Numerator.cs" />
-    <Compile Include="Objects\TreeNode.cs" />
+    <Compile Include="DataStructures\CharRange.cs" />
+    <Compile Include="DataStructures\Charset.cs" />
+    <Compile Include="Utils\Counter.cs" />
+    <Compile Include="Utils\CounterPoppedEventArgs.cs" />
+    <Compile Include="DataStructures\DateRange.cs" />
+    <Compile Include="DataStructures\IntRange.cs" />
+    <Compile Include="Utils\Numerator.cs" />
+    <Compile Include="DataStructures\Trees\TreeNode{T}.cs" />
     <Compile Include="Plugins\IPluginControllable.cs" />
     <Compile Include="Plugins\LocalResource.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -129,7 +131,7 @@
     <Compile Include="DataAccess\Database.cs" />
     <Compile Include="Config\ConfigSerializer.cs" />
     <Compile Include="Config\ConfigEntryAttribute.cs" />
-    <Compile Include="Collections\DictionaryBase{TKey,T}.cs" />
+    <Compile Include="DataStructures\Collections\DictionaryBase{TKey,T}.cs" />
     <Compile Include="DataEntities\DataEntityMap{T}.cs" />
     <Compile Include="DataEntities\DataEntityFieldAttribute.cs" />
     <Compile Include="Logger\Logger.cs" />
@@ -156,16 +158,16 @@
     <Compile Include="Threading\ChannelTasksDoneEventArgs.cs" />
     <Compile Include="Threading\ChannelTaskStatus.cs" />
     <Compile Include="Threading\ChannelTaskStatusChangedEventArgs.cs" />
-    <Compile Include="Utils\ArrayUtils.cs" />
-    <Compile Include="Utils\RandomUtils.cs" />
-    <Compile Include="Utils\MimeUtils.cs" />
-    <Compile Include="Utils\NetUtils.cs" />
-    <Compile Include="Utils\IOUtils.cs" />
-    <Compile Include="Utils\EventUtils.cs" />
-    <Compile Include="Utils\DateTimeUtils.cs" />
-    <Compile Include="Utils\HashUtils.cs" />
-    <Compile Include="Utils\SerializationUtils.cs" />
-    <Compile Include="Utils\VariableUtils.cs" />
+    <Compile Include="Helpers\ArrayHelpers.cs" />
+    <Compile Include="Helpers\RandomHelpers.cs" />
+    <Compile Include="Helpers\MimeHelpers.cs" />
+    <Compile Include="Helpers\NetHelpers.cs" />
+    <Compile Include="Helpers\IOHelpers.cs" />
+    <Compile Include="Helpers\EventHelpers.cs" />
+    <Compile Include="Helpers\DateTimeHelpers.cs" />
+    <Compile Include="Helpers\HashHelpers.cs" />
+    <Compile Include="Helpers\SerializationHelpers.cs" />
+    <Compile Include="Helpers\VariableHelpers.cs" />
     <Compile Include="Logger\StreamLogger.cs" />
     <Compile Include="Services\ServiceStatus.cs" />
     <Compile Include="Services\Service.cs" />

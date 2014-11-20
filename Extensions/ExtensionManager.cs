@@ -1,8 +1,9 @@
 // -----------------------------------------------------------------------
 // <copyright file="ExtensionManager.cs" company="-">
-// Copyright (c) 2013 larukedi (eser@sent.com). All rights reserved.
+// Copyright (c) 2014 Eser Ozvataf (eser@sent.com). All rights reserved.
+// Web: http://eser.ozvataf.com/ GitHub: http://github.com/larukedi
 // </copyright>
-// <author>larukedi (http://github.com/larukedi/)</author>
+// <author>Eser Ozvataf (eser@sent.com)</author>
 // -----------------------------------------------------------------------
 
 //// This program is free software: you can redistribute it and/or modify
@@ -26,9 +27,9 @@ namespace Tasslehoff.Library.Extensions
     using System.Globalization;
     using System.IO;
     using System.Reflection;
+    using Tasslehoff.Library.Helpers;
     using Tasslehoff.Library.Logger;
     using Tasslehoff.Library.Services;
-    using Tasslehoff.Library.Utils;
 
     /// <summary>
     /// ExtensionManager class.
@@ -173,7 +174,7 @@ namespace Tasslehoff.Library.Extensions
         /// </summary>
         public void Clear()
         {
-            Assembly[] assemblies = ArrayUtils.GetArray<Assembly>(this.assemblies);
+            Assembly[] assemblies = ArrayHelpers.GetArray<Assembly>(this.assemblies);
 
             foreach (Assembly item in assemblies)
             {
