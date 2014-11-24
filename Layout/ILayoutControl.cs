@@ -92,15 +92,27 @@ namespace Tasslehoff.Library.Layout
         // methods
 
         /// <summary>
+        /// Initializes the layout control
+        /// </summary>
+        void Init();
+
+        /// <summary>
+        /// Initializes the layout control
+        /// </summary>
+        /// <param name="parameters">Parameters</param>
+        void Init(Dictionary<string, object> parameters);
+
+        /// <summary>
         /// Creates web control
         /// </summary>
         void CreateWebControl();
 
         /// <summary>
-        /// Set parameters of the control and its children
+        /// Gets children objects filtered by type
         /// </summary>
-        /// <param name="parameters">Parameters</param>
-        void SetParameters(Dictionary<string, object> parameters);
+        /// <typeparam name="T">Type</typeparam>
+        /// <returns>Children objects</returns>
+        IEnumerable<T> GetChildrenType<T>() where T : ILayoutControl;
 
         /// <summary>
         /// Serializes control into json

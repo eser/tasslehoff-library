@@ -22,6 +22,7 @@
 namespace Tasslehoff.Library.Layout
 {
     using System;
+    using System.Runtime.InteropServices;
     using Newtonsoft.Json;
     using Newtonsoft.Json.Converters;
     using Newtonsoft.Json.Linq;
@@ -29,6 +30,7 @@ namespace Tasslehoff.Library.Layout
     /// <summary>
     /// LayoutControlConverter class.
     /// </summary>
+    [ComVisible(false)]
     public class LayoutControlConverter : CustomCreationConverter<ILayoutControl>
     {
         // fields
@@ -51,7 +53,7 @@ namespace Tasslehoff.Library.Layout
         }
 
         // methods
-        
+
         /// <summary>
         /// Constructs target instance in proper type
         /// </summary>

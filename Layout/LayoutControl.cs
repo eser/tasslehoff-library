@@ -416,32 +416,54 @@ namespace Tasslehoff.Library.Layout
         // methods
 
         /// <summary>
+        /// Initializes the layout control
+        /// </summary>
+        public virtual void Init()
+        {
+            this.Init(new Dictionary<string, object>());
+        }
+
+        /// <summary>
+        /// Initializes the layout control
+        /// </summary>
+        /// <param name="parameters">Parameters</param>
+        public virtual void Init(Dictionary<string, object> parameters)
+        {
+            this.Parameters = parameters;
+
+            foreach (ILayoutControl layoutControl in this.Children)
+            {
+                layoutControl.Init(parameters);
+            }
+
+            this.OnInit(parameters);
+        }
+
+        /// <summary>
+        /// Occurs when [init].
+        /// </summary>
+        /// <param name="parameters">Parameters</param>
+        public abstract void OnInit(Dictionary<string, object> parameters);
+
+        /// <summary>
         /// Creates web control
         /// </summary>
         public abstract void CreateWebControl();
 
         /// <summary>
-        /// Updates the control and its children with given parameters
+        /// Gets children objects filtered by type
         /// </summary>
-        /// <param name="parameters">Parameters</param>
-        public void SetParameters(Dictionary<string, object> parameters)
+        /// <typeparam name="T">Type</typeparam>
+        /// <returns>Children objects</returns>
+        public IEnumerable<T> GetChildrenType<T>() where T : ILayoutControl
         {
-            this.Parameters = parameters;
-
-            this.OnUpdate(parameters);
-
             foreach (ILayoutControl layoutControl in this.Children)
             {
-                layoutControl.SetParameters(parameters);
+                if (layoutControl is T)
+                {
+                    yield return (T)layoutControl;
+                }
             }
-        }
-
-        /// <summary>
-        /// Occurs when [update].
-        /// </summary>
-        /// <param name="parameters">Parameters</param>
-        public virtual void OnUpdate(Dictionary<string, object> parameters)
-        {
         }
 
         /// <summary>

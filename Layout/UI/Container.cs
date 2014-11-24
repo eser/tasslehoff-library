@@ -80,6 +80,15 @@ namespace Tasslehoff.Library.Layout.UI
         }
 
         /// <summary>
+        /// Occurs when [init].
+        /// </summary>
+        /// <param name="parameters">Parameters</param>
+        public override void OnInit(Dictionary<string, object> parameters)
+        {
+            base.OnInit(parameters);
+        }
+
+        /// <summary>
         /// Occurs when [export].
         /// </summary>
         /// <param name="jsonOutputWriter">Json Output Writer</param>
