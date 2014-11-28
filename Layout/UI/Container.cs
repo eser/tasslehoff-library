@@ -38,13 +38,38 @@ namespace Tasslehoff.Library.Layout.UI
         // fields
 
         /// <summary>
+        /// Tag name
+        /// </summary>
+        [DataMember(Name = "TagName")]
+        private string tagName = "div";
+
+        /// <summary>
         /// Title
         /// </summary>
         [DataMember(Name = "Title")]
         private string title = string.Empty;
 
         // properties
-        
+
+        /// <summary>
+        /// Gets or sets tag name
+        /// </summary>
+        /// <value>
+        /// Tag name
+        /// </value>
+        [IgnoreDataMember]
+        public virtual string TagName
+        {
+            get
+            {
+                return this.tagName;
+            }
+            set
+            {
+                this.tagName = value;
+            }
+        }
+
         /// <summary>
         /// Gets or sets title
         /// </summary>
@@ -96,6 +121,11 @@ namespace Tasslehoff.Library.Layout.UI
         {
             base.OnExport(jsonOutputWriter);
 
+            if (this.TagName != "div")
+            {
+                jsonOutputWriter.WriteProperty("TagName", this.TagName);
+            }
+
             if (!string.IsNullOrEmpty(this.Title))
             {
                 jsonOutputWriter.WriteProperty("Title", this.Title);
@@ -110,6 +140,7 @@ namespace Tasslehoff.Library.Layout.UI
         {
             base.OnGetEditProperties(properties);
 
+            properties.Add("TagName", "Tag Name");
             properties.Add("Title", "Title");
         }
     }

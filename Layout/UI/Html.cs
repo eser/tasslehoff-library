@@ -38,6 +38,12 @@ namespace Tasslehoff.Library.Layout.UI
         // fields
 
         /// <summary>
+        /// Tag name
+        /// </summary>
+        [DataMember(Name = "TagName")]
+        private string tagName = "div";
+
+        /// <summary>
         /// Inner content
         /// </summary>
         [DataMember(Name = "InnerContent")]
@@ -50,6 +56,25 @@ namespace Tasslehoff.Library.Layout.UI
         private bool encodeContents;
 
         // properties
+
+        /// <summary>
+        /// Gets or sets tag name
+        /// </summary>
+        /// <value>
+        /// Tag name
+        /// </value>
+        [IgnoreDataMember]
+        public virtual string TagName
+        {
+            get
+            {
+                return this.tagName;
+            }
+            set
+            {
+                this.tagName = value;
+            }
+        }
 
         /// <summary>
         /// Gets or sets inner content
@@ -133,6 +158,11 @@ namespace Tasslehoff.Library.Layout.UI
         {
             base.OnExport(jsonOutputWriter);
 
+            if (this.TagName != "div")
+            {
+                jsonOutputWriter.WriteProperty("TagName", this.TagName);
+            }
+
             if (this.EncodeContents != false)
             {
                 jsonOutputWriter.WriteProperty("EncodeContents", this.EncodeContents);
@@ -152,6 +182,7 @@ namespace Tasslehoff.Library.Layout.UI
         {
             base.OnGetEditProperties(properties);
 
+            properties.Add("TagName", "Tag Name");
             properties.Add("InnerContent", "Inner Content");
             properties.Add("EncodeContents", "Encode Contents");
         }

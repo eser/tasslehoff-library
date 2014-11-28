@@ -25,7 +25,6 @@ namespace Tasslehoff.Library.Layout.UI
     using System.Collections.Generic;
     using System.Runtime.Serialization;
     using System.Web.UI;
-    using System.Web.UI.HtmlControls;
     using Tasslehoff.Library.Text;
 
     /// <summary>
@@ -35,35 +34,6 @@ namespace Tasslehoff.Library.Layout.UI
     [DataContract]
     public abstract class Base : LayoutControl
     {
-        // fields
-
-        /// <summary>
-        /// Tag name
-        /// </summary>
-        [DataMember(Name = "TagName")]
-        private string tagName = "div";
-
-        // properties
-        
-        /// <summary>
-        /// Gets or sets tag name
-        /// </summary>
-        /// <value>
-        /// Tag name
-        /// </value>
-        [IgnoreDataMember]
-        public virtual string TagName
-        {
-            get
-            {
-                return this.tagName;
-            }
-            set
-            {
-                this.tagName = value;
-            }
-        }
-        
         // methods
 
         /// <summary>
@@ -146,12 +116,6 @@ namespace Tasslehoff.Library.Layout.UI
         /// </summary>
         public override void CreateWebControl()
         {
-            HtmlGenericControl element = new HtmlGenericControl(this.TagName);
-
-            this.AddWebControlAttributes(element, element.Attributes);
-            this.AddWebControlChildren(element);
-
-            this.WebControl = element;
         }
 
         /// <summary>
@@ -160,6 +124,7 @@ namespace Tasslehoff.Library.Layout.UI
         /// <param name="parameters">Parameters</param>
         public override void OnInit(Dictionary<string, object> parameters)
         {
+            // base.OnInit(parameters);
         }
 
         /// <summary>
@@ -168,10 +133,7 @@ namespace Tasslehoff.Library.Layout.UI
         /// <param name="jsonOutputWriter">Json Output Writer</param>
         public override void OnExport(MultiFormatOutputWriter jsonOutputWriter)
         {
-            if (this.TagName != "div")
-            {
-                jsonOutputWriter.WriteProperty("TagName", this.TagName);
-            }
+            // base.OnExport(jsonOutputWriter);
         }
 
         /// <summary>
@@ -180,7 +142,7 @@ namespace Tasslehoff.Library.Layout.UI
         /// <param name="jsonOutputWriter">Json Output Writer</param>
         public override void OnGetEditProperties(Dictionary<string, string> properties)
         {
-            properties.Add("TagName", "Tag Name");
+            // base.OnGetEditProperties(properties);
         }
     }
 }
