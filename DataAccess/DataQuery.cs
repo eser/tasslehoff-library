@@ -27,7 +27,6 @@ namespace Tasslehoff.Library.DataAccess
     using System.Data;
     using System.Data.Common;
     using System.Text;
-    using Tasslehoff.Library.DataEntities;
 
     /// <summary>
     /// DataQuery class.
@@ -659,100 +658,6 @@ namespace Tasslehoff.Library.DataAccess
             this.database.ExecuteReader(finalSqlString, CommandType.Text, commandBehavior, this.parameters, function);
 
             this.Reset();
-        }
-
-        /// <summary>
-        /// Executes the data entity.
-        /// </summary>
-        /// <param name="dataEntityMap">The data entity map instance</param>
-        /// <param name="commandBehavior">The command behavior</param>
-        /// <typeparam name="T">IDataEntity implementation</typeparam>
-        public T ExecuteDataEntity<T>(DataEntityMap<T> dataEntityMap, CommandBehavior commandBehavior = CommandBehavior.Default) where T : IDataEntity, new()
-        {
-            string finalSqlString = DataQuery.ApplyPlaceholders(this.sqlString, this.placeholders);
-            T result = this.database.ExecuteDataEntity<T>(dataEntityMap, finalSqlString, CommandType.Text, commandBehavior, this.parameters);
-
-            this.Reset();
-
-            return result;
-        }
-
-        /// <summary>
-        /// Executes the data entity.
-        /// </summary>
-        /// <param name="dataEntityMap">The data entity registry instance</param>
-        /// <param name="commandBehavior">The command behavior</param>
-        /// <typeparam name="T">IDataEntity implementation</typeparam>
-        public T ExecuteDataEntity<T>(DataEntityRegistry dataEntityRegistry, CommandBehavior commandBehavior = CommandBehavior.Default) where T : IDataEntity, new()
-        {
-            string finalSqlString = DataQuery.ApplyPlaceholders(this.sqlString, this.placeholders);
-            T result = this.database.ExecuteDataEntity<T>(dataEntityRegistry, finalSqlString, CommandType.Text, commandBehavior, this.parameters);
-
-            this.Reset();
-
-            return result;
-        }
-
-        /// <summary>
-        /// Executes the data entity.
-        /// </summary>
-        /// <param name="commandBehavior">The command behavior</param>
-        /// <typeparam name="T">IDataEntity implementation</typeparam>
-        public T ExecuteDataEntity<T>(CommandBehavior commandBehavior = CommandBehavior.Default) where T : IDataEntity, new()
-        {
-            string finalSqlString = DataQuery.ApplyPlaceholders(this.sqlString, this.placeholders);
-            T result = this.database.ExecuteDataEntity<T>(finalSqlString, CommandType.Text, commandBehavior, this.parameters);
-
-            this.Reset();
-
-            return result;
-        }
-
-        /// <summary>
-        /// Executes the enumerable data entity.
-        /// </summary>
-        /// <param name="dataEntityMap">The data entity map instance</param>
-        /// <param name="commandBehavior">The command behavior</param>
-        /// <typeparam name="T">IDataEntity implementation</typeparam>
-        public List<T> ExecuteEnumerableDataEntity<T>(DataEntityMap<T> dataEntityMap, CommandBehavior commandBehavior = CommandBehavior.Default) where T : IDataEntity, new()
-        {
-            string finalSqlString = DataQuery.ApplyPlaceholders(this.sqlString, this.placeholders);
-            List<T> result = this.database.ExecuteEnumerableDataEntity<T>(dataEntityMap, finalSqlString, CommandType.Text, commandBehavior, this.parameters);
-
-            this.Reset();
-
-            return result;
-        }
-
-        /// <summary>
-        /// Executes the enumerable data entity.
-        /// </summary>
-        /// <param name="dataEntityMap">The data entity registry instance</param>
-        /// <param name="commandBehavior">The command behavior</param>
-        /// <typeparam name="T">IDataEntity implementation</typeparam>
-        public List<T> ExecuteEnumerableDataEntity<T>(DataEntityRegistry dataEntityRegistry, CommandBehavior commandBehavior = CommandBehavior.Default) where T : IDataEntity, new()
-        {
-            string finalSqlString = DataQuery.ApplyPlaceholders(this.sqlString, this.placeholders);
-            List<T> result = this.database.ExecuteEnumerableDataEntity<T>(dataEntityRegistry, finalSqlString, CommandType.Text, commandBehavior, this.parameters);
-
-            this.Reset();
-
-            return result;
-        }
-
-        /// <summary>
-        /// Executes the enumerable data entity.
-        /// </summary>
-        /// <param name="commandBehavior">The command behavior</param>
-        /// <typeparam name="T">IDataEntity implementation</typeparam>
-        public List<T> ExecuteEnumerableDataEntity<T>(CommandBehavior commandBehavior = CommandBehavior.Default) where T : IDataEntity, new()
-        {
-            string finalSqlString = DataQuery.ApplyPlaceholders(this.sqlString, this.placeholders);
-            List<T> result = this.database.ExecuteEnumerableDataEntity<T>(finalSqlString, CommandType.Text, commandBehavior, this.parameters);
-
-            this.Reset();
-
-            return result;
         }
         
         /// <summary>

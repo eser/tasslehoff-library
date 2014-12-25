@@ -94,12 +94,6 @@
     <Compile Include="DataAccess\CustomDataSourceView.cs" />
     <Compile Include="DataAccess\CustomDataSource.cs" />
     <Compile Include="DataAccess\DataQuery.cs" />
-    <Compile Include="DataEntities\DataEntityRegistry.cs" />
-    <Compile Include="DataEntities\FieldSerializer.cs" />
-    <Compile Include="DataEntities\FieldSerializers.cs" />
-    <Compile Include="DataEntities\DataEntity.cs" />
-    <Compile Include="DataEntities\IDataEntity.cs" />
-    <Compile Include="DataEntities\IDataEntityMap.cs" />
     <Compile Include="Layout\UI\Container.cs" />
     <Compile Include="Layout\LayoutControl.cs" />
     <Compile Include="Layout\LayoutControlRegistry.cs" />
@@ -133,8 +127,6 @@
     <Compile Include="Config\ConfigSerializer.cs" />
     <Compile Include="Config\ConfigEntryAttribute.cs" />
     <Compile Include="DataStructures\Collections\DictionaryBase{TKey,T}.cs" />
-    <Compile Include="DataEntities\DataEntityMap{T}.cs" />
-    <Compile Include="DataEntities\DataEntityFieldAttribute.cs" />
     <Compile Include="Logger\Logger.cs" />
     <Compile Include="Logger\LogLevel.cs" />
     <Compile Include="Logger\LogEntry.cs" />
@@ -174,8 +166,6 @@
     <Compile Include="Services\Service.cs" />
     <Compile Include="Services\ServiceControllable.cs" />
     <Compile Include="Services\ServiceStatusChangedEventArgs.cs" />
-    <Compile Include="WebServices\WebServiceEndpoint.cs" />
-    <Compile Include="WebServices\WebServiceManager.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
