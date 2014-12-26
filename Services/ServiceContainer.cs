@@ -84,6 +84,45 @@ namespace Tasslehoff.Library.Services
         }
 
         /// <summary>
+        /// Finds an service with path notation.
+        /// </summary>
+        /// <param name="path">Path of the service</param>
+        /// <returns>A service instance</returns>
+        public IService Find(string path)
+        {
+            Queue<string> parts = new Queue<string>(
+                path.Split(new char[] { '\\' }, StringSplitOptions.RemoveEmptyEntries)
+            );
+
+            IService current = this;
+            while (parts.Count > 0)
+            {
+                string part = parts.Dequeue();
+
+                ServiceContainer currentAsContainer = current as ServiceContainer;
+                if (!currentAsContainer.Children.ContainsKey(part))
+                {
+                    return null;
+                }
+
+                current = currentAsContainer.Children[part];
+            }
+
+            return current;
+        }
+
+        /// <summary>
+        /// Finds an service with path notation.
+        /// </summary>
+        /// <typeparam name="T">A type</typeparam>
+        /// <param name="path">Path of the service</param>
+        /// <returns>A service instance</returns>
+        public T Find<T>(string path) where T : class
+        {
+            return this.Find(path) as T;
+        }
+
+        /// <summary>
         /// Starts this instance.
         /// </summary>
         public override void Start()
