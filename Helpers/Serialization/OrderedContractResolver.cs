@@ -29,7 +29,7 @@ namespace Tasslehoff.Library.Utils.Serialization
     using Newtonsoft.Json.Serialization;
 
     [ComVisible(false)]
-    public class OrderedContractResolver : DefaultContractResolver
+    internal class OrderedContractResolver : DefaultContractResolver
     {
         protected override IList<JsonProperty> CreateProperties(Type type, MemberSerialization memberSerialization)
         {

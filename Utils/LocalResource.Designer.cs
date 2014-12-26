@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Tasslehoff.Library.Extensions {
+namespace Tasslehoff.Library.Utils {
     using System;
     
     
@@ -39,7 +39,7 @@ namespace Tasslehoff.Library.Extensions {
         internal static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Tasslehoff.Library.Extensions.LocalResource", typeof(LocalResource).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Tasslehoff.Library.Utils.LocalResource", typeof(LocalResource).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;

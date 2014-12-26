@@ -1,5 +1,5 @@
 ﻿// -----------------------------------------------------------------------
-// <copyright file="ProcessName.cs" company="-">
+// <copyright file="ProcessNames.cs" company="-">
 // Copyright (c) 2014 Eser Ozvataf (eser@sent.com). All rights reserved.
 // Web: http://eser.ozvataf.com/ GitHub: http://github.com/larukedi
 // </copyright>
@@ -24,53 +24,26 @@ namespace Tasslehoff.Library.Profiler
     using System.Diagnostics;
 
     /// <summary>
-    /// ProcessName class.
+    /// ProcessNames class.
     /// </summary>
-    public class ProcessName
+    public static class ProcessNames
     {
         // fields
 
         /// <summary>
-        /// The nothing
-        /// </summary>
-        private static ProcessName nothing;
-
-        /// <summary>
         /// Current Process
         /// </summary>
-        private static ProcessName me;
-
-        /// <summary>
-        /// The total
-        /// </summary>
-        private static ProcessName total;
-
-        /// <summary>
-        /// The name
-        /// </summary>
-        private readonly string name;
+        private static string me;
 
         // constructors
 
         /// <summary>
-        /// Initializes static members of the <see cref="ProcessName"/> class.
+        /// Initializes static members of the <see cref="ProcessNames"/> class.
         /// </summary>
-        static ProcessName()
+        static ProcessNames()
         {
             Process process = Process.GetCurrentProcess();
-
-            ProcessName.nothing = new ProcessName(null);
-            ProcessName.me = new ProcessName(process.ProcessName);
-            ProcessName.total = new ProcessName("_Total");
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ProcessName" /> class.
-        /// </summary>
-        /// <param name="name">The name</param>
-        public ProcessName(string name)
-        {
-            this.name = name;
+            ProcessNames.me = process.ProcessName;
         }
 
         // properties
@@ -81,11 +54,11 @@ namespace Tasslehoff.Library.Profiler
         /// <value>
         /// The nothing.
         /// </value>
-        public static ProcessName Nothing
+        public static string Nothing
         {
             get
             {
-                return ProcessName.nothing;
+                return null;
             }
         }
 
@@ -95,11 +68,11 @@ namespace Tasslehoff.Library.Profiler
         /// <value>
         /// The current process.
         /// </value>
-        public static ProcessName Me
+        public static string Me
         {
             get
             {
-                return ProcessName.me;
+                return ProcessNames.me;
             }
         }
 
@@ -109,25 +82,11 @@ namespace Tasslehoff.Library.Profiler
         /// <value>
         /// The total.
         /// </value>
-        public static ProcessName Total
+        public static string Total
         {
             get
             {
-                return ProcessName.total;
-            }
-        }
-
-        /// <summary>
-        /// Gets the name.
-        /// </summary>
-        /// <value>
-        /// The name.
-        /// </value>
-        public string Name
-        {
-            get
-            {
-                return this.name;
+                return "_Total";
             }
         }
     }

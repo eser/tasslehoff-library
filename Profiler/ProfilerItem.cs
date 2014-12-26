@@ -46,7 +46,7 @@ namespace Tasslehoff.Library.Profiler
         /// <summary>
         /// The process name
         /// </summary>
-        private readonly ProcessName processName;
+        private readonly string processName;
 
         /// <summary>
         /// The performance counter
@@ -71,7 +71,7 @@ namespace Tasslehoff.Library.Profiler
         /// <param name="categoryName">Name of the category</param>
         /// <param name="counterName">Name of the counter</param>
         /// <param name="processName">Name of the process</param>
-        public ProfilerItem(string categoryName, string counterName, ProcessName processName)
+        public ProfilerItem(string categoryName, string counterName, string processName)
         {
             this.categoryName = categoryName;
             this.counterName = counterName;
@@ -122,7 +122,7 @@ namespace Tasslehoff.Library.Profiler
         /// <value>
         /// The name of the process.
         /// </value>
-        public ProcessName ProcessName
+        public string ProcessName
         {
             get
             {
@@ -221,9 +221,9 @@ namespace Tasslehoff.Library.Profiler
         {
             if (this.performanceCounter == null)
             {
-                if (this.processName.Name != null)
+                if (!string.IsNullOrEmpty(this.processName))
                 {
-                    this.performanceCounter = new PerformanceCounter(this.categoryName, this.counterName, this.processName.Name, true);
+                    this.performanceCounter = new PerformanceCounter(this.categoryName, this.counterName, this.processName, true);
                 }
                 else
                 {

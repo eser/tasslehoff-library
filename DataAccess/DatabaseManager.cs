@@ -70,11 +70,8 @@ namespace Tasslehoff.Library.DataAccess
         /// <summary>
         /// Initializes a new instance of the <see cref="DatabaseManager"/> class.
         /// </summary>
-        public DatabaseManager()
+        public DatabaseManager() : this("Default")
         {
-            this.connections = new Dictionary<string, DatabaseManagerConnection>();
-            this.queries = new Dictionary<string, DatabaseManagerQuery>();
-            this.queryPlaceholders = new Dictionary<string, string>();
         }
 
         /// <summary>
@@ -82,8 +79,10 @@ namespace Tasslehoff.Library.DataAccess
         /// </summary>
         /// <param name="defaultDatabaseKey">Key for default database</param>
         public DatabaseManager(string defaultDatabaseKey)
-            : this()
         {
+            this.connections = new Dictionary<string, DatabaseManagerConnection>();
+            this.queries = new Dictionary<string, DatabaseManagerQuery>();
+            this.queryPlaceholders = new Dictionary<string, string>();
             this.defaultDatabaseKey = defaultDatabaseKey;
         }
 

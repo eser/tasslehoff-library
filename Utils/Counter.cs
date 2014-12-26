@@ -28,7 +28,7 @@ namespace Tasslehoff.Library.Utils
     /// <summary>
     /// Counter class.
     /// </summary>
-    public class Counter : Service
+    public class Counter
     {
         // fields
 
@@ -48,7 +48,6 @@ namespace Tasslehoff.Library.Utils
         /// Initializes a new instance of the <see cref="Counter"/> class.
         /// </summary>
         public Counter()
-            : base()
         {
             this.counterStack = new Dictionary<int, KeyValuePair<string, DateTime>>();
             this.numerator = new Numerator();
@@ -60,36 +59,6 @@ namespace Tasslehoff.Library.Utils
         /// Occurs when [on popped].
         /// </summary>
         public event EventHandler<CounterPoppedEventArgs> OnPopped;
-
-        // properties
-
-        /// <summary>
-        /// Gets the name.
-        /// </summary>
-        /// <value>
-        /// The name.
-        /// </value>
-        public override string Name
-        {
-            get
-            {
-                return "Counter";
-            }
-        }
-
-        /// <summary>
-        /// Gets the description.
-        /// </summary>
-        /// <value>
-        /// The description.
-        /// </value>
-        public override string Description
-        {
-            get
-            {
-                return string.Empty;
-            }
-        }
 
         // methods
 
@@ -153,15 +122,6 @@ namespace Tasslehoff.Library.Utils
             }
 
             return period;
-        }
-
-        /// <summary>
-        /// Called when [dispose].
-        /// </summary>
-        /// <param name="releaseManagedResources"><c>true</c> to release both managed and unmanaged resources; <c>false</c> to release only unmanaged resources</param>
-        protected override void OnDispose(bool releaseManagedResources)
-        {
-            this.counterStack.Clear();
         }
     }
 }

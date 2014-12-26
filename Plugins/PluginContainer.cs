@@ -23,8 +23,8 @@ namespace Tasslehoff.Library.Plugins
 {
     using System;
     using System.Collections.Generic;
-    using Tasslehoff.Library.Extensions;
     using Tasslehoff.Library.Services;
+    using Tasslehoff.Library.Utils;
 
     /// <summary>
     /// PluginContainer class.
@@ -36,17 +36,17 @@ namespace Tasslehoff.Library.Plugins
         /// <summary>
         /// The extension manager
         /// </summary>
-        private readonly ExtensionManager extensionManager;
+        private readonly ExtensionFinder extensionFinder;
 
         // constructors
 
         /// <summary>
         /// Initializes a new instance of the <see cref="PluginContainer" /> class.
         /// </summary>
-        /// <param name="extensionManager">The extension manager</param>
-        public PluginContainer(ExtensionManager extensionManager) : base()
+        /// <param name="extensionFinder">The extension finder</param>
+        public PluginContainer(ExtensionFinder extensionFinder) : base()
         {
-            this.extensionManager = extensionManager;
+            this.extensionFinder = extensionFinder;
         }
 
         // properties
@@ -80,16 +80,16 @@ namespace Tasslehoff.Library.Plugins
         }
 
         /// <summary>
-        /// Gets the extension manager.
+        /// Gets the extension finder.
         /// </summary>
         /// <value>
-        /// The extension manager.
+        /// The extension finder.
         /// </value>
-        public ExtensionManager ExtensionManager
+        public ExtensionFinder ExtensionFinder
         {
             get
             {
-                return this.extensionManager;
+                return this.extensionFinder;
             }
         }
 
@@ -100,7 +100,7 @@ namespace Tasslehoff.Library.Plugins
         /// </summary>
         protected override void ServiceStart()
         {
-            IEnumerable<Type> types = this.extensionManager.SearchInterface(typeof(IPlugin));
+            IEnumerable<Type> types = this.extensionFinder.SearchInterface(typeof(IPlugin));
             foreach (Type type in types)
             {
                 IPlugin plugin = (IPlugin)Activator.CreateInstance(type);

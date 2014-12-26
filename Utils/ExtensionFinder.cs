@@ -1,5 +1,5 @@
 // -----------------------------------------------------------------------
-// <copyright file="ExtensionManager.cs" company="-">
+// <copyright file="ExtensionFinder.cs" company="-">
 // Copyright (c) 2014 Eser Ozvataf (eser@sent.com). All rights reserved.
 // Web: http://eser.ozvataf.com/ GitHub: http://github.com/larukedi
 // </copyright>
@@ -19,7 +19,7 @@
 //// You should have received a copy of the GNU General Public License
 //// along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-namespace Tasslehoff.Library.Extensions
+namespace Tasslehoff.Library.Utils
 {
     using System;
     using System.Collections.Generic;
@@ -34,7 +34,7 @@ namespace Tasslehoff.Library.Extensions
     /// <summary>
     /// ExtensionManager class.
     /// </summary>
-    public class ExtensionManager : Service
+    public class ExtensionFinder : Service
     {
         // fields
 
@@ -46,9 +46,9 @@ namespace Tasslehoff.Library.Extensions
         // constructors
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="ExtensionManager"/> class.
+        /// Initializes a new instance of the <see cref="ExtensionFinder"/> class.
         /// </summary>
-        public ExtensionManager() : base()
+        public ExtensionFinder() : base()
         {
             this.assemblies = new Collection<Assembly>();
         }
