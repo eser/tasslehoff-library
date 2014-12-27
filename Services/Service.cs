@@ -41,7 +41,7 @@ namespace Tasslehoff.Library.Services
         /// <summary>
         /// The status date
         /// </summary>
-        private DateTime statusDate;
+        private DateTimeOffset statusDate;
 
         /// <summary>
         /// The log
@@ -61,7 +61,7 @@ namespace Tasslehoff.Library.Services
         protected Service()
         {
             this.status = (this is ServiceControllable) ? ServiceStatus.Stopped : ServiceStatus.Passive;
-            this.statusDate = DateTime.UtcNow;
+            this.statusDate = DateTimeOffset.UtcNow;
 
             this.log = new LoggerDelegate();
         }
@@ -112,7 +112,6 @@ namespace Tasslehoff.Library.Services
             {
                 return this.status;
             }
-
             protected set
             {
                 this.status = value;
@@ -125,13 +124,12 @@ namespace Tasslehoff.Library.Services
         /// <value>
         /// The status date.
         /// </value>
-        public DateTime StatusDate
+        public DateTimeOffset StatusDate
         {
             get
             {
                 return this.statusDate;
             }
-
             protected set
             {
                 this.statusDate = value;
@@ -150,13 +148,13 @@ namespace Tasslehoff.Library.Services
             {
                 return this.log;
             }
-
             protected set
             {
                 this.log = value;
             }
         }
         #endregion
+
         /// <summary>
         /// Gets or sets a value indicating whether this <see cref="Service"/> is disposed.
         /// </summary>
@@ -169,7 +167,6 @@ namespace Tasslehoff.Library.Services
             {
                 return this.disposed;
             }
-
             protected set
             {
                 this.disposed = value;

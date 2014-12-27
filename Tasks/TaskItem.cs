@@ -1,5 +1,5 @@
 ﻿// -----------------------------------------------------------------------
-// <copyright file="CronItem.cs" company="-">
+// <copyright file="TaskItem.cs" company="-">
 // Copyright (c) 2014 Eser Ozvataf (eser@sent.com). All rights reserved.
 // Web: http://eser.ozvataf.com/ GitHub: http://github.com/larukedi
 // </copyright>
@@ -19,7 +19,7 @@
 //// You should have received a copy of the GNU General Public License
 //// along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-namespace Tasslehoff.Library.Cron
+namespace Tasslehoff.Library.Tasks
 {
     using System;
     using System.Collections.Generic;
@@ -27,9 +27,9 @@ namespace Tasslehoff.Library.Cron
     using System.Threading.Tasks;
 
     /// <summary>
-    /// CronItem class.
+    /// TaskItem class.
     /// </summary>
-    public class CronItem
+    public class TaskItem
     {
         // fields
 
@@ -41,17 +41,17 @@ namespace Tasslehoff.Library.Cron
         /// <summary>
         /// The action
         /// </summary>
-        private Action<CronActionParameters> action;
+        private Action<TaskActionParameters> action;
 
         /// <summary>
         /// The status
         /// </summary>
-        private CronItemStatus status;
+        private TaskItemStatus status;
 
         /// <summary>
         /// The last run
         /// </summary>
-        private DateTime lastRun;
+        private DateTimeOffset lastRun;
 
         /// <summary>
         /// The lifetime
@@ -61,26 +61,26 @@ namespace Tasslehoff.Library.Cron
         /// <summary>
         /// The active actions
         /// </summary>
-        private ICollection<CronActionParameters> activeActions;
+        private ICollection<TaskActionParameters> activeActions;
 
         // constructors
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="CronItem" /> class.
+        /// Initializes a new instance of the <see cref="TaskItem" /> class.
         /// </summary>
         /// <param name="recurrence">The recurrence</param>
         /// <param name="action">The action</param>
         /// <param name="lifetime">The lifetime</param>
-        public CronItem(Recurrence recurrence, Action<CronActionParameters> action, TimeSpan? lifetime = null)
+        public TaskItem(Recurrence recurrence, Action<TaskActionParameters> action, TimeSpan? lifetime = null)
         {
-            this.status = CronItemStatus.NotStarted;
-            this.lastRun = DateTime.MinValue;
+            this.status = TaskItemStatus.NotStarted;
+            this.lastRun = DateTimeOffset.MinValue;
 
             this.recurrence = recurrence;
             this.action = action;
             this.lifetime = lifetime.GetValueOrDefault(TimeSpan.Zero);
 
-            this.activeActions = new Collection<CronActionParameters>();
+            this.activeActions = new Collection<TaskActionParameters>();
         }
 
         /// <summary>
@@ -95,7 +95,6 @@ namespace Tasslehoff.Library.Cron
             {
                 return this.recurrence;
             }
-
             set
             {
                 this.recurrence = value;
@@ -108,13 +107,12 @@ namespace Tasslehoff.Library.Cron
         /// <value>
         /// The action.
         /// </value>
-        public Action<CronActionParameters> Action
+        public Action<TaskActionParameters> Action
         {
             get
             {
                 return this.action;
             }
-
             set
             {
                 this.action = value;
@@ -127,11 +125,15 @@ namespace Tasslehoff.Library.Cron
         /// <value>
         /// The status.
         /// </value>
-        public CronItemStatus Status
+        public TaskItemStatus Status
         {
             get
             {
                 return this.status;
+            }
+            protected set
+            {
+                this.status = value;
             }
         }
 
@@ -141,11 +143,15 @@ namespace Tasslehoff.Library.Cron
         /// <value>
         /// The last run.
         /// </value>
-        public DateTime LastRun
+        public DateTimeOffset LastRun
         {
             get
             {
                 return this.lastRun;
+            }
+            protected set
+            {
+                this.lastRun = value;
             }
         }
 
@@ -161,6 +167,10 @@ namespace Tasslehoff.Library.Cron
             {
                 return this.lifetime;
             }
+            protected set
+            {
+                this.lifetime = value;
+            }
         }
 
         /// <summary>
@@ -169,11 +179,15 @@ namespace Tasslehoff.Library.Cron
         /// <value>
         /// The active actions.
         /// </value>
-        public ICollection<CronActionParameters> ActiveActions
+        public ICollection<TaskActionParameters> ActiveActions
         {
             get
             {
                 return this.activeActions;
+            }
+            protected set
+            {
+                this.activeActions = value;
             }
         }
 
@@ -184,46 +198,52 @@ namespace Tasslehoff.Library.Cron
         /// </summary>
         public void Init()
         {
-            this.status = CronItemStatus.Running;
-            this.lastRun = DateTime.UtcNow;
+            this.Status = TaskItemStatus.Running;
+            this.LastRun = DateTimeOffset.UtcNow;
         }
 
         /// <summary>
         /// Runs the specified date time.
         /// </summary>
         /// <param name="dateTime">The date time</param>
-        public void Run(DateTime? dateTime = null)
+        public void Run(DateTimeOffset? dateTime = null)
         {
-            DateTime now = dateTime.GetValueOrDefault(DateTime.UtcNow);
+            DateTimeOffset now = dateTime.GetValueOrDefault(DateTimeOffset.UtcNow);
 
-            if (now > this.recurrence.DateEnd)
+            if (now > this.Recurrence.DateEnd)
             {
-                this.status = CronItemStatus.Stopped;
+                this.Status = TaskItemStatus.Stopped;
                 return;
             }
 
-            if (!this.recurrence.CheckDate(now))
-            {
-                return;
-            }
-
-            if (this.status != CronItemStatus.Running)
-            {
-                return;
-            }
-            else if (now.Subtract(this.lastRun) < this.recurrence.Interval)
+            if (!this.Recurrence.CheckDate(now))
             {
                 return;
             }
 
-            this.lastRun = now;
-            CronActionParameters cronActionParameters = new CronActionParameters(this, this.lastRun, this.Lifetime);
-            this.activeActions.Add(cronActionParameters);
-
-            Task.Run(() => { this.action(cronActionParameters); this.activeActions.Remove(cronActionParameters); });
-            if (this.recurrence.Interval == TimeSpan.Zero)
+            if (this.Status != TaskItemStatus.Running)
             {
-                this.status = CronItemStatus.Stopped;
+                return;
+            }
+            else if (now.Subtract(this.LastRun) < this.Recurrence.Interval)
+            {
+                return;
+            }
+
+            this.LastRun = now;
+            TaskActionParameters cronActionParameters = new TaskActionParameters(this, now, this.Lifetime);
+            this.ActiveActions.Add(cronActionParameters);
+
+            Task.Run(
+                () => {
+                    this.Action(cronActionParameters);
+                    this.ActiveActions.Remove(cronActionParameters);
+                }
+            );
+
+            if (this.Recurrence.Interval == TimeSpan.Zero)
+            {
+                this.Status = TaskItemStatus.Stopped;
             }
         }
 
@@ -232,7 +252,7 @@ namespace Tasslehoff.Library.Cron
         /// </summary>
         public void CancelActiveActions()
         {
-            foreach (CronActionParameters activeAction in this.activeActions)
+            foreach (TaskActionParameters activeAction in this.ActiveActions)
             {
                 activeAction.CancellationTokenSource.Cancel();
             }

@@ -1,5 +1,5 @@
 ﻿// -----------------------------------------------------------------------
-// <copyright file="CronItemStatus.cs" company="-">
+// <copyright file="ITask.cs" company="-">
 // Copyright (c) 2014 Eser Ozvataf (eser@sent.com). All rights reserved.
 // Web: http://eser.ozvataf.com/ GitHub: http://github.com/larukedi
 // </copyright>
@@ -19,34 +19,19 @@
 //// You should have received a copy of the GNU General Public License
 //// along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-namespace Tasslehoff.Library.Cron
+namespace Tasslehoff.Library.Tasks
 {
-    using System;
-    using System.Runtime.Serialization;
-
     /// <summary>
-    /// CronItemStatus enumeration.
+    /// ITask interface.
     /// </summary>
-    [Serializable]
-    [DataContract]
-    public enum CronItemStatus
+    public interface ITask
     {
-        /// <summary>
-        /// Not started
-        /// </summary>
-        [EnumMember]
-        NotStarted = 0,
+        // methods
 
         /// <summary>
-        /// Item is running
+        /// Does the task.
         /// </summary>
-        [EnumMember]
-        Running = 1,
-
-        /// <summary>
-        /// Item is stopped
-        /// </summary>
-        [EnumMember]
-        Stopped = 2
+        /// <param name="parameters">The parameters</param>
+        void Do(TaskActionParameters parameters);
     }
 }

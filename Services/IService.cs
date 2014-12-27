@@ -61,7 +61,7 @@ namespace Tasslehoff.Library.Services
         /// <value>
         /// The status date.
         /// </value>
-        DateTime StatusDate { get; }
+        DateTimeOffset StatusDate { get; }
 
         /// <summary>
         /// Gets the log.

@@ -1,5 +1,5 @@
 ﻿// -----------------------------------------------------------------------
-// <copyright file="CronActionParameters.cs" company="-">
+// <copyright file="TaskActionParameters.cs" company="-">
 // Copyright (c) 2014 Eser Ozvataf (eser@sent.com). All rights reserved.
 // Web: http://eser.ozvataf.com/ GitHub: http://github.com/larukedi
 // </copyright>
@@ -19,7 +19,7 @@
 //// You should have received a copy of the GNU General Public License
 //// along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-namespace Tasslehoff.Library.Cron
+namespace Tasslehoff.Library.Tasks
 {
     using System;
     using System.Diagnostics.CodeAnalysis;
@@ -27,21 +27,21 @@ namespace Tasslehoff.Library.Cron
     using Tasslehoff.Library.Helpers;
 
     /// <summary>
-    /// CronActionParameters class.
+    /// TaskActionParameters class.
     /// </summary>
-    public class CronActionParameters : IDisposable
+    public class TaskActionParameters : IDisposable
     {
         // fields
 
         /// <summary>
         /// The source
         /// </summary>
-        private readonly CronItem source;
+        private readonly TaskItem source;
 
         /// <summary>
         /// The action started
         /// </summary>
-        private readonly DateTime actionStarted;
+        private readonly DateTimeOffset actionStarted;
 
         /// <summary>
         /// The lifetime
@@ -61,12 +61,12 @@ namespace Tasslehoff.Library.Cron
         // constructors
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="CronActionParameters" /> class.
+        /// Initializes a new instance of the <see cref="TaskActionParameters" /> class.
         /// </summary>
         /// <param name="source">The source</param>
         /// <param name="actionStarted">The action started</param>
         /// <param name="lifetime">The lifetime</param>
-        public CronActionParameters(CronItem source, DateTime actionStarted, TimeSpan lifetime)
+        public TaskActionParameters(TaskItem source, DateTimeOffset actionStarted, TimeSpan lifetime)
         {
             this.source = source;
             this.actionStarted = actionStarted;
@@ -83,9 +83,9 @@ namespace Tasslehoff.Library.Cron
         }
 
         /// <summary>
-        /// Finalizes an instance of the <see cref="CronActionParameters"/> class.
+        /// Finalizes an instance of the <see cref="TaskActionParameters"/> class.
         /// </summary>
-        ~CronActionParameters()
+        ~TaskActionParameters()
         {
             this.Dispose(false);
         }
@@ -98,7 +98,7 @@ namespace Tasslehoff.Library.Cron
         /// <value>
         /// The source.
         /// </value>
-        public CronItem Source
+        public TaskItem Source
         {
             get
             {
@@ -112,7 +112,7 @@ namespace Tasslehoff.Library.Cron
         /// <value>
         /// The action started.
         /// </value>
-        public DateTime ActionStarted
+        public DateTimeOffset ActionStarted
         {
             get
             {
@@ -160,7 +160,6 @@ namespace Tasslehoff.Library.Cron
             {
                 return this.disposed;
             }
-
             protected set
             {
                 this.disposed = value;
@@ -196,14 +195,14 @@ namespace Tasslehoff.Library.Cron
         [SuppressMessage("Microsoft.Usage", "CA2213:DisposableFieldsShouldBeDisposed", MessageId = "cancellationTokenSource")]
         protected void Dispose(bool releaseManagedResources)
         {
-            if (this.disposed)
+            if (this.Disposed)
             {
                 return;
             }
 
             this.OnDispose(releaseManagedResources);
 
-            this.disposed = true;
+            this.Disposed = true;
         }
     }
 }

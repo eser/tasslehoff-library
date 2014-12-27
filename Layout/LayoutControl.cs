@@ -386,7 +386,6 @@ namespace Tasslehoff.Library.Layout
             {
                 return this.webControl;
             }
-
             set
             {
                 this.webControl = value;
@@ -406,7 +405,6 @@ namespace Tasslehoff.Library.Layout
             {
                 return this.disposed;
             }
-
             protected set
             {
                 this.disposed = value;

@@ -66,7 +66,6 @@ namespace Tasslehoff.Library.DataAccess
             {
                 return this.driver;
             }
-
             set
             {
                 this.driver = value;
@@ -83,7 +82,6 @@ namespace Tasslehoff.Library.DataAccess
             {
                 return this.connectionString;
             }
-
             set
             {
                 this.connectionString = value;

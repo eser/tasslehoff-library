@@ -1,5 +1,5 @@
 ﻿// -----------------------------------------------------------------------
-// <copyright file="DayOfWeekFlags.cs" company="-">
+// <copyright file="TaskItemStatus.cs" company="-">
 // Copyright (c) 2014 Eser Ozvataf (eser@sent.com). All rights reserved.
 // Web: http://eser.ozvataf.com/ GitHub: http://github.com/larukedi
 // </copyright>
@@ -19,65 +19,34 @@
 //// You should have received a copy of the GNU General Public License
 //// along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-namespace Tasslehoff.Library.Cron
+namespace Tasslehoff.Library.Tasks
 {
     using System;
     using System.Runtime.Serialization;
 
     /// <summary>
-    /// DayOfWeekFlags enumeration.
+    /// TaskItemStatus enumeration.
     /// </summary>
     [Serializable]
     [DataContract]
-    [Flags]
-    public enum DayOfWeekFlags
+    public enum TaskItemStatus
     {
         /// <summary>
-        /// None of them.
+        /// Not started
         /// </summary>
         [EnumMember]
-        None = 0,
+        NotStarted = 0,
 
         /// <summary>
-        /// Day Sunday.
+        /// Item is running
         /// </summary>
         [EnumMember]
-        Sunday = 1,
+        Running = 1,
 
         /// <summary>
-        /// Day Monday.
+        /// Item is stopped
         /// </summary>
         [EnumMember]
-        Monday = 2,
-
-        /// <summary>
-        /// Day Tuesday.
-        /// </summary>
-        [EnumMember]
-        Tuesday = 4,
-
-        /// <summary>
-        /// Day Wednesday.
-        /// </summary>
-        [EnumMember]
-        Wednesday = 8,
-
-        /// <summary>
-        /// Day Thursday.
-        /// </summary>
-        [EnumMember]
-        Thursday = 16,
-
-        /// <summary>
-        /// Day Friday.
-        /// </summary>
-        [EnumMember]
-        Friday = 32,
-
-        /// <summary>
-        /// Day Saturday.
-        /// </summary>
-        [EnumMember]
-        Saturday = 64
+        Stopped = 2
     }
 }

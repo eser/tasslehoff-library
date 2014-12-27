@@ -60,7 +60,6 @@ namespace Tasslehoff.Library.Helpers
             {
                 return RandomHelpers.randomObject;
             }
-
             set
             {
                 RandomHelpers.randomObject = value;

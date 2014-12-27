@@ -105,7 +105,6 @@ namespace Tasslehoff.Library.DataAccess
             {
                 return this.defaultDatabaseKey;
             }
-
             set
             {
                 this.defaultDatabaseKey = value;
@@ -122,7 +121,6 @@ namespace Tasslehoff.Library.DataAccess
             {
                 return this.connections;
             }
-
             set
             {
                 this.connections = value;
@@ -139,7 +137,6 @@ namespace Tasslehoff.Library.DataAccess
             {
                 return this.databaseInstances;
             }
-
             set
             {
                 this.databaseInstances = value;
@@ -156,7 +153,6 @@ namespace Tasslehoff.Library.DataAccess
             {
                 return this.queries;
             }
-
             set
             {
                 this.queries = value;
@@ -173,7 +169,6 @@ namespace Tasslehoff.Library.DataAccess
             {
                 return this.queryPlaceholders;
             }
-
             set
             {
                 this.queryPlaceholders = value;

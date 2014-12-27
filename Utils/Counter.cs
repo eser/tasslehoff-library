@@ -35,7 +35,7 @@ namespace Tasslehoff.Library.Utils
         /// <summary>
         /// The counter stack
         /// </summary>
-        private IDictionary<int, KeyValuePair<string, DateTime>> counterStack;
+        private IDictionary<int, KeyValuePair<string, DateTimeOffset>> counterStack;
 
         /// <summary>
         /// The numerator
@@ -49,7 +49,7 @@ namespace Tasslehoff.Library.Utils
         /// </summary>
         public Counter()
         {
-            this.counterStack = new Dictionary<int, KeyValuePair<string, DateTime>>();
+            this.counterStack = new Dictionary<int, KeyValuePair<string, DateTimeOffset>>();
             this.numerator = new Numerator();
         }
 
@@ -70,7 +70,7 @@ namespace Tasslehoff.Library.Utils
         /// </returns>
         public int Push()
         {
-            return this.Push(null, DateTime.UtcNow);
+            return this.Push(null, DateTimeOffset.UtcNow);
         }
 
         /// <summary>
@@ -82,7 +82,7 @@ namespace Tasslehoff.Library.Utils
         /// </returns>
         public int Push(string key)
         {
-            return this.Push(key, DateTime.UtcNow);
+            return this.Push(key, DateTimeOffset.UtcNow);
         }
 
         /// <summary>
@@ -93,10 +93,10 @@ namespace Tasslehoff.Library.Utils
         /// <returns>
         /// The number
         /// </returns>
-        public int Push(string key, DateTime dateTime)
+        public int Push(string key, DateTimeOffset dateTime)
         {
             int number = this.numerator.Get();
-            this.counterStack.Add(number, new KeyValuePair<string, DateTime>(key, dateTime));
+            this.counterStack.Add(number, new KeyValuePair<string, DateTimeOffset>(key, dateTime));
 
             return number;
         }
@@ -110,10 +110,10 @@ namespace Tasslehoff.Library.Utils
         /// </returns>
         public TimeSpan Pop(int number)
         {
-            KeyValuePair<string, DateTime> pop = this.counterStack[number];
+            KeyValuePair<string, DateTimeOffset> pop = this.counterStack[number];
             this.counterStack.Remove(number);
 
-            TimeSpan period = DateTime.UtcNow.Subtract(pop.Value);
+            TimeSpan period = DateTimeOffset.UtcNow.Subtract(pop.Value);
 
             if (this.OnPopped != null)
             {

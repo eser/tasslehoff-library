@@ -36,10 +36,10 @@ namespace Tasslehoff.Library.Helpers
         /// </summary>
         /// <param name="datetime">DateTime to be converted</param>
         /// <returns>Unix Timestamp</returns>
-        public static double UnixTimestamp(DateTime? datetime)
+        public static double UnixTimestamp(DateTimeOffset? datetime)
         {
-            DateTime epoch = new DateTime(1970, 1, 1, 0, 0, 0, 0);
-            return (datetime.GetValueOrDefault(DateTime.UtcNow) - epoch).TotalSeconds;
+            DateTimeOffset epoch = new DateTimeOffset(1970, 1, 1, 0, 0, 0, 0, TimeSpan.Zero);
+            return (datetime.GetValueOrDefault(DateTimeOffset.UtcNow) - epoch).TotalSeconds;
         }
 
         /// <summary>
@@ -47,9 +47,9 @@ namespace Tasslehoff.Library.Helpers
         /// </summary>
         /// <param name="secondsPassed">The seconds passed</param>
         /// <returns>DateTime Object</returns>
-        public static DateTime FromUnixtime(double secondsPassed)
+        public static DateTimeOffset FromUnixtime(double secondsPassed)
         {
-            DateTime epoch = new DateTime(1970, 1, 1, 0, 0, 0, 0);
+            DateTimeOffset epoch = new DateTimeOffset(1970, 1, 1, 0, 0, 0, 0, TimeSpan.Zero);
             return epoch.AddSeconds(secondsPassed);
         }
 
@@ -58,7 +58,7 @@ namespace Tasslehoff.Library.Helpers
         /// </summary>
         /// <param name="datetime">The datetime.</param>
         /// <returns>ISO8601 formatted datetime</returns>
-        public static string ISO8601(DateTime datetime)
+        public static string ISO8601(DateTimeOffset datetime)
         {
             return datetime.ToString("yyyy'-'MM'-'dd'T'HH':'mm':'sszzz");
         }
@@ -68,9 +68,9 @@ namespace Tasslehoff.Library.Helpers
         /// </summary>
         /// <param name="datetime">The datetime.</param>
         /// <returns>DateTime Object</returns>
-        public static DateTime FromISO8601(string datetime)
+        public static DateTimeOffset FromISO8601(string datetime)
         {
-            return DateTime.ParseExact(
+            return DateTimeOffset.ParseExact(
                 datetime,
                 "yyyy'-'MM'-'dd'T'HH':'mm':'sszzz", // new string[] { "s", "u" },
                 CultureInfo.InvariantCulture,
@@ -94,30 +94,20 @@ namespace Tasslehoff.Library.Helpers
         /// <param name="timeZoneId">The time zone id</param>
         /// <param name="dateTime">The date time</param>
         /// <returns>The converted DateTime object</returns>
-        public static DateTime ToSpecificTimeZone(string timeZoneId, DateTime dateTime)
+        public static DateTimeOffset ToSpecificTimeZone(string timeZoneId, DateTimeOffset dateTime)
         {
-            if (dateTime == DateTime.MinValue || dateTime == DateTime.MaxValue)
-            {
-                return dateTime;
-            }
-
-            return TimeZoneInfo.ConvertTimeFromUtc(dateTime, DateTimeHelpers.GetTimeZone(timeZoneId));
+            TimeZoneInfo timeZoneInfo = DateTimeHelpers.GetTimeZone(timeZoneId);
+            return dateTime.ToOffset(timeZoneInfo.BaseUtcOffset);
         }
 
         /// <summary>
         /// To the universal.
         /// </summary>
-        /// <param name="timeZoneId">The time zone id</param>
         /// <param name="dateTime">The date time</param>
         /// <returns>The converted DateTime object</returns>
-        public static DateTime ToUniversal(string timeZoneId, DateTime dateTime)
+        public static DateTimeOffset ToUniversal(DateTimeOffset dateTime)
         {
-            if (dateTime == DateTime.MinValue || dateTime == DateTime.MaxValue)
-            {
-                return dateTime;
-            }
-
-            return TimeZoneInfo.ConvertTimeToUtc(dateTime, DateTimeHelpers.GetTimeZone(timeZoneId));
+            return dateTime.ToUniversalTime();
         }
     }
 }

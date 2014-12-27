@@ -60,7 +60,6 @@ namespace Tasslehoff.Library.DataAccess
             {
                 return this.sqlCommand;
             }
-
             set
             {
                 this.sqlCommand = value;

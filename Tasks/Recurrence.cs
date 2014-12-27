@@ -19,7 +19,7 @@
 //// You should have received a copy of the GNU General Public License
 //// along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-namespace Tasslehoff.Library.Cron
+namespace Tasslehoff.Library.Tasks
 {
     using System;
     using Tasslehoff.Library.Helpers;
@@ -34,7 +34,7 @@ namespace Tasslehoff.Library.Cron
         /// <summary>
         /// The date start
         /// </summary>
-        private readonly DateTime dateStart;
+        private readonly DateTimeOffset dateStart;
 
         /// <summary>
         /// The interval
@@ -44,7 +44,7 @@ namespace Tasslehoff.Library.Cron
         /// <summary>
         /// The date end
         /// </summary>
-        private DateTime dateEnd;
+        private DateTimeOffset dateEnd;
 
         /// <summary>
         /// The excluded hours
@@ -74,10 +74,10 @@ namespace Tasslehoff.Library.Cron
         /// <param name="dateStart">The date start</param>
         /// <param name="interval">The interval</param>
         /// <remarks>Use TimeSpan.Zero as interval for non-recurring events.</remarks>
-        public Recurrence(DateTime dateStart, TimeSpan interval)
+        public Recurrence(DateTimeOffset dateStart, TimeSpan interval)
         {
             this.dateStart = dateStart;
-            this.dateEnd = DateTime.MaxValue;
+            this.dateEnd = DateTimeOffset.MaxValue;
             this.interval = interval;
 
             this.excludedHours = HourFlags.None;
@@ -92,7 +92,7 @@ namespace Tasslehoff.Library.Cron
         /// <value>
         /// The date start.
         /// </value>
-        public DateTime DateStart
+        public DateTimeOffset DateStart
         {
             get
             {
@@ -111,13 +111,12 @@ namespace Tasslehoff.Library.Cron
         /// <value>
         /// The date end.
         /// </value>
-        public DateTime DateEnd
+        public DateTimeOffset DateEnd
         {
             get
             {
                 return this.dateEnd;
             }
-
             set
             {
                 this.dateEnd = value;
@@ -155,7 +154,6 @@ namespace Tasslehoff.Library.Cron
             {
                 return this.excludedHours;
             }
-
             set
             {
                 this.excludedHours = value;
@@ -174,7 +172,6 @@ namespace Tasslehoff.Library.Cron
             {
                 return this.excludedDayOfWeeks;
             }
-
             set
             {
                 this.excludedDayOfWeeks = value;
@@ -193,7 +190,6 @@ namespace Tasslehoff.Library.Cron
             {
                 return this.excludedDays;
             }
-
             set
             {
                 this.excludedDays = value;
@@ -212,7 +208,6 @@ namespace Tasslehoff.Library.Cron
             {
                 return this.excludedMonths;
             }
-
             set
             {
                 this.excludedMonths = value;
@@ -224,9 +219,18 @@ namespace Tasslehoff.Library.Cron
         /// <summary>
         /// Creates recurrence works at once.
         /// </summary>
+        /// <returns>Recurrence instance</returns>
+        public static Recurrence Once()
+        {
+            return new Recurrence(DateTimeOffset.MinValue, TimeSpan.Zero);
+        }
+
+        /// <summary>
+        /// Creates recurrence works at once on specified time.
+        /// </summary>
         /// <param name="dateTime">The date time</param>
         /// <returns>Recurrence instance</returns>
-        public static Recurrence OnceAt(DateTime dateTime)
+        public static Recurrence OnceAt(DateTimeOffset dateTime)
         {
             return new Recurrence(dateTime, TimeSpan.Zero);
         }
@@ -238,7 +242,7 @@ namespace Tasslehoff.Library.Cron
         /// <returns>Recurrence instance</returns>
         public static Recurrence Periodically(TimeSpan period)
         {
-            return new Recurrence(DateTime.MinValue, period);
+            return new Recurrence(DateTimeOffset.MinValue, period);
         }
 
         /// <summary>
@@ -246,34 +250,34 @@ namespace Tasslehoff.Library.Cron
         /// </summary>
         /// <param name="dateTime">The date time</param>
         /// <returns>Is date valid or not</returns>
-        public bool CheckDate(DateTime dateTime)
+        public bool CheckDate(DateTimeOffset dateTime)
         {
-            if (this.excludedMonths.HasFlag((MonthFlags)dateTime.Month))
+            if (this.ExcludedMonths.HasFlag((MonthFlags)dateTime.Month))
             {
                 return false;
             }
 
-            if (this.excludedDayOfWeeks.HasFlag((DayOfWeekFlags)(dateTime.DayOfWeek + 1)))
+            if (this.ExcludedDayOfWeeks.HasFlag((DayOfWeekFlags)(dateTime.DayOfWeek + 1)))
             {
                 return false;
             }
 
-            if (this.excludedDays.HasFlag((DayFlags)dateTime.Day))
+            if (this.ExcludedDays.HasFlag((DayFlags)dateTime.Day))
             {
                 return false;
             }
 
-            if (this.excludedHours.HasFlag((HourFlags)(dateTime.Hour + 1)))
+            if (this.ExcludedHours.HasFlag((HourFlags)(dateTime.Hour + 1)))
             {
                 return false;
             }
 
-            if (this.dateStart != DateTime.MinValue && this.dateStart < dateTime)
+            if (this.DateStart != DateTimeOffset.MinValue && this.DateStart > dateTime)
             {
                 return false;
             }
 
-            if (this.dateEnd != DateTime.MaxValue && this.dateEnd > dateTime)
+            if (this.DateEnd != DateTimeOffset.MaxValue && this.DateEnd < dateTime)
             {
                 return false;
             }
@@ -289,7 +293,7 @@ namespace Tasslehoff.Library.Cron
         /// </returns>
         public override int GetHashCode()
         {
-            return HashHelpers.RSHash(this.dateStart, this.dateEnd, this.interval, this.excludedHours, this.excludedDayOfWeeks, this.excludedDays, this.excludedMonths);
+            return HashHelpers.RSHash(this.DateStart, this.DateEnd, this.Interval, this.ExcludedHours, this.ExcludedDayOfWeeks, this.ExcludedDays, this.ExcludedMonths);
         }
 
         /// <summary>
@@ -303,12 +307,12 @@ namespace Tasslehoff.Library.Cron
         {
             Recurrence other = (Recurrence)obj;
 
-            if (this.dateStart != other.dateStart || this.dateEnd != other.DateEnd || this.interval != other.Interval)
+            if (this.DateStart != other.DateStart || this.DateEnd != other.DateEnd || this.Interval != other.Interval)
             {
                 return false;
             }
 
-            if (this.excludedHours != other.ExcludedHours || this.excludedDayOfWeeks != other.ExcludedDayOfWeeks || this.excludedDays != other.ExcludedDays || this.excludedMonths != other.ExcludedMonths)
+            if (this.ExcludedHours != other.ExcludedHours || this.ExcludedDayOfWeeks != other.ExcludedDayOfWeeks || this.ExcludedDays != other.ExcludedDays || this.ExcludedMonths != other.ExcludedMonths)
             {
                 return false;
             }

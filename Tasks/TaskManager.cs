@@ -1,5 +1,5 @@
 ﻿// -----------------------------------------------------------------------
-// <copyright file="CronManager.cs" company="-">
+// <copyright file="TaskManager.cs" company="-">
 // Copyright (c) 2014 Eser Ozvataf (eser@sent.com). All rights reserved.
 // Web: http://eser.ozvataf.com/ GitHub: http://github.com/larukedi
 // </copyright>
@@ -19,7 +19,7 @@
 //// You should have received a copy of the GNU General Public License
 //// along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-namespace Tasslehoff.Library.Cron
+namespace Tasslehoff.Library.Tasks
 {
     using System;
     using System.Collections.Generic;
@@ -27,16 +27,16 @@ namespace Tasslehoff.Library.Cron
     using Tasslehoff.Library.Services;
 
     /// <summary>
-    /// CronManager class.
+    /// TaskManager class.
     /// </summary>
-    public class CronManager : ServiceControllable
+    public class TaskManager : ServiceControllable
     {
         // fields
 
         /// <summary>
         /// The items
         /// </summary>
-        private IDictionary<string, CronItem> items;
+        private IDictionary<string, TaskItem> items;
 
         /// <summary>
         /// The timer
@@ -46,16 +46,16 @@ namespace Tasslehoff.Library.Cron
         /// <summary>
         /// The now
         /// </summary>
-        private DateTime now;
+        private DateTimeOffset now;
 
         // constructors
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="CronManager"/> class.
+        /// Initializes a new instance of the <see cref="TaskManager"/> class.
         /// </summary>
-        public CronManager() : base()
+        public TaskManager() : base()
         {
-            this.items = new Dictionary<string, CronItem>();
+            this.items = new Dictionary<string, TaskItem>();
 
             this.timer = new Timer(1000)
             {
@@ -64,7 +64,7 @@ namespace Tasslehoff.Library.Cron
             };
             this.timer.Elapsed += this.Timer_Elapsed;
 
-            this.now = DateTime.UtcNow;
+            this.now = DateTimeOffset.UtcNow;
         }
 
         // properties
@@ -79,7 +79,7 @@ namespace Tasslehoff.Library.Cron
         {
             get
             {
-                return "CronManager";
+                return "TaskManager";
             }
         }
 
@@ -97,6 +97,60 @@ namespace Tasslehoff.Library.Cron
             }
         }
 
+        /// <summary>
+        /// Gets or sets the items.
+        /// </summary>
+        /// <value>
+        /// The items.
+        /// </value>
+        public IDictionary<string, TaskItem> Items
+        {
+            get
+            {
+                return this.items;
+            }
+            set
+            {
+                this.items = value;
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the timer.
+        /// </summary>
+        /// <value>
+        /// The timer.
+        /// </value>
+        protected Timer Timer
+        {
+            get
+            {
+                return this.timer;
+            }
+            set
+            {
+                this.timer = value;
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the now.
+        /// </summary>
+        /// <value>
+        /// The now.
+        /// </value>
+        protected DateTimeOffset Now
+        {
+            get
+            {
+                return this.now;
+            }
+            set
+            {
+                this.now = value;
+            }
+        }
+
         // methods
 
         /// <summary>
@@ -104,11 +158,15 @@ namespace Tasslehoff.Library.Cron
         /// </summary>
         /// <param name="key">The key</param>
         /// <param name="item">The item</param>
-        public void Add(string key, CronItem item)
+        public void Add(string key, TaskItem item)
         {
             item.Init();
 
-            this.items.Add(key, item);
+            this.Items.Add(key, item);
+            if (this.Status == ServiceStatus.Running)
+            {
+                item.Run();
+            }
         }
 
         /// <summary>
@@ -117,7 +175,7 @@ namespace Tasslehoff.Library.Cron
         /// <param name="key">The key</param>
         public void Remove(string key)
         {
-            this.items.Remove(key);
+            this.Items.Remove(key);
         }
 
         /// <summary>
@@ -125,7 +183,7 @@ namespace Tasslehoff.Library.Cron
         /// </summary>
         public void Clear()
         {
-            this.items.Clear();
+            this.Items.Clear();
         }
 
         /// <summary>
@@ -133,7 +191,7 @@ namespace Tasslehoff.Library.Cron
         /// </summary>
         protected override void ServiceStart()
         {
-            this.timer.Start();
+            this.Timer.Start();
         }
 
         /// <summary>
@@ -141,12 +199,12 @@ namespace Tasslehoff.Library.Cron
         /// </summary>
         protected override void ServiceStop()
         {
-            foreach (CronItem item in this.items.Values)
+            foreach (TaskItem item in this.Items.Values)
             {
                 item.CancelActiveActions();
             }
 
-            this.timer.Stop();
+            this.Timer.Stop();
         }
 
         /// <summary>
@@ -156,14 +214,14 @@ namespace Tasslehoff.Library.Cron
         /// <param name="e">The <see cref="ElapsedEventArgs"/> instance containing the event data</param>
         private void Timer_Elapsed(object sender, ElapsedEventArgs e)
         {
-            this.now = e.SignalTime.ToUniversalTime();
+            this.Now = e.SignalTime.ToUniversalTime();
 
-            foreach (KeyValuePair<string, CronItem> pair in this.items)
+            foreach (KeyValuePair<string, TaskItem> pair in this.Items)
             {
-                pair.Value.Run(this.now);
+                pair.Value.Run(this.Now);
             }
 
-            this.timer.Start();
+            this.Timer.Start();
         }
     }
 }

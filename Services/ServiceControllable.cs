@@ -71,7 +71,7 @@ namespace Tasslehoff.Library.Services
                 this.ServiceStart();
                 
                 this.Status = ServiceStatus.Running;
-                this.StatusDate = DateTime.UtcNow;
+                this.StatusDate = DateTimeOffset.UtcNow;
                 this.Log.Write(LogLevel.Info, string.Format(CultureInfo.InvariantCulture, LocalResource.ServiceHasBeenStarted, this.Name));
                 
                 if (this.OnStart != null)
@@ -104,7 +104,7 @@ namespace Tasslehoff.Library.Services
                 this.ServiceStop();
                 
                 this.Status = ServiceStatus.Stopped;
-                this.StatusDate = DateTime.UtcNow;
+                this.StatusDate = DateTimeOffset.UtcNow;
                 this.Log.Write(LogLevel.Info, string.Format(CultureInfo.InvariantCulture, LocalResource.ServiceHasBeenStopped, this.Name));
                 
                 if (this.OnStop != null)

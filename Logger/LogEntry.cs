@@ -51,7 +51,7 @@ namespace Tasslehoff.Library.Logger
         /// <summary>
         /// The date
         /// </summary>
-        private DateTime date;
+        private DateTimeOffset date;
 
         /// <summary>
         /// The message
@@ -90,7 +90,6 @@ namespace Tasslehoff.Library.Logger
             {
                 return this.application;
             }
-
             set
             {
                 this.application = value;
@@ -109,7 +108,6 @@ namespace Tasslehoff.Library.Logger
             {
                 return this.category;
             }
-
             set
             {
                 this.category = value;
@@ -122,13 +120,12 @@ namespace Tasslehoff.Library.Logger
         /// <value>
         /// The date.
         /// </value>
-        public DateTime Date
+        public DateTimeOffset Date
         {
             get
             {
                 return this.date;
             }
-
             set
             {
                 this.date = value;
@@ -147,7 +144,6 @@ namespace Tasslehoff.Library.Logger
             {
                 return this.message;
             }
-
             set
             {
                 this.message = value;
@@ -166,7 +162,6 @@ namespace Tasslehoff.Library.Logger
             {
                 return this.isDirect;
             }
-
             set
             {
                 this.isDirect = value;
@@ -199,7 +194,6 @@ namespace Tasslehoff.Library.Logger
             {
                 return this.level;
             }
-
             set
             {
                 this.level = value;

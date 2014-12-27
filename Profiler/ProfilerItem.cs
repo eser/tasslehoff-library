@@ -156,7 +156,6 @@ namespace Tasslehoff.Library.Profiler
             {
                 return this.disposed;
             }
-
             protected set
             {
                 this.disposed = value;

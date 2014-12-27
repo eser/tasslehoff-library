@@ -90,7 +90,6 @@ namespace Tasslehoff.Library.Logger
             {
                 return this.application;
             }
-
             set
             {
                 this.application = value;
@@ -109,7 +108,6 @@ namespace Tasslehoff.Library.Logger
             {
                 return this.category;
             }
-
             set
             {
                 this.category = value;
@@ -128,7 +126,6 @@ namespace Tasslehoff.Library.Logger
             {
                 return this.isDirect;
             }
-
             set
             {
                 this.isDirect = value;
@@ -161,7 +158,6 @@ namespace Tasslehoff.Library.Logger
             {
                 return this.disposed;
             }
-
             protected set
             {
                 this.disposed = value;
@@ -196,7 +192,7 @@ namespace Tasslehoff.Library.Logger
         /// <param name="category">The category</param>
         /// <param name="isDirect">The is direct</param>
         /// <returns>LogEntry instance</returns>
-        public LogEntry Get(LogLevel level, string text, Exception exception = null, DateTime? date = null, string application = null, string category = null, bool? isDirect = null)
+        public LogEntry Get(LogLevel level, string text, Exception exception = null, DateTimeOffset? date = null, string application = null, string category = null, bool? isDirect = null)
         {
             if (exception != null)
             {
@@ -226,7 +222,7 @@ namespace Tasslehoff.Library.Logger
                 Category = category ?? this.category,
                 Message = text,
                 IsDirect = isDirect ?? this.isDirect,
-                Date = date.GetValueOrDefault(DateTime.UtcNow)
+                Date = date.GetValueOrDefault(DateTimeOffset.UtcNow)
             };
         }
 
@@ -241,7 +237,7 @@ namespace Tasslehoff.Library.Logger
         /// <param name="category">The category</param>
         /// <param name="isDirect">The is direct</param>
         /// <returns>Is written or not</returns>
-        public bool Write(LogLevel level, string text, Exception exception = null, DateTime? date = null, string application = null, string category = null, bool? isDirect = null)
+        public bool Write(LogLevel level, string text, Exception exception = null, DateTimeOffset? date = null, string application = null, string category = null, bool? isDirect = null)
         {
             if (this.assignedLogger == null)
             {

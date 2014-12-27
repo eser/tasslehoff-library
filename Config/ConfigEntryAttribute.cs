@@ -69,7 +69,6 @@ namespace Tasslehoff.Library.Config
             {
                 return this.defaultValue;
             }
-
             set
             {
                 this.defaultValue = value;
@@ -88,7 +87,6 @@ namespace Tasslehoff.Library.Config
             {
                 return this.isEncrypted;
             }
-
             set
             {
                 this.isEncrypted = value;
@@ -107,7 +105,6 @@ namespace Tasslehoff.Library.Config
             {
                 return this.skipInReset;
             }
-
             set
             {
                 this.skipInReset = value;

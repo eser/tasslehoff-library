@@ -128,7 +128,6 @@ namespace Tasslehoff.Library.Text
             {
                 return this.stringBuilder;
             }
-
             set
             {
                 this.stringBuilder = value;
@@ -144,7 +143,6 @@ namespace Tasslehoff.Library.Text
             {
                 return this.textWriter;
             }
-
             set
             {
                 this.textWriter = value;
@@ -160,7 +158,6 @@ namespace Tasslehoff.Library.Text
             {
                 return this.jsonTextWriter;
             }
-
             set
             {
                 this.jsonTextWriter = value;
@@ -176,7 +173,6 @@ namespace Tasslehoff.Library.Text
             {
                 return this.xmlTextWriter;
             }
-
             set
             {
                 this.xmlTextWriter = value;
@@ -195,7 +191,6 @@ namespace Tasslehoff.Library.Text
             {
                 return this.disposed;
             }
-
             protected set
             {
                 this.disposed = value;

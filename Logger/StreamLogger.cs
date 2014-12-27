@@ -82,7 +82,6 @@ namespace Tasslehoff.Library.Logger
             {
                 return this.outputEncoding;
             }
-
             set
             {
                 this.outputEncoding = value;

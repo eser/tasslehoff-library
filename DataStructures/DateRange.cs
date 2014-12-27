@@ -39,13 +39,13 @@ namespace Tasslehoff.Library.DataStructures
         /// The start
         /// </summary>
         [DataMember(Name = "Start")]
-        private readonly DateTime start;
+        private readonly DateTimeOffset start;
 
         /// <summary>
         /// The end
         /// </summary>
         [DataMember(Name = "End")]
-        private readonly DateTime end;
+        private readonly DateTimeOffset end;
 
         // constructors
 
@@ -54,7 +54,7 @@ namespace Tasslehoff.Library.DataStructures
         /// </summary>
         /// <param name="start">The start</param>
         /// <param name="end">The end</param>
-        public DateRange(DateTime start, DateTime end)
+        public DateRange(DateTimeOffset start, DateTimeOffset end)
         {
             this.start = start;
             this.end = end;
@@ -67,7 +67,7 @@ namespace Tasslehoff.Library.DataStructures
         /// Gets the start.
         /// </summary>
         [IgnoreDataMember]
-        public DateTime Start
+        public DateTimeOffset Start
         {
             get
             {
@@ -79,7 +79,7 @@ namespace Tasslehoff.Library.DataStructures
         /// Gets the end.
         /// </summary>
         [IgnoreDataMember]
-        public DateTime End
+        public DateTimeOffset End
         {
             get
             {
@@ -94,7 +94,7 @@ namespace Tasslehoff.Library.DataStructures
         /// </summary>
         /// <param name="current">The current</param>
         /// <returns>Set of days</returns>
-        public static DateRange CreateWeekRange(DateTime current)
+        public static DateRange CreateWeekRange(DateTimeOffset current)
         {
             return DateRange.CreateWeekRange(current, Thread.CurrentThread.CurrentCulture);
         }
@@ -105,13 +105,13 @@ namespace Tasslehoff.Library.DataStructures
         /// <param name="current">The current</param>
         /// <param name="cultureInfo">The culture info</param>
         /// <returns>Set of days</returns>
-        public static DateRange CreateWeekRange(DateTime current, CultureInfo cultureInfo)
+        public static DateRange CreateWeekRange(DateTimeOffset current, CultureInfo cultureInfo)
         {
             DayOfWeek firstDay = cultureInfo.DateTimeFormat.FirstDayOfWeek;
             int diff = (7 + ((int)current.DayOfWeek - (int)firstDay)) % 7;
 
-            DateTime start = new DateTime(current.Year, current.Month, current.Day - diff, 0, 0, 0, 0, DateTimeKind.Utc);
-            DateTime end = start.Add(new TimeSpan(7, 0, 0, 0, -1));
+            DateTimeOffset start = new DateTimeOffset(current.Year, current.Month, current.Day - diff, 0, 0, 0, 0, TimeSpan.Zero);
+            DateTimeOffset end = start.Add(new TimeSpan(7, 0, 0, 0, -1));
 
             return new DateRange(start, end);
         }
@@ -121,10 +121,10 @@ namespace Tasslehoff.Library.DataStructures
         /// </summary>
         /// <param name="current">The current</param>
         /// <returns>Set of days</returns>
-        public static DateRange CreateMonthRange(DateTime current)
+        public static DateRange CreateMonthRange(DateTimeOffset current)
         {
-            DateTime start = new DateTime(current.Year, current.Month, 1, 0, 0, 0, 0, DateTimeKind.Utc);
-            DateTime end = start.AddMonths(1).AddMilliseconds(-1);
+            DateTimeOffset start = new DateTimeOffset(current.Year, current.Month, 1, 0, 0, 0, 0, TimeSpan.Zero);
+            DateTimeOffset end = start.AddMonths(1).AddMilliseconds(-1);
 
             return new DateRange(start, end);
         }

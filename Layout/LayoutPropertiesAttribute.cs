@@ -69,7 +69,6 @@ namespace Tasslehoff.Library.Layout
             {
                 return this.type;
             }
-
             set
             {
                 this.type = value;
@@ -88,7 +87,6 @@ namespace Tasslehoff.Library.Layout
             {
                 return this.displayName;
             }
-
             set
             {
                 this.displayName = value;
@@ -107,7 +105,6 @@ namespace Tasslehoff.Library.Layout
             {
                 return this.icon;
             }
-
             set
             {
                 this.icon = value;

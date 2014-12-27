@@ -135,7 +135,6 @@ namespace Tasslehoff.Library.DataStructures.Collections
 
                 return this.values[index];
             }
-
             set
             {
                 this.Add(key, value, true);

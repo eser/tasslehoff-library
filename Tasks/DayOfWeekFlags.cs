@@ -1,5 +1,5 @@
 ﻿// -----------------------------------------------------------------------
-// <copyright file="MonthFlags.cs" company="-">
+// <copyright file="DayOfWeekFlags.cs" company="-">
 // Copyright (c) 2014 Eser Ozvataf (eser@sent.com). All rights reserved.
 // Web: http://eser.ozvataf.com/ GitHub: http://github.com/larukedi
 // </copyright>
@@ -19,18 +19,18 @@
 //// You should have received a copy of the GNU General Public License
 //// along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-namespace Tasslehoff.Library.Cron
+namespace Tasslehoff.Library.Tasks
 {
     using System;
     using System.Runtime.Serialization;
 
     /// <summary>
-    /// MonthFlags enumeration.
+    /// DayOfWeekFlags enumeration.
     /// </summary>
     [Serializable]
     [DataContract]
     [Flags]
-    public enum MonthFlags
+    public enum DayOfWeekFlags
     {
         /// <summary>
         /// None of them.
@@ -39,75 +39,45 @@ namespace Tasslehoff.Library.Cron
         None = 0,
 
         /// <summary>
-        /// Month January.
+        /// Day Sunday.
         /// </summary>
         [EnumMember]
-        January = 1,
+        Sunday = 1,
 
         /// <summary>
-        /// Month February.
+        /// Day Monday.
         /// </summary>
         [EnumMember]
-        February = 2,
+        Monday = 2,
 
         /// <summary>
-        /// Month March.
+        /// Day Tuesday.
         /// </summary>
         [EnumMember]
-        March = 4,
+        Tuesday = 4,
 
         /// <summary>
-        /// Month April.
+        /// Day Wednesday.
         /// </summary>
         [EnumMember]
-        April = 8,
+        Wednesday = 8,
 
         /// <summary>
-        /// Month May.
+        /// Day Thursday.
         /// </summary>
         [EnumMember]
-        May = 16,
+        Thursday = 16,
 
         /// <summary>
-        /// Month June.
+        /// Day Friday.
         /// </summary>
         [EnumMember]
-        June = 32,
+        Friday = 32,
 
         /// <summary>
-        /// Month July.
+        /// Day Saturday.
         /// </summary>
         [EnumMember]
-        July = 64,
-
-        /// <summary>
-        /// Month August.
-        /// </summary>
-        [EnumMember]
-        August = 128,
-
-        /// <summary>
-        /// Month September.
-        /// </summary>
-        [EnumMember]
-        September = 256,
-
-        /// <summary>
-        /// Month October.
-        /// </summary>
-        [EnumMember]
-        October = 512,
-
-        /// <summary>
-        /// Month November.
-        /// </summary>
-        [EnumMember]
-        November = 1024,
-
-        /// <summary>
-        /// Month December.
-        /// </summary>
-        [EnumMember]
-        December = 2048
+        Saturday = 64
     }
 }

@@ -141,7 +141,6 @@ namespace Laroux.ScabbiaLibrary.Threading
             {
                 return this.disposed;
             }
-
             protected set
             {
                 this.disposed = value;

@@ -120,7 +120,6 @@ namespace Tasslehoff.Library.Logger
             {
                 return this.application;
             }
-
             set
             {
                 this.application = value;
@@ -158,7 +157,6 @@ namespace Tasslehoff.Library.Logger
             {
                 return this.minimumLevel;
             }
-
             set
             {
                 this.minimumLevel = value;
@@ -177,7 +175,6 @@ namespace Tasslehoff.Library.Logger
             {
                 return this.customFormat;
             }
-
             set
             {
                 this.customFormat = value;
@@ -196,7 +193,6 @@ namespace Tasslehoff.Library.Logger
             {
                 return this.disposed;
             }
-
             protected set
             {
                 this.disposed = value;
