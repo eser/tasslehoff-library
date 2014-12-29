@@ -60,6 +60,11 @@
     <Compile Include="DataAccess\DatabaseManagerConnection.cs" />
     <Compile Include="DataAccess\DatabaseManagerQuery.cs" />
     <Compile Include="DataAccess\DatabaseManager.cs" />
+    <Compile Include="Dynamic\DynamicMethod.cs" />
+    <Compile Include="Dynamic\DynamicField.cs" />
+    <Compile Include="Dynamic\DynamicProperty.cs" />
+    <Compile Include="Dynamic\DynamicType.cs" />
+    <Compile Include="Dynamic\DynamicAssembly.cs" />
     <Compile Include="Layout\LayoutPropertiesAttribute.cs" />
     <Compile Include="Layout\UI\Base.cs" />
     <Compile Include="Layout\UI\Html.cs" />
