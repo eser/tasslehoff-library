@@ -22,6 +22,7 @@
 namespace Tasslehoff.Library.Dynamic
 {
     using System;
+    using System.IO;
     using System.Reflection;
     using System.Reflection.Emit;
     using System.Threading;
@@ -93,6 +94,24 @@ namespace Tasslehoff.Library.Dynamic
         }
 
         /// <summary>
+        /// Gets or sets the assembly name.
+        /// </summary>
+        /// <value>
+        /// The assembly name.
+        /// </value>
+        public AssemblyName AssemblyName
+        {
+            get
+            {
+                return this.assemblyName;
+            }
+            set
+            {
+                this.assemblyName = value;
+            }
+        }
+
+        /// <summary>
         /// Gets or sets the assembly builder.
         /// </summary>
         /// <value>
@@ -134,9 +153,15 @@ namespace Tasslehoff.Library.Dynamic
         /// Saves this dynamic assembly to disk.
         /// </summary>
         /// <param name="path">The file path of the assembly</param>
-        public void Save(string path)
+        public void Save(string path = null)
         {
-            this.AssemblyBuilder.Save(path);
+            string assemblyPath = this.AssemblyName.Name + ".dll";
+            this.AssemblyBuilder.Save(assemblyPath);
+
+            if (!string.IsNullOrEmpty(path))
+            {
+                File.Move(assemblyPath, path);
+            }
         }
 
         /// <summary>
