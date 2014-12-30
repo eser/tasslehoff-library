@@ -1,4 +1,5 @@
-﻿// -----------------------------------------------------------------------
+﻿#if WEB_UI
+// -----------------------------------------------------------------------
 // <copyright file="Container.cs" company="-">
 // Copyright (c) 2014 Eser Ozvataf (eser@sent.com). All rights reserved.
 // Web: http://eser.ozvataf.com/ GitHub: http://github.com/larukedi
@@ -145,3 +146,4 @@ namespace Tasslehoff.Library.Layout.UI
         }
     }
 }
+#endif

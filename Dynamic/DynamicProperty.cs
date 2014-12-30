@@ -77,7 +77,7 @@ namespace Tasslehoff.Library.Dynamic
         {
             this.AddAttribute(
                 new CustomAttributeBuilder(
-                    type.GetConstructor(parameterTypes ?? Type.EmptyTypes),
+                    type.GetConstructor(parameterTypes ?? new Type[0]),
                     parameters ?? new object[0]
                 )
             );
@@ -104,7 +104,7 @@ namespace Tasslehoff.Library.Dynamic
             OwnDynamicMethod dynamicMethod = dynamicType.AddMethod(
                 "get_" + this.PropertyBuilder.Name,
                 this.PropertyBuilder.PropertyType,
-                Type.EmptyTypes,
+                new Type[0],
                 methodAttributes
             );
 

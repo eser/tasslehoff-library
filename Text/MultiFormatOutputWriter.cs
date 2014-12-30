@@ -24,6 +24,7 @@ namespace Tasslehoff.Library.Text
     using System;
     using System.Diagnostics.CodeAnalysis;
     using System.IO;
+    using System.Reflection;
     using System.Text;
     using Newtonsoft.Json;
     using Tasslehoff.Library.Helpers;
@@ -337,15 +338,6 @@ namespace Tasslehoff.Library.Text
         }
 
         /// <summary>
-        /// Closes the current writer and releases any system resources
-        /// </summary>
-        public void Close()
-        {
-            this.JsonTextWriter.Close();
-            this.TextWriter.Close();
-        }
-
-        /// <summary>
         /// Converts the object instance to serialized Json string
         /// </summary>
         /// <returns>Json string</returns>
@@ -372,7 +364,8 @@ namespace Tasslehoff.Library.Text
         {
             if (releaseManagedResources)
             {
-                this.Close();
+                // this.JsonTextWriter.Close();
+                this.TextWriter.Dispose();
             }
 
             VariableHelpers.CheckAndDispose<TextWriter>(ref this.textWriter);

@@ -52,11 +52,11 @@ namespace Tasslehoff.Library.Helpers
         /// <returns>Member type</returns>
         public static Type GetMemberType(MemberInfo member)
         {
-            if (member.MemberType == MemberTypes.Field)
+            if (member is FieldInfo)
             {
                 return (member as FieldInfo).FieldType;
             }
-            else if (member.MemberType == MemberTypes.Property)
+            else if (member is PropertyInfo)
             {
                 return (member as PropertyInfo).PropertyType;
             }
@@ -75,7 +75,7 @@ namespace Tasslehoff.Library.Helpers
         {
             object value = null;
 
-            if (member.MemberType == MemberTypes.Field)
+            if (member is FieldInfo)
             {
                 FieldInfo fieldInfo = member as FieldInfo;
 
@@ -93,7 +93,7 @@ namespace Tasslehoff.Library.Helpers
                     }
                 }
             }
-            else if (member.MemberType == MemberTypes.Property)
+            else if (member is PropertyInfo)
             {
                 PropertyInfo propertyInfo = member as PropertyInfo;
 
@@ -128,12 +128,12 @@ namespace Tasslehoff.Library.Helpers
             PropertyInfo propertyInfo = null;
             Type type;
 
-            if (member.MemberType == MemberTypes.Field)
+            if (member is FieldInfo)
             {
                 fieldInfo = member as FieldInfo;
                 type = Nullable.GetUnderlyingType(fieldInfo.FieldType) ?? fieldInfo.FieldType;
             }
-            else if (member.MemberType == MemberTypes.Property)
+            else if (member is PropertyInfo)
             {
                 propertyInfo = member as PropertyInfo;
                 type = Nullable.GetUnderlyingType(propertyInfo.PropertyType) ?? propertyInfo.PropertyType;
@@ -155,11 +155,11 @@ namespace Tasslehoff.Library.Helpers
                 }
             }
 
-            if (member.MemberType == MemberTypes.Field)
+            if (member is FieldInfo)
             {
                 fieldInfo.SetValue(instance, value);
             }
-            else
+            else if (member is PropertyInfo)
             {
                 propertyInfo.SetValue(instance, value);
             }

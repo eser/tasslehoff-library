@@ -16,7 +16,7 @@
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>bin\Debug</OutputPath>
-    <DefineConstants>DEBUG;</DefineConstants>
+    <DefineConstants>DEBUG;WEB_UI</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <Externalconsole>true</Externalconsole>
@@ -30,6 +30,7 @@
     <WarningLevel>4</WarningLevel>
     <Externalconsole>true</Externalconsole>
     <LangVersion>5</LangVersion>
+    <DefineConstants>WEB_UI</DefineConstants>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -53,10 +54,6 @@
     <Compile Include="DataStructures\Collections\DictionaryBase{TKey1,TKey2,T}.cs" />
     <Compile Include="Config\Config.cs" />
     <Compile Include="Config\ConfigRegistry.cs" />
-    <Compile Include="DataAccess\CustomDataSourceExecuteSelectEventArgs.cs" />
-    <Compile Include="DataAccess\CustomDataSourceExecuteDeleteEventArgs.cs" />
-    <Compile Include="DataAccess\CustomDataSourceExecuteUpdateEventArgs.cs" />
-    <Compile Include="DataAccess\CustomDataSourceExecuteInsertEventArgs.cs" />
     <Compile Include="DataAccess\DatabaseManagerConnection.cs" />
     <Compile Include="DataAccess\DatabaseManagerQuery.cs" />
     <Compile Include="DataAccess\DatabaseManager.cs" />
@@ -87,8 +84,6 @@
     <Compile Include="Tasks\HourFlags.cs" />
     <Compile Include="Tasks\MonthFlags.cs" />
     <Compile Include="Tasks\Recurrence.cs" />
-    <Compile Include="DataAccess\CustomDataSourceView.cs" />
-    <Compile Include="DataAccess\CustomDataSource.cs" />
     <Compile Include="DataAccess\DataQuery.cs" />
     <Compile Include="Layout\UI\Container.cs" />
     <Compile Include="Layout\LayoutControl.cs" />
