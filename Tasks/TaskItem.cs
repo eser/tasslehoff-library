@@ -24,6 +24,7 @@ namespace Tasslehoff.Library.Tasks
     using System;
     using System.Collections.Generic;
     using System.Collections.ObjectModel;
+    using System.Threading;
     using System.Threading.Tasks;
 
     /// <summary>
@@ -37,6 +38,11 @@ namespace Tasslehoff.Library.Tasks
         /// The recurrence
         /// </summary>
         private Recurrence recurrence;
+
+        /// <summary>
+        /// The repeat
+        /// </summary>
+        private int repeat;
 
         /// <summary>
         /// The action
@@ -71,14 +77,15 @@ namespace Tasslehoff.Library.Tasks
         /// <param name="recurrence">The recurrence</param>
         /// <param name="action">The action</param>
         /// <param name="lifetime">The lifetime</param>
-        public TaskItem(Recurrence recurrence, Action<TaskActionParameters> action, TimeSpan? lifetime = null)
+        public TaskItem(Action<TaskActionParameters> action)
         {
             this.status = TaskItemStatus.NotStarted;
             this.lastRun = DateTimeOffset.MinValue;
 
-            this.recurrence = recurrence;
+            this.recurrence = Recurrence.Once;
+            this.repeat = 1;
             this.action = action;
-            this.lifetime = lifetime.GetValueOrDefault(TimeSpan.Zero);
+            this.lifetime = TimeSpan.Zero;
 
             this.activeActions = new Collection<TaskActionParameters>();
         }
@@ -98,6 +105,24 @@ namespace Tasslehoff.Library.Tasks
             set
             {
                 this.recurrence = value;
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the repeat.
+        /// </summary>
+        /// <value>
+        /// The repeat.
+        /// </value>
+        public int Repeat
+        {
+            get
+            {
+                return this.repeat;
+            }
+            set
+            {
+                this.repeat = value;
             }
         }
 
@@ -194,6 +219,54 @@ namespace Tasslehoff.Library.Tasks
         // methods
 
         /// <summary>
+        /// Sets recurrence of task item.
+        /// </summary>
+        /// <param name="recurrence">Recurrence</param>
+        /// <returns>Task Item</returns>
+        public TaskItem SetRecurrence(Recurrence recurrence)
+        {
+            this.Recurrence = recurrence;
+
+            return this;
+        }
+
+        /// <summary>
+        /// Sets repeat of task item.
+        /// </summary>
+        /// <param name="repeat">Repeat</param>
+        /// <returns>Task Item</returns>
+        public TaskItem SetRepeat(int repeat)
+        {
+            this.Repeat = repeat;
+
+            return this;
+        }
+
+        /// <summary>
+        /// Sets lifetime of task item.
+        /// </summary>
+        /// <param name="lifetime">Life time</param>
+        /// <returns>Task Item</returns>
+        public TaskItem SetLifetime(TimeSpan lifetime)
+        {
+            this.Lifetime = lifetime;
+
+            return this;
+        }
+
+        /// <summary>
+        /// Postpones the task schedule.
+        /// </summary>
+        /// <param name="timespan">The timespan which will be added to start time</param>
+        /// <returns>Task Item</returns>
+        public TaskItem Postpone(TimeSpan timespan)
+        {
+            this.Recurrence = new Recurrence(DateTimeOffset.UtcNow.Add(timespan), this.Recurrence.Interval);
+
+            return this;
+        }
+
+        /// <summary>
         /// Initializes this instance.
         /// </summary>
         public void Init()
@@ -231,15 +304,29 @@ namespace Tasslehoff.Library.Tasks
             }
 
             this.LastRun = now;
-            TaskActionParameters cronActionParameters = new TaskActionParameters(this, now, this.Lifetime);
+
+            CancellationTokenSource cancellationTokenSource;
+            if (this.Lifetime != TimeSpan.Zero)
+            {
+                cancellationTokenSource = new CancellationTokenSource(this.Lifetime);
+            }
+            else
+            {
+                cancellationTokenSource = new CancellationTokenSource();
+            }
+
+            TaskActionParameters cronActionParameters = new TaskActionParameters(this, now, cancellationTokenSource);
             this.ActiveActions.Add(cronActionParameters);
 
-            Task.Run(
-                () => {
+            Action actionToRun = () =>
+            {
+                for (int i = this.Repeat; i > 0; i--) {
                     this.Action(cronActionParameters);
-                    this.ActiveActions.Remove(cronActionParameters);
                 }
-            );
+                this.ActiveActions.Remove(cronActionParameters);
+            };
+
+            Task lastTask = Task.Run(actionToRun, cancellationTokenSource.Token);
 
             if (this.Recurrence.Interval == TimeSpan.Zero)
             {

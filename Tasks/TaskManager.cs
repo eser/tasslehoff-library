@@ -24,12 +24,13 @@ namespace Tasslehoff.Library.Tasks
     using System;
     using System.Collections.Generic;
     using System.Timers;
+    using System.Web.Hosting;
     using Tasslehoff.Library.Services;
 
     /// <summary>
     /// TaskManager class.
     /// </summary>
-    public class TaskManager : ServiceControllable
+    public class TaskManager : ServiceControllable, IRegisteredObject
     {
         // fields
 
@@ -187,10 +188,21 @@ namespace Tasslehoff.Library.Tasks
         }
 
         /// <summary>
+        /// Stops the service.
+        /// </summary>
+        /// <param name="immediate"></param>
+        public void Stop(bool immediate)
+        {
+            this.Stop();
+        }
+
+        /// <summary>
         /// Services the start.
         /// </summary>
         protected override void ServiceStart()
         {
+            HostingEnvironment.RegisterObject(this);
+
             this.Timer.Start();
         }
 
@@ -205,6 +217,8 @@ namespace Tasslehoff.Library.Tasks
             }
 
             this.Timer.Stop();
+
+            HostingEnvironment.UnregisterObject(this);
         }
 
         /// <summary>

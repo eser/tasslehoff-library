@@ -32,6 +32,11 @@ namespace Tasslehoff.Library.Tasks
         // fields
 
         /// <summary>
+        /// Once
+        /// </summary>
+        public static Recurrence Once = new Recurrence(DateTimeOffset.MinValue, TimeSpan.Zero);
+
+        /// <summary>
         /// The date start
         /// </summary>
         private readonly DateTimeOffset dateStart;
@@ -215,15 +220,6 @@ namespace Tasslehoff.Library.Tasks
         }
 
         // methods
-
-        /// <summary>
-        /// Creates recurrence works at once.
-        /// </summary>
-        /// <returns>Recurrence instance</returns>
-        public static Recurrence Once()
-        {
-            return new Recurrence(DateTimeOffset.MinValue, TimeSpan.Zero);
-        }
 
         /// <summary>
         /// Creates recurrence works at once on specified time.

@@ -44,11 +44,6 @@ namespace Tasslehoff.Library.Tasks
         private readonly DateTimeOffset actionStarted;
 
         /// <summary>
-        /// The lifetime
-        /// </summary>
-        private readonly TimeSpan lifetime;
-
-        /// <summary>
         /// The cancellation token source
         /// </summary>
         private CancellationTokenSource cancellationTokenSource;
@@ -65,21 +60,12 @@ namespace Tasslehoff.Library.Tasks
         /// </summary>
         /// <param name="source">The source</param>
         /// <param name="actionStarted">The action started</param>
-        /// <param name="lifetime">The lifetime</param>
-        public TaskActionParameters(TaskItem source, DateTimeOffset actionStarted, TimeSpan lifetime)
+        /// <param name="cancellationTokenSource">The cancellation token source</param>
+        public TaskActionParameters(TaskItem source, DateTimeOffset actionStarted, CancellationTokenSource cancellationTokenSource)
         {
             this.source = source;
             this.actionStarted = actionStarted;
-            this.lifetime = lifetime;
-
-            if (lifetime != TimeSpan.Zero)
-            {
-                this.cancellationTokenSource = new CancellationTokenSource(this.lifetime);
-            }
-            else
-            {
-                this.cancellationTokenSource = new CancellationTokenSource();
-            }
+            this.cancellationTokenSource = cancellationTokenSource;
         }
 
         /// <summary>
@@ -117,20 +103,6 @@ namespace Tasslehoff.Library.Tasks
             get
             {
                 return this.actionStarted;
-            }
-        }
-
-        /// <summary>
-        /// Gets the lifetime.
-        /// </summary>
-        /// <value>
-        /// The lifetime.
-        /// </value>
-        public TimeSpan LifeTime
-        {
-            get
-            {
-                return this.lifetime;
             }
         }
 
